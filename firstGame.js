@@ -1,14 +1,16 @@
 "use strict";
 // gonehacking.dk
 (function(){
-	var lastUpdate = performance.now();
+	
 	var keyMap = [];
 	var CANVAS_WIDTH = 800;
 	var CANVAS_HEIGHT = 600;
 	var DIRECTION = 1;
 	var BASE_VELOCITY = {x: 0.1, y: 0.1}
+
+	var lastUpdate = performance.now();
 	var FPS = 30;
-	var dt = 1;
+	var dt = 0.01;
 
 	var arrows = { left: 37, up: 38, right: 39, down: 40 };
 	var canvas = document.getElementById('playground');
@@ -19,18 +21,14 @@
 	var player = {
 		color: "#00A",
 		velocity: {x: 0.1, y: 0.1},
-		acceleration: {x: 0.0008, y: 0.0008},
-		velocityLimit: 0.68,
+		acceleration: {x: 0.0018, y: 0.0018},
+		velocityLimit: 0.58,
 		position: {x: 0, y: 0},
 		width: 32,
 		height: 32,
 		draw: function() {
 			ctx.fillStyle = this.color;
 			ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
-		},
-		resetVelocity: function(){
-			this.velocity.x = Math.min(BASE_VELOCITY.x, this.velocity.x);
-			this.velocity.y = Math.min(BASE_VELOCITY.y, this.velocity.y);
 		},
 		move: function(x, y) {
 			var xUBound = this.position.x + this.width;
@@ -66,35 +64,37 @@
 	}
 
 	function keyboardReact() {
-		if( keyMap[arrows.right] ) {
+		if ( keyMap[arrows.right] ) {
 			player.move(DIRECTION, 0);
 		}  
 		if ( keyMap[arrows.left] ) {
 			player.move(-DIRECTION, 0);
 		}
-		if( keyMap[arrows.up] ) {
+		if ( keyMap[arrows.up] ) {
 			player.move(0, -DIRECTION);
 		}  
-		if( keyMap[arrows.down] ) {
+		if ( keyMap[arrows.down] ) {
 			player.move(0, DIRECTION);
 		}
-
-		if(!(keyMap[arrows.right] || keyMap[arrows.left] || keyMap[arrows.up] || keyMap[arrows.down])) {
-			player.resetVelocity();
+		if (!(keyMap[arrows.right] || keyMap[arrows.left])) {
+			player.velocity.x = Math.min(BASE_VELOCITY.x, player.velocity.x);
+		}
+		if (!(keyMap[arrows.up] || keyMap[arrows.down])) {
+			player.velocity.y = Math.min(BASE_VELOCITY.y, player.velocity.y);
 		}
 	}
 
 	function tick() {
 		ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+
 		var now = performance.now();
 		dt = now - lastUpdate;
 		lastUpdate = now;
 
 		keyboardReact(); // tied to clock ticking of the main game loop
 		player.draw();
-
-		requestAnimationFrame(tick);
 	}
-	requestAnimationFrame(tick);
+
+	setInterval(tick, 1000 / FPS);
 
 })();
