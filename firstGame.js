@@ -35,22 +35,43 @@
 			var yUBound = this.position.y + this.height;
 
 			if ( x != 0 ) {
-				var oldXV = this.velocity.x;
+				var oldV = this.velocity.x;
 				this.velocity.x = Math.min(this.velocity.x + this.acceleration.x * dt, this.velocityLimit);
-				if ( x > 0 && xUBound <= CANVAS_WIDTH ) {
-					this.position.x += dt * ( oldXV + this.velocity.x ) / 2;	
-				} else if ( x < 0 && this.position.x > 0 ) {
-					this.position.x -= dt * ( oldXV + this.velocity.x ) / 2;
+				if ( x > 0 ) {
+					var nextPosition = this.position.x + dt * ( oldV + this.velocity.x ) / 2;
+					if ( nextPosition + this.width <= CANVAS_WIDTH ) {
+						this.position.x = nextPosition;	
+					} else {
+						this.position.x = CANVAS_WIDTH - this.width;
+					}
+				} else if ( x < 0 ) {
+					var nextPosition = this.position.x - dt * ( oldV + this.velocity.x ) / 2;
+					if ( nextPosition > 0 ) { // is the next step within the bounds of the canvas??
+						this.position.x = nextPosition;	
+					} else {
+						this.position.x = 0;
+					}
 				}
 			}
 			
 			if ( y != 0 ) {
-				var oldYV = this.velocity.y;
+				var oldV = this.velocity.y;
 				this.velocity.y = Math.min(this.velocity.y + this.acceleration.y * dt, this.velocityLimit);
-				if ( y > 0 && yUBound <= CANVAS_HEIGHT ) {
-					this.position.y += dt * ( oldYV + this.velocity.y ) / 2;	
-				} else if ( y < 0 && this.position.y > 0 ) {
-					this.position.y -= dt * ( oldYV + this.velocity.y ) / 2;
+				if ( y > 0 ) {
+					var nextPosition = this.position.y + dt * ( oldV + this.velocity.y ) / 2;
+					if ( nextPosition + this.height <= CANVAS_HEIGHT ) {
+						this.position.y = nextPosition;	
+					} else {
+						this.position.y = CANVAS_HEIGHT - this.height;
+					}
+				} else if ( y < 0 ) {
+					var nextPosition = this.position.y - dt * ( oldV + this.velocity.y ) / 2;
+					if ( nextPosition > 0 ) {
+						this.position.y = nextPosition;
+					} else {
+						this.position.y = 0;
+					}
+					
 				}
 			}
 		}
