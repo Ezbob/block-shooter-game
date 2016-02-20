@@ -1,6 +1,6 @@
 "use strict";
 
-(function(){
+(function() {
 	
 	var keyMap = []; // maps wheither a key is pressed down, keycode -> boolean
 	var CANVAS_WIDTH = 800;
@@ -11,25 +11,39 @@
 	var lastUpdate = performance.now();
 	var FPS = 30;
 	var dt = 0.001;
+	var shots = [];
 
-	var arrows = { left: 37, up: 38, right: 39, down: 40 };
+	var arrows = { left: 37, up: 38, right: 39, down: 40, z: 90, x: 88 };
 	var canvas = document.getElementById('playground');
 	canvas.setAttribute("width", CANVAS_WIDTH);
 	canvas.setAttribute("height", CANVAS_HEIGHT);
 	var ctx = canvas.getContext('2d');
 
+	function Shot(shooter, velocity) {
+		this.shooter = shooter;
+		this.color = "red";
+		this.dimension = {width: 4, height: 16};
+		this.position = {x: shooter.position.x + (shooter.dimension.width / 2) - (this.dimension.width / 2), 
+			y: shooter.position.y - shooter.dimension.height};
+		this.velocity = velocity;
+		this.draw = function () {
+			ctx.fillRect(this.position.x, this.position.y, this.dimension.width, this.dimension.height);
+			ctx.fillStyle = this.color;
+			this.position.y -= velocity;
+		};
+	};
+
 	// the player object
 	var player = {
 		color: "#00A",
 		velocity: (function(){ return {x: BASE_VELOCITY.x, y: BASE_VELOCITY.y} })(),
+		dimension: {width: 32, height: 32},
 		acceleration: {x: 0.0018, y: 0.0018},
 		velocityLimit: 0.55,
-		position: {x: 0, y: 0},
-		width: 32,
-		height: 32,
+		position: {x: CANVAS_WIDTH/2 - 32, y: CANVAS_HEIGHT-(CANVAS_HEIGHT/6)},
 		draw: function() {
 			ctx.fillStyle = this.color;
-			ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
+			ctx.fillRect(this.position.x, this.position.y, this.dimension.width, this.dimension.height);
 		},
 		move: function(directX, directY) {
 
@@ -38,10 +52,10 @@
 				this.velocity.x = Math.min(this.velocity.x + this.acceleration.x * dt, this.velocityLimit);
 				if ( directX > 0 ) {
 					var nextPosition = this.position.x + dt * ( oldV + this.velocity.x ) / 2;
-					if ( nextPosition + this.width <= CANVAS_WIDTH ) {
+					if ( nextPosition + this.dimension.width <= CANVAS_WIDTH ) {
 						this.position.x = nextPosition;	
 					} else {
-						this.position.x = CANVAS_WIDTH - this.width;
+						this.position.x = CANVAS_WIDTH - this.dimension.width;
 					}
 				} else if ( directX < 0 ) {
 					var nextPosition = this.position.x - dt * ( oldV + this.velocity.x ) / 2;
@@ -58,10 +72,10 @@
 				this.velocity.y = Math.min(this.velocity.y + this.acceleration.y * dt, this.velocityLimit);
 				if ( directY > 0 ) {
 					var nextPosition = this.position.y + dt * ( oldV + this.velocity.y ) / 2;
-					if ( nextPosition + this.height <= CANVAS_HEIGHT ) {
+					if ( nextPosition + this.dimension.height <= CANVAS_HEIGHT ) {
 						this.position.y = nextPosition;	
 					} else {
-						this.position.y = CANVAS_HEIGHT - this.height;
+						this.position.y = CANVAS_HEIGHT - this.dimension.height;
 					}
 				} else if ( directY < 0 ) {
 					var nextPosition = this.position.y - dt * ( oldV + this.velocity.y ) / 2;
@@ -73,9 +87,12 @@
 					
 				}
 			}
+		},
+		shoot: function () {
+			shots.push(new Shot(this, 6));
 		}
 	}; 
-	
+
 	// sets the event listner to check if key is pressed down
 	onkeydown = onkeyup = function (event) { 
 		keyMap[event.keyCode] = event.type == "keydown";
@@ -83,6 +100,10 @@
 
 	// registres actions to keyMap bindings
 	function keyboardRegistry() {
+
+		if ( keyMap[arrows.z] ) {
+			player.shoot();
+		}
 		if ( keyMap[arrows.right] ) {
 			player.move(DIRECTION, 0);
 		}  
@@ -110,12 +131,19 @@
 		lastUpdate = now;	
 	}
 
+	function drawShots() {
+		for (var i = 0, size = shots.length; i < size; ++i) {
+			shots[i].draw();
+		}
+	}
+
 	// "Game loop" this is where the continous function goes 
 	function tick() {
 		ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 		updateTimeStep();
 		keyboardRegistry(); // tied to clock ticking of the main game loop
 		player.draw();
+		drawShots();
 	}
 
 	setInterval(tick, 1000 / FPS);
