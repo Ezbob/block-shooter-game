@@ -2,10 +2,10 @@
 
 (function(){
 	
-	var keyMap = [];
+	var keyMap = []; // maps wheither a key is pressed down, keycode -> boolean
 	var CANVAS_WIDTH = 800;
 	var CANVAS_HEIGHT = 600;
-	var DIRECTION = 1;
+	var DIRECTION = 1; // if negative reverse the controls, if zero no controls, else normal
 	var BASE_VELOCITY = {x: 0.1, y: 0.1}
 
 	var lastUpdate = performance.now();
@@ -18,6 +18,7 @@
 	canvas.setAttribute("height", CANVAS_HEIGHT);
 	var ctx = canvas.getContext('2d');
 
+	// the player object
 	var player = {
 		color: "#00A",
 		velocity: (function(){ return {x: BASE_VELOCITY.x, y: BASE_VELOCITY.y} })(),
@@ -31,8 +32,6 @@
 			ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
 		},
 		move: function(directX, directY) {
-			var xUBound = this.position.x + this.width;
-			var yUBound = this.position.y + this.height;
 
 			if ( directX != 0 ) {
 				var oldV = this.velocity.x;
@@ -77,10 +76,12 @@
 		}
 	}; 
 	
-	onkeydown = onkeyup = function (event) {
+	// sets the event listner to check if key is pressed down
+	onkeydown = onkeyup = function (event) { 
 		keyMap[event.keyCode] = event.type == "keydown";
 	}
 
+	// registres actions to keyMap bindings
 	function keyboardRegistry() {
 		if ( keyMap[arrows.right] ) {
 			player.move(DIRECTION, 0);
@@ -102,13 +103,17 @@
 		}
 	}
 
-	function tick() {
-		ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-
+	// the timestemp needed in the Verlet integration (calculation of velocity and acceleration)
+	function updateTimeStep() {
 		var now = performance.now();
 		dt = now - lastUpdate;
-		lastUpdate = now;
+		lastUpdate = now;	
+	}
 
+	// "Game loop" this is where the continous function goes 
+	function tick() {
+		ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+		updateTimeStep();
 		keyboardRegistry(); // tied to clock ticking of the main game loop
 		player.draw();
 	}
