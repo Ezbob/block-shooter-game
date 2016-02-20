@@ -10,7 +10,7 @@
 
 	var lastUpdate = performance.now();
 	var FPS = 30;
-	var dt = 0.01;
+	var dt = 0.001;
 
 	var arrows = { left: 37, up: 38, right: 39, down: 40 };
 	var canvas = document.getElementById('playground');
@@ -32,27 +32,24 @@
 		},
 		move: function(x, y) {
 			var xUBound = this.position.x + this.width;
-			var xLBound = this.position.x - this.velocity.x;
-
 			var yUBound = this.position.y + this.height;
-			var yLBound = this.position.y - this.velocity.y;
 
-			if ( x != 0 && (xUBound <= CANVAS_WIDTH || (x < 0 && xUBound > CANVAS_WIDTH)) ) {
+			if ( x != 0 ) {
 				var oldXV = this.velocity.x;
 				this.velocity.x = Math.min(this.velocity.x + this.acceleration.x * dt, this.velocityLimit);
-				if ( x > 0 ) {
+				if ( x > 0 && xUBound <= CANVAS_WIDTH ) {
 					this.position.x += dt * ( oldXV + this.velocity.x ) / 2;	
-				} else {
+				} else if ( x < 0 && this.position.x > 0 ) {
 					this.position.x -= dt * ( oldXV + this.velocity.x ) / 2;
 				}
 			}
 			
-			if ( y != 0 && (yUBound <= CANVAS_WIDTH || (y < 0 && yUBound > CANVAS_WIDTH)) ) {
+			if ( y != 0 ) {
 				var oldYV = this.velocity.y;
 				this.velocity.y = Math.min(this.velocity.y + this.acceleration.y * dt, this.velocityLimit);
-				if ( y > 0 ) {
+				if ( y > 0 && yUBound <= CANVAS_HEIGHT ) {
 					this.position.y += dt * ( oldYV + this.velocity.y ) / 2;	
-				} else {
+				} else if ( y < 0 && this.position.y > 0 ) {
 					this.position.y -= dt * ( oldYV + this.velocity.y ) / 2;
 				}
 			}
@@ -63,7 +60,7 @@
 		keyMap[event.keyCode] = event.type == "keydown";
 	}
 
-	function keyboardReact() {
+	function keyboardRegistry() {
 		if ( keyMap[arrows.right] ) {
 			player.move(DIRECTION, 0);
 		}  
@@ -91,7 +88,7 @@
 		dt = now - lastUpdate;
 		lastUpdate = now;
 
-		keyboardReact(); // tied to clock ticking of the main game loop
+		keyboardRegistry(); // tied to clock ticking of the main game loop
 		player.draw();
 	}
 
