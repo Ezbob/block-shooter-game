@@ -1,5 +1,5 @@
 "use strict";
-// gonehacking.dk
+
 (function(){
 	
 	var keyMap = [];
@@ -20,9 +20,9 @@
 
 	var player = {
 		color: "#00A",
-		velocity: {x: 0.1, y: 0.1},
+		velocity: (function(){ return {x: BASE_VELOCITY.x, y: BASE_VELOCITY.y} })(),
 		acceleration: {x: 0.0018, y: 0.0018},
-		velocityLimit: 0.58,
+		velocityLimit: 0.55,
 		position: {x: 0, y: 0},
 		width: 32,
 		height: 32,
