@@ -7,17 +7,27 @@
 	var CANVAS_HEIGHT = 600;
 	var DIRECTION = 1; // if negative reverse the controls, if zero no controls, else normal
 	var BASE_VELOCITY = {x: 0.1, y: 0.1}
+	var TRAVEL_VELOCITY = 11;
 
 	var lastUpdate = performance.now();
 	var FPS = 30;
 	var dt = 0.001;
+
+	// props
+	var NUMBER_OF_CLOUDS = 6;
 	var shots = [];
+	var clouds = [];
 
 	var arrows = { left: 37, up: 38, right: 39, down: 40, z: 90, x: 88 };
 	var canvas = document.getElementById('playground');
 	canvas.setAttribute("width", CANVAS_WIDTH);
 	canvas.setAttribute("height", CANVAS_HEIGHT);
 	var ctx = canvas.getContext('2d');
+
+
+	function randomBetween(low,max) {
+		return low + Math.floor((Math.random() * max));
+	}
 
 	function Shot(shooter, velocity) {
 		this.shooter = shooter;
@@ -32,6 +42,16 @@
 			this.position.y -= velocity;
 		};
 	};
+
+	function Cloud(dimension, position) {
+		this.dimension = dimension;
+		this.position = position;
+		this.draw = function () {
+			ctx.lineWidth = "0.2";
+			ctx.strokeRect(position.x, position.y, dimension.width, dimension.height);
+			this.position.y += TRAVEL_VELOCITY;
+		};
+	}
 
 	// the player object
 	var player = {
@@ -132,8 +152,19 @@
 	}
 
 	function drawShots() {
-		for (var i = 0, size = shots.length; i < size; ++i) {
-			shots[i].draw();
+		shots.forEach(function(element, index) {element.draw()});	
+	}
+
+	function drawClouds() {
+		clouds.forEach(function(element, index) {element.draw()});
+		if (clouds.every(function(element) { return element.position.y > CANVAS_HEIGHT })) {
+			clouds = [];
+		}	
+	}
+
+	function addClouds(maxClouds) {
+		if (clouds.length < maxClouds) {
+			clouds.push(new Cloud({width: 20, height: 20}, {x: randomBetween(1, CANVAS_WIDTH - 1), y: 1}));
 		}
 	}
 
@@ -142,8 +173,12 @@
 		ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 		updateTimeStep();
 		keyboardRegistry(); // tied to clock ticking of the main game loop
+
+		addClouds(NUMBER_OF_CLOUDS);
+
 		player.draw();
 		drawShots();
+		drawClouds();
 	}
 
 	setInterval(tick, 1000 / FPS);
