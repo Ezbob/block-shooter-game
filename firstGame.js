@@ -47,7 +47,7 @@
 		this.dimension = dimension;
 		this.position = position;
 		this.draw = function () {
-			ctx.lineWidth = "0.2";
+			ctx.lineWidth = "0.18";
 			ctx.strokeRect(position.x, position.y, dimension.width, dimension.height);
 			this.position.y += TRAVEL_VELOCITY;
 		};
@@ -157,9 +157,7 @@
 
 	function drawClouds() {
 		clouds.forEach(function(element, index) {element.draw()});
-		if (clouds.every(function(element) { return element.position.y > CANVAS_HEIGHT })) {
-			clouds = [];
-		}	
+		clouds = clouds.filter(function(element){ return element.position.y < CANVAS_HEIGHT });
 	}
 
 	function addClouds(maxClouds) {
