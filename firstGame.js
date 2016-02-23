@@ -1,17 +1,28 @@
 "use strict";
 
+window.requestAnimFrame = (function() {
+	return  window.requestAnimationFrame       || 
+			window.webkitRequestAnimationFrame || 
+			window.mozRequestAnimationFrame    || 
+			window.oRequestAnimationFrame      || 
+			window.msRequestAnimationFrame     || 
+			function(/* function */ callback, /* DOMElement */ element){
+				window.setTimeout(callback, 1000 / 60);
+			};
+})();
+
+
 (function() {
 	
 	var keyMap = []; // maps wheither a key is pressed down, keycode -> boolean
 	var CANVAS_WIDTH = 800;
-	var CANVAS_HEIGHT = 600;
+	var CANVAS_HEIGHT = CANVAS_WIDTH / 12 * 9;
 	var DIRECTION = 1; // if negative reverse the controls, if zero no controls, else normal
-	var BASE_VELOCITY = {x: 0.1, y: 0.1}
-	var TRAVEL_VELOCITY = 11;
-
-	var lastUpdate = performance.now();
-	var FPS = 30;
-	var dt = 0.001;
+	var BASE_VELOCITY = {x: 2, y: 2}
+	var TRAVEL_VELOCITY = 0.45;
+	var lastUpdate;
+	var now;
+	var dt;
 
 	// props
 	var NUMBER_OF_CLOUDS = 6;
@@ -38,7 +49,7 @@
 		this.draw = function () {
 			ctx.fillRect(this.position.x, this.position.y, this.dimension.width, this.dimension.height);
 			ctx.fillStyle = this.color;
-			this.position.y -= velocity;
+			this.position.y -= velocity * dt;
 		};
 	};
 
@@ -46,19 +57,19 @@
 		this.dimension = dimension;
 		this.position = position;
 		this.draw = function () {
-			ctx.lineWidth = "0.18";
+			ctx.lineWidth = 0.20;
 			ctx.strokeRect(position.x, position.y, dimension.width, dimension.height);
-			this.position.y += TRAVEL_VELOCITY;
+			this.position.y += TRAVEL_VELOCITY * dt;
 		};
 	}
 
 	// the player object
 	var player = {
-		gun: {shots: [], limit: 50 },
+		gun: {shots: [], limit: 50, velocity: 0.32 },
 		color: "#00A",
 		velocity: (function(){ return {x: BASE_VELOCITY.x, y: BASE_VELOCITY.y} })(),
 		dimension: {width: 32, height: 32},
-		acceleration: {x: 0.0018, y: 0.0018},
+		acceleration: {x: 0.0002, y: 0.0002},
 		velocityLimit: 0.55,
 		position: {x: CANVAS_WIDTH/2 - 32, y: CANVAS_HEIGHT-(CANVAS_HEIGHT/6)},
 		draw: function() {
@@ -110,7 +121,7 @@
 		},
 		shoot: function () {
 			if (this.gun.shots.length < this.gun.limit ) {
-				this.gun.shots.push(new Shot(this, 6));	
+				this.gun.shots.push(new Shot(this, this.gun.velocity));	
 			}
 		}
 	}; 
@@ -148,9 +159,9 @@
 
 	// the timestemp needed in the Verlet integration (calculation of velocity and acceleration)
 	function updateTimeStep() {
-		var now = performance.now();
-		dt = now - lastUpdate;
-		lastUpdate = now;	
+		now = performance.now();
+		dt = now - (lastUpdate || now);
+		lastUpdate = now;
 	}
 
 	function drawShots() {
@@ -172,8 +183,11 @@
 
 	// "Game loop" this is where the continous function goes 
 	function tick() {
-		ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+		requestAnimFrame(tick);
 		updateTimeStep();
+
+
+		ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 		keyboardRegistry(); // tied to clock ticking of the main game loop
 
 		addClouds(NUMBER_OF_CLOUDS);
@@ -183,6 +197,5 @@
 		drawClouds();
 	}
 
-	setInterval(tick, 1000 / FPS);
-
+	requestAnimFrame(tick);
 })();
