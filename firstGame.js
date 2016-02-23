@@ -15,7 +15,6 @@
 
 	// props
 	var NUMBER_OF_CLOUDS = 6;
-	var shots = [];
 	var clouds = [];
 
 	var arrows = { left: 37, up: 38, right: 39, down: 40, z: 90, x: 88 };
@@ -55,6 +54,7 @@
 
 	// the player object
 	var player = {
+		gun: {shots: [], limit: 50 },
 		color: "#00A",
 		velocity: (function(){ return {x: BASE_VELOCITY.x, y: BASE_VELOCITY.y} })(),
 		dimension: {width: 32, height: 32},
@@ -109,7 +109,9 @@
 			}
 		},
 		shoot: function () {
-			shots.push(new Shot(this, 6));
+			if (this.gun.shots.length < this.gun.limit ) {
+				this.gun.shots.push(new Shot(this, 6));	
+			}
 		}
 	}; 
 
@@ -152,7 +154,9 @@
 	}
 
 	function drawShots() {
-		shots.forEach(function(element, index) {element.draw()});	
+		var bullets = player.gun.shots;
+		bullets.forEach(function(element, index) {element.draw()});
+		player.gun.shots = bullets.filter(function(element){ return element.position.y >= -5 });
 	}
 
 	function drawClouds() {
@@ -162,7 +166,7 @@
 
 	function addClouds(maxClouds) {
 		if (clouds.length < maxClouds) {
-			clouds.push(new Cloud({width: 20, height: 20}, {x: randomBetween(1, CANVAS_WIDTH - 1), y: 1}));
+			clouds.push(new Cloud({width: 20, height: 20}, {x: randomBetween(1, CANVAS_WIDTH - 1), y: randomBetween(-15, 15)}));
 		}
 	}
 
