@@ -71,7 +71,7 @@ window.requestAnimFrame = (function() {
 		dimension: {width: 32, height: 32},
 		acceleration: {x: 0.0002, y: 0.0002},
 		velocityLimit: 0.55,
-		position: {x: CANVAS_WIDTH/2 - 32, y: CANVAS_HEIGHT-(CANVAS_HEIGHT/6)},
+		position: {x:0 , y: 0}, // {x: CANVAS_WIDTH/2 - 32, y: CANVAS_HEIGHT-(CANVAS_HEIGHT/6)},
 		draw: function() {
 			ctx.fillStyle = this.color;
 			ctx.fillRect(this.position.x, this.position.y, this.dimension.width, this.dimension.height);
@@ -123,6 +123,24 @@ window.requestAnimFrame = (function() {
 			if (this.gun.shots.length < this.gun.limit ) {
 				this.gun.shots.push(new Shot(this, this.gun.velocity));	
 			}
+		},
+		checkBoundary: function (shot) {
+		
+			var playerLeft = this.position.x;
+			var playerRight = this.position.x + this.dimension.width;
+			var playerTop = this.position.y;
+			var playerBottom = this.position.y + this.dimension.height;
+
+			var shotLeft = shot.position.x;
+			var shotRight = shot.position.x + shot.dimension.width;
+			var shotTop = shot.position.y;
+			var shotBottom = shot.position.y + shot.dimension.height;
+
+
+			var isSeparate = playerRight < shotLeft || playerLeft > shotRight || 
+				playerTop < shotBottom || playerBottom > shotTop;
+
+			return !isSeparate;
 		}
 	}; 
 
@@ -164,15 +182,21 @@ window.requestAnimFrame = (function() {
 		lastUpdate = now;
 	}
 
+	function checkPlayerHit() {
+		player.gun.shots.forEach(function(element) {
+			player.checkBoundary(element);
+		});
+	}
+
 	function drawShots() {
 		var bullets = player.gun.shots;
 		bullets.forEach(function(element, index) {element.draw()});
-		player.gun.shots = bullets.filter(function(element){ return element.position.y >= -5 });
+		player.gun.shots = bullets.filter(function(element) { return element.position.y >= -5 });
 	}
 
 	function drawClouds() {
 		clouds.forEach(function(element, index) {element.draw()});
-		clouds = clouds.filter(function(element){ return element.position.y < CANVAS_HEIGHT });
+		clouds = clouds.filter(function(element) { return element.position.y < CANVAS_HEIGHT });
 	}
 
 	function addClouds(maxClouds) {
@@ -185,13 +209,13 @@ window.requestAnimFrame = (function() {
 	function tick() {
 		requestAnimFrame(tick);
 		updateTimeStep();
-
-
+		
 		ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 		keyboardRegistry(); // tied to clock ticking of the main game loop
 
 		addClouds(NUMBER_OF_CLOUDS);
 
+		checkPlayerHit();
 		player.draw();
 		drawShots();
 		drawClouds();
