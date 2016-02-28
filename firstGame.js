@@ -20,6 +20,7 @@ window.requestAnimFrame = (function() {
 	var DIRECTION = 1; // if negative reverse the controls, if zero no controls, else normal
 	var BASE_VELOCITY = {x: 2, y: 2}
 	var TRAVEL_VELOCITY = 0.45;
+	var FPS_LIMIT = 140;
 	var lastUpdate;
 	var now;
 	var dt;
@@ -43,8 +44,8 @@ window.requestAnimFrame = (function() {
 		this.shooter = shooter;
 		this.color = "red";
 		this.dimension = {width: 4, height: 16};
-		this.position = {x: shooter.position.x + (shooter.dimension.width / 2) - (this.dimension.width / 2), 
-			y: shooter.position.y - shooter.dimension.height};
+		this.position = {x: shooter.position.x + (shooter.dimension.width / 2) - 
+			(this.dimension.width / 2), y: shooter.position.y - shooter.dimension.height};
 		this.velocity = velocity;
 		this.draw = function () {
 			ctx.fillRect(this.position.x, this.position.y, this.dimension.width, this.dimension.height);
@@ -66,21 +67,22 @@ window.requestAnimFrame = (function() {
 	// the player object
 	var player = {
 		gun: {shots: [], limit: 50, velocity: 0.32 },
-		color: "#00A",
+		damage: 0,
+		color: 'rgb(0,8,255)',
 		velocity: (function(){ return {x: BASE_VELOCITY.x, y: BASE_VELOCITY.y} })(),
 		dimension: {width: 32, height: 32},
 		acceleration: {x: 0.0002, y: 0.0002},
 		velocityLimit: 0.55,
-		position: {x:0 , y: 0}, // {x: CANVAS_WIDTH/2 - 32, y: CANVAS_HEIGHT-(CANVAS_HEIGHT/6)},
+		position: {x: CANVAS_WIDTH/2 - 32, y: CANVAS_HEIGHT-(CANVAS_HEIGHT/6)},
 		draw: function() {
 			ctx.fillStyle = this.color;
 			ctx.fillRect(this.position.x, this.position.y, this.dimension.width, this.dimension.height);
 		},
 		move: function(directX, directY) {
-
 			if ( directX != 0 ) {
 				var oldV = this.velocity.x;
-				this.velocity.x = Math.min(this.velocity.x + this.acceleration.x * dt, this.velocityLimit);
+				this.velocity.x = Math.min(this.velocity.x + this.acceleration.x * dt, 
+					this.velocityLimit);
 				if ( directX > 0 ) {
 					var nextPosition = this.position.x + dt * ( oldV + this.velocity.x ) / 2;
 					if ( nextPosition + this.dimension.width <= CANVAS_WIDTH ) {
@@ -97,10 +99,10 @@ window.requestAnimFrame = (function() {
 					}
 				}
 			}
-			
 			if ( directY != 0 ) {
 				var oldV = this.velocity.y;
-				this.velocity.y = Math.min(this.velocity.y + this.acceleration.y * dt, this.velocityLimit);
+				this.velocity.y = Math.min(this.velocity.y + this.acceleration.y * dt, 
+					this.velocityLimit);
 				if ( directY > 0 ) {
 					var nextPosition = this.position.y + dt * ( oldV + this.velocity.y ) / 2;
 					if ( nextPosition + this.dimension.height <= CANVAS_HEIGHT ) {
@@ -126,19 +128,18 @@ window.requestAnimFrame = (function() {
 		},
 		checkBoundary: function (shot) {
 		
-			var playerLeft = this.position.x;
-			var playerRight = this.position.x + this.dimension.width;
-			var playerTop = this.position.y;
-			var playerBottom = this.position.y + this.dimension.height;
+			var playerLeft = this.position.x; // x1
+			var playerRight = this.position.x + this.dimension.width; // x1 + w1
+			var playerTop = this.position.y; // y1 
+			var playerBottom = this.position.y + this.dimension.height; // y1 + h1 
 
-			var shotLeft = shot.position.x;
-			var shotRight = shot.position.x + shot.dimension.width;
-			var shotTop = shot.position.y;
-			var shotBottom = shot.position.y + shot.dimension.height;
+			var shotLeft = shot.position.x; // x2
+			var shotRight = shot.position.x + shot.dimension.width; // x2 + w2
+			var shotTop = shot.position.y; // y2
+			var shotBottom = shot.position.y + shot.dimension.height; // y2 + h2
 
-
-			var isSeparate = playerRight < shotLeft || playerLeft > shotRight || 
-				playerTop < shotBottom || playerBottom > shotTop;
+			var isSeparate = (playerRight < shotLeft || shotRight < playerLeft || 
+				playerBottom < shotTop || shotBottom < playerTop);
 
 			return !isSeparate;
 		}
@@ -184,7 +185,10 @@ window.requestAnimFrame = (function() {
 
 	function checkPlayerHit() {
 		player.gun.shots.forEach(function(element) {
-			player.checkBoundary(element);
+			if (player.checkBoundary(element)) {
+				player.damage++;
+				console.log(player.damage);
+			}
 		});
 	}
 
@@ -201,14 +205,17 @@ window.requestAnimFrame = (function() {
 
 	function addClouds(maxClouds) {
 		if (clouds.length < maxClouds) {
-			clouds.push(new Cloud({width: 20, height: 20}, {x: randomBetween(1, CANVAS_WIDTH - 1), y: randomBetween(-15, 15)}));
+			clouds.push(new Cloud({width: 20, height: 20}, 
+				{x: randomBetween(1, CANVAS_WIDTH - 1), y: randomBetween(-15, 15)}));
 		}
 	}
 
 	// "Game loop" this is where the continous function goes 
 	function tick() {
-		requestAnimFrame(tick);
-		updateTimeStep();
+		setTimeout(function() {
+			requestAnimFrame(tick);
+			updateTimeStep();
+		}, 1000 / FPS_LIMIT);
 		
 		ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 		keyboardRegistry(); // tied to clock ticking of the main game loop
