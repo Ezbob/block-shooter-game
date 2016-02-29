@@ -48,8 +48,8 @@ window.requestAnimFrame = (function() {
 			(this.dimension.width / 2), y: shooter.position.y - shooter.dimension.height};
 		this.velocity = velocity;
 		this.draw = function () {
-			ctx.fillRect(this.position.x, this.position.y, this.dimension.width, this.dimension.height);
 			ctx.fillStyle = this.color;
+			ctx.fillRect(this.position.x, this.position.y, this.dimension.width, this.dimension.height);
 			this.position.y -= velocity * dt;
 		};
 	};
@@ -58,7 +58,7 @@ window.requestAnimFrame = (function() {
 		this.dimension = dimension;
 		this.position = position;
 		this.draw = function () {
-			ctx.lineWidth = 0.20;
+			ctx.lineWidth = 0.40;
 			ctx.strokeRect(position.x, position.y, dimension.width, dimension.height);
 			this.position.y += TRAVEL_VELOCITY * dt;
 		};
@@ -67,7 +67,7 @@ window.requestAnimFrame = (function() {
 	// the player object
 	var player = {
 		gun: {shots: [], limit: 50, velocity: 0.32 },
-		damage: 0,
+		health: { damage: 0, maxDamage: 400, isDead: false },
 		color: 'rgb(0,8,255)',
 		velocity: (function(){ return {x: BASE_VELOCITY.x, y: BASE_VELOCITY.y} })(),
 		dimension: {width: 32, height: 32},
@@ -75,8 +75,10 @@ window.requestAnimFrame = (function() {
 		velocityLimit: 0.55,
 		position: {x: CANVAS_WIDTH/2 - 32, y: CANVAS_HEIGHT-(CANVAS_HEIGHT/6)},
 		draw: function() {
-			ctx.fillStyle = this.color;
-			ctx.fillRect(this.position.x, this.position.y, this.dimension.width, this.dimension.height);
+			if (!this.health.isDead) {
+				ctx.fillStyle = this.color;
+				ctx.fillRect(this.position.x, this.position.y, this.dimension.width, this.dimension.height);
+			}
 		},
 		move: function(directX, directY) {
 			if ( directX != 0 ) {
@@ -127,7 +129,6 @@ window.requestAnimFrame = (function() {
 			}
 		},
 		checkBoundary: function (shot) {
-		
 			var playerLeft = this.position.x; // x1
 			var playerRight = this.position.x + this.dimension.width; // x1 + w1
 			var playerTop = this.position.y; // y1 
@@ -142,6 +143,17 @@ window.requestAnimFrame = (function() {
 				playerBottom < shotTop || shotBottom < playerTop);
 
 			return !isSeparate;
+		},
+		checkDamage: function() {
+			var health = this.health.damage;
+			var maxHealth = this.health.maxDamage;
+			if (health >= maxHealth) {
+				ctx.font = "42px Helvetica";
+				ctx.fillStyle = "red";
+				ctx.textAlign = "center";
+				ctx.fillText("YOU DIED!", CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
+				this.health.isDead = true;
+			}
 		}
 	}; 
 
@@ -153,7 +165,7 @@ window.requestAnimFrame = (function() {
 	// registres actions to keyMap bindings
 	function keyboardRegistry() {
 
-		if ( keyMap[arrows.z] ) {
+		if ( keyMap[arrows.z] && !player.health.isDead ) {
 			player.shoot();
 		}
 		if ( keyMap[arrows.right] ) {
@@ -185,9 +197,10 @@ window.requestAnimFrame = (function() {
 
 	function checkPlayerHit() {
 		player.gun.shots.forEach(function(element) {
-			if (player.checkBoundary(element)) {
-				player.damage++;
-				console.log(player.damage);
+			if ( player.checkBoundary(element) ) {
+				player.health.damage++;
+				ctx.clearRect(player.position.x,player.position.y, 
+					player.dimension.width, player.dimension.height);
 			}
 		});
 	}
@@ -216,13 +229,14 @@ window.requestAnimFrame = (function() {
 			requestAnimFrame(tick);
 			updateTimeStep();
 		}, 1000 / FPS_LIMIT);
-		
+
 		ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 		keyboardRegistry(); // tied to clock ticking of the main game loop
 
 		addClouds(NUMBER_OF_CLOUDS);
 
 		checkPlayerHit();
+		player.checkDamage();
 		player.draw();
 		drawShots();
 		drawClouds();
