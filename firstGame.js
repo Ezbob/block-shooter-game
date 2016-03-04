@@ -70,7 +70,7 @@ BOXED_GAME.actors = (function(game) {
 		this.draw = function () {
 			ctx.fillStyle = this.color;
 			ctx.fillRect(this.position.x, this.position.y, this.dimension.width, this.dimension.height);
-			this.position.y -= game.constants.velocity * game.variables.dt;
+			this.position.y -= this.velocity * game.variables.dt;
 		};
 	};
 
@@ -85,25 +85,25 @@ BOXED_GAME.actors = (function(game) {
 	}
 
 	// the player object
-	var Player = {
-		gun: {shots: [], limit: 50, velocity: 0.32 },
-		health: { damage: 0, maxDamage: 400, isDead: false },
-		color: 'rgb(0,8,255)',
-		velocity: (function(){ return {x: consts.BASE_VELOCITY.x, y: consts.BASE_VELOCITY.y} })(),
-		dimension: {width: 32, height: 32},
-		acceleration: {x: 0.0002, y: 0.0002},
-		velocityLimit: 0.55,
-		position: {x: consts.CANVAS_WIDTH/2 - 32, y: consts.CANVAS_HEIGHT-(consts.CANVAS_HEIGHT/6)},
-		draw: function() {
+	function Player() {
+		this.gun = {shots: [], limit: 50, velocity: 0.32 };
+		this.health = { damage: 0, maxDamage: 400, isDead: false };
+		this.color = 'rgb(0,8,255)';
+		this.velocity = (function(){ return {x: consts.BASE_VELOCITY.x, y: consts.BASE_VELOCITY.y} }());
+		this.dimension = {width: 32, height: 32};
+		this.acceleration = {x: 0.0002, y: 0.0002};
+		this.velocityLimit = 0.55;
+		this.position = {x: consts.CANVAS_WIDTH/2 - 32, y: consts.CANVAS_HEIGHT-(consts.CANVAS_HEIGHT/6)};
+		this.draw = function() {
 			if (!this.health.isDead) {
 				ctx.fillStyle = this.color;
 				ctx.fillRect(this.position.x, this.position.y, this.dimension.width, this.dimension.height);
 			}
-		},
-		hide: function() {
+		};
+		this.hide = function() {
 			ctx.clearRect(this.position.x, this.position.y, this.dimension.width, this.dimension.height);
-		},
-		move: function(directX, directY) {
+		};
+		this.move = function(directX, directY) {
 			if ( directX != 0 ) {
 				var oldV = this.velocity.x;
 				this.velocity.x = Math.min(this.velocity.x + this.acceleration.x * game.variables.dt, 
@@ -145,33 +145,33 @@ BOXED_GAME.actors = (function(game) {
 					
 				}
 			}
-		},
-		shoot: function () {
+		};
+		this.shoot = function () {
 			if (this.gun.shots.length < this.gun.limit ) {
 				this.gun.shots.push(new Shot(this, this.gun.velocity));	
 			}
-		},
-		checkDamage: function() {
+		};
+		this.checkDamage = function() {
 			if (this.health.damage >= this.health.maxDamage) {
 				ctx.font = "42px Helvetica";
 				ctx.fillStyle = "red";
 				ctx.textAlign = "center";
-				ctx.fillText("YOU DIED!", CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
+				ctx.fillText("YOU DIED!", game.constants.CANVAS_WIDTH / 2, game.constants.CANVAS_HEIGHT / 2);
 				this.health.isDead = true;
 				this.hide();
 			}
-		},
-		checkPlayerHit: function() {
+		};
+		this.checkPlayerHit = function() {
 			var player = this;
 			this.gun.shots.forEach(function(element) {
 				if ( game.utils.intersectingRectangles(player, element) ) {
 					player.health.damage++;
 				}
 			});
-		}
+		};
 	}; 
 
-	return {shot: Shot, cloud: Cloud, player: Player};
+	return {shot: Shot, cloud: Cloud, player: new Player() };
 
 }(BOXED_GAME));
 
@@ -190,9 +190,9 @@ BOXED_GAME.backDrops = (function(game) {
 BOXED_GAME.draw = (function(game) {
 	var player = game.actors.player;
 	function drawShots() {
-		var bullets = player.gun.shots;
-		bullets.forEach(function(element, index) {element.draw()});
-		player.gun.shots = bullets.filter(function(element) { return element.position.y >= -5 });
+		player.gun.shots.forEach(function(element, index) { element.draw(); });
+
+		player.gun.shots = player.gun.shots.filter(function(element) { return element.position.y >= -5 });
 	}
 
 	function drawClouds() {
@@ -217,26 +217,28 @@ BOXED_GAME.keyboardInput = (function(game) {
 
 	// registres actions to keyMap bindings
 	function keyboardRegistry() {
-		if ( keyMap[keyCodes.z] && !player.health.isDead ) {
-			player.shoot();
-		}
-		if ( keyMap[keyCodes.right] ) {
-			player.move(consts.DIRECTION, 0);
-		}  
-		if ( keyMap[keyCodes.left] ) {
-			player.move(-consts.DIRECTION, 0);
-		}
-		if ( keyMap[keyCodes.up] ) {
-			player.move(0, -consts.DIRECTION);
-		}  
-		if ( keyMap[keyCodes.down] ) {
-			player.move(0, consts.DIRECTION);
-		}
-		if (!(keyMap[keyCodes.right] || keyMap[keyCodes.left])) {
-			player.velocity.x = Math.min(consts.BASE_VELOCITY.x, player.velocity.x);
-		}
-		if (!(keyMap[keyCodes.up] || keyMap[keyCodes.down])) {
-			player.velocity.y = Math.min(consts.BASE_VELOCITY.y, player.velocity.y);
+		if ( !player.health.isDead ) {
+			if ( keyMap[keyCodes.z] ) {
+				player.shoot();
+			}
+			if ( keyMap[keyCodes.right] ) {
+				player.move(consts.DIRECTION, 0);
+			}  
+			if ( keyMap[keyCodes.left] ) {
+				player.move(-consts.DIRECTION, 0);
+			}
+			if ( keyMap[keyCodes.up] ) {
+				player.move(0, -consts.DIRECTION);
+			}  
+			if ( keyMap[keyCodes.down] ) {
+				player.move(0, consts.DIRECTION);
+			}
+			if (!(keyMap[keyCodes.right] || keyMap[keyCodes.left])) {
+				player.velocity.x = Math.min(consts.BASE_VELOCITY.x, player.velocity.x);
+			}
+			if (!(keyMap[keyCodes.up] || keyMap[keyCodes.down])) {
+				player.velocity.y = Math.min(consts.BASE_VELOCITY.y, player.velocity.y);
+			}
 		}
 	}
 
@@ -268,7 +270,7 @@ BOXED_GAME.gameLoop = (function(game) {
 		setTimeout(function() {
 			requestAniFrame(tick);
 			updateTimeStep();
-		}, 1000 / game.FPS_LIMIT);
+		}, 1000 / game.constants.FPS_LIMIT);
 
 		game.constants.CONTEXT2D.clearRect(0, 0, game.constants.CANVAS_WIDTH, game.constants.CANVAS_HEIGHT);
 		game.keyboardInput.keyboardListner(); // tied to clock ticking of the main game loop
