@@ -102,6 +102,7 @@ BOXED_GAME.actors = (function(game) {
 		};
 		this.hide = function() {
 			ctx.clearRect(this.position.x, this.position.y, this.dimension.width, this.dimension.height);
+			this.health.isDead = true;
 		};
 		this.move = function(directX, directY) {
 			if ( directX != 0 ) {
@@ -153,12 +154,11 @@ BOXED_GAME.actors = (function(game) {
 		};
 		this.checkDamage = function() {
 			if (this.health.damage >= this.health.maxDamage) {
+				this.hide();
 				ctx.font = "42px Helvetica";
 				ctx.fillStyle = "red";
 				ctx.textAlign = "center";
 				ctx.fillText("YOU DIED!", game.constants.CANVAS_WIDTH / 2, game.constants.CANVAS_HEIGHT / 2);
-				this.health.isDead = true;
-				this.hide();
 			}
 		};
 		this.checkPlayerHit = function() {
