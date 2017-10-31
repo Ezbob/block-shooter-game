@@ -4,7 +4,7 @@ var BOXED_GAME = (function init() {
 	var game = {};
 	game.constants = { 	
 		CANVAS_HTML_ID: "playground",		
-		CANVAS_WIDTH: 800,
+		CANVAS_WIDTH: 900,
 		DIRECTION: 1, // if negative reverse the controls, if zero no controls, else normal
 		BASE_VELOCITY: {x: 2, y: 2},
 		TRAVEL_VELOCITY: 0.45,

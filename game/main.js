@@ -8,7 +8,7 @@ BOXED_GAME.gameLoop = (function(game) {
 				window.mozRequestAnimationFrame    || 
 				window.oRequestAnimationFrame      || 
 				window.msRequestAnimationFrame     || 
-				function(/* function */ callback, /* DOMElement */ element) {
+				function(callback) {
 					window.setTimeout(callback, 1000 / game.dataConstants.FPS_LIMIT);
 				};
 	})();
