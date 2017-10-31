@@ -3,15 +3,15 @@
 var BOXED_GAME = (function init() {
 	var game = {};
 	game.constants = { 	
-			CANVAS_HTML_ID: "playground",		
-			CANVAS_WIDTH: 800,
-			DIRECTION: 1, // if negative reverse the controls, if zero no controls, else normal
-			BASE_VELOCITY: {x: 2, y: 2},
-			TRAVEL_VELOCITY: 0.45,
-			FPS_LIMIT: 140,
-			NUMBER_OF_CLOUDS: 6,
-			KEYS: { left: 37, up: 38, right: 39, down: 40, z: 90, x: 88 }
-		};
+		CANVAS_HTML_ID: "playground",		
+		CANVAS_WIDTH: 800,
+		DIRECTION: 1, // if negative reverse the controls, if zero no controls, else normal
+		BASE_VELOCITY: {x: 2, y: 2},
+		TRAVEL_VELOCITY: 0.45,
+		FPS_LIMIT: 140,
+		NUMBER_OF_CLOUDS: 30,
+		KEYS: { left: 37, up: 38, right: 39, down: 40, z: 90, x: 88 }
+	};
 
 	game.variables = {
 		lastUpdate: 0,

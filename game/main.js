@@ -35,6 +35,9 @@ BOXED_GAME.gameLoop = (function(game) {
 		game.actors.player.checkPlayerHit();
 		game.actors.player.checkDamage();
 		game.actors.player.draw();
+
+		game.actors.health_bar.draw();
+
 		game.draw.drawShots();
 		game.draw.drawClouds();
 	}
