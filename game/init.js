@@ -10,7 +10,7 @@ var BOXED_GAME = (function init() {
 		TRAVEL_VELOCITY: 0.45,
 		FPS_LIMIT: 140,
 		NUMBER_OF_CLOUDS: 30,
-		KEYS: { left: 37, up: 38, right: 39, down: 40, z: 90, x: 88 }
+		KEYS: { left: 37, up: 38, right: 39, down: 40, z: 90, x: 88, space: 32 }
 	};
 
 	game.variables = {

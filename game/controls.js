@@ -14,7 +14,7 @@ BOXED_GAME.keyboardInput = (function(game) {
 	// registres actions to keyMap bindings
 	function keyboardRegistry() {
 		if ( !player.health.isDead ) {
-			if ( keyMap[keyCodes.z] ) {
+			if ( keyMap[keyCodes.space] ) {
 				player.shoot();
 			}
 			if ( keyMap[keyCodes.right] ) {
