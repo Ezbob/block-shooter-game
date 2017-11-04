@@ -5,7 +5,7 @@ BOXED_GAME.utils = (function(game) {
 		return low + Math.floor((Math.random() * max));
 	}
 
-	function checkIntersectingRectangles (rectA, rectB) {
+	function checkIntersectingRectangles(rectA, rectB) {
 		var ALeft = rectA.position.x; // x1
 		var ARight = rectA.position.x + rectA.dimension.width; // x1 + w1
 		var ATop = rectA.position.y; // y1 
@@ -22,5 +22,8 @@ BOXED_GAME.utils = (function(game) {
 		return !isSeparate;
 	}
 
-	return {randomBetween: randomBetween, intersectingRectangles: checkIntersectingRectangles};
+	return {
+		randomBetween: randomBetween, 
+		intersectingRectangles: checkIntersectingRectangles
+	};
 }(BOXED_GAME));
