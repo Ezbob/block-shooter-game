@@ -22,15 +22,15 @@ BOXED_GAME.gameLoop = (function(game) {
 
 	// first time load function
 	function load() {
-		game.backDrops.addClouds();
-		game.actors.player.load();	
+		game.backDrops.loadClouds();
+		game.actors.player.load();
 	}
 
 	function update() {
 		game.keyboardInput.keyboardListner(); // tied to clock ticking of the main game loop
 
-		game.actors.player.checkPlayerHit();
-		game.actors.player.checkDamage();
+		game.actors.player.update();
+		game.actors.health_bar.update();
 		game.draw.updateClouds();
 		game.draw.updateShots();
 	}

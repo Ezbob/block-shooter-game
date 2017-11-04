@@ -3,17 +3,6 @@
 var BOXED_GAME = (function init() {
 	var game = {};
 
-	game.constants = { 	
-		CANVAS_HTML_ID: "playground",		
-		CANVAS_WIDTH: 900,
-		DIRECTION: 1, // if negative reverse the controls, if zero no controls, else normal
-		BASE_VELOCITY: {x: 2, y: 2},
-		TRAVEL_VELOCITY: 0.45,
-		FPS_LIMIT: 140,
-		NUMBER_OF_CLOUDS: 30,
-		KEYS: { left: 37, up: 38, right: 39, down: 40, z: 90, x: 88, space: 32 }
-	};
-
 	game.utils = {
 		randomBetween: function(low, max) {
 			return low + Math.floor((Math.random() * max));
@@ -40,21 +29,41 @@ var BOXED_GAME = (function init() {
 	}
 
 	game.dataStructures = {
-		CircularBuffer: function(size, isRandomized, FillPrototype) {
+
+		ReversableEnum: function(items) {
+			var me = this;
+			me.map = {};
+			me.reverseMap = {};
+
+			for (var i = 0; i < items.length; ++i) {
+				var curr = items[i];
+				me.map[curr] = i;
+			}
+
+			me.map['unknown'] = -1;
+
+			var keys = Object.keys(me.map);
+
+			for (var i = 0; i < keys.length; ++i) {
+				var currkey = keys[i];
+				me.reverseMap[me.map[currkey]] = currkey;
+			}
+
+			me.get = function(key) {
+				return me.map[key] || -1;
+			}
+
+			me.getReverse = function(value) {
+				return me.reverseMap[value] || 'unknown';
+			}
+		},
+
+		CircularBuffer: function(size, FillPrototype) {
 			var me = this;
 			var utils = game.utils;
 			me.buffer = [];
 			me.size = size || 15;
-			me.length = 0;
-			me.isRandomized = isRandomized || false;
-
-			me.next_index = (function(){
-				if ( me.isRandomized ) {
-					return utils.randomBetween(0, me.size);
-				} else {
-					return 0;
-				}
-			})();
+			me.next_index =  0;
 
 			if ( !(typeof FillPrototype == "undefined" || FillPrototype == null ) ) {
 				for (var i = 0; i < me.size; ++i) {
@@ -65,45 +74,58 @@ var BOXED_GAME = (function init() {
 			me.push = function(element) {
 				if ( me.buffer.length < me.size ) {
 					me.buffer.push(element);
-					me.length++;
 					return true;
 				} else {
 					return false;
 				}
 			};
 
-			me.next = (
-				function() {
-					if ( me.isRandomized ) {
-						return function() {
-							var utils = game.utils;
-							var res = me.buffer[me.next_index];
-							me.next_index = utils.randomBetween(0, me.size);
-							return res;
-						}
-					} else {
-						return function() {
-							var res = me.buffer[me.next_index];
-							me.next_index = (me.next_index + 1) % me.size;
-							return res;
-						}	
-					}
-				})()
+			me.next = function() {
+				var res = me.buffer[me.next_index] || null;
+				me.next_index = (me.next_index + 1) % (me.size - (me.size - me.buffer.length));
+				return res;
+			};
+
+			me.hasNext = function() {
+				return (me.size - (me.size - me.buffer.length)) > 0;
+			};
 
 			me.reset = function() {
-				if ( me.isRandomized ) {
-					me.next_index = utils.randomBetween(0, me.size);
-				} else {
-					me.next_index = 0;
-				}
-			}
+				me.next_index = 0;
+			};
 
 			me.forEach = function(mappingFunction) {
 				for (var i = 0; i < me.buffer.length; ++i) {
 					mappingFunction(me.next(), i);
 				} 
-			}
+			};
+		},
+
+		Entity: function(type, position, dimension, velocity) {
+			var me = this;
+			var x;
+			me.type = typeof type == "number" && (x = Math.floor(type)) === type ? x : -1;
+			me.position = position || { x: 0, y: 0 };
+			me.dimension = dimension || { width: 0, height: 0 };
+			me.velocity = velocity || { x: 0, y: 0 };
+
+			me.draw = function() { console.log("Draw not implemented"); }
+			me.update = function() { console.log("Update not implemented"); }
+			me.isEnabled = function() { console.log("isEnabled not implemented"); return true; }
 		}
+	};
+
+	game.constants = { 	
+		CANVAS_HTML_ID: "playground",		
+		CANVAS_WIDTH: 900,
+		MAX_SHOTS: 1000,
+		DIRECTION: 1, // if negative reverse the controls, if zero no controls, else normal
+		BASE_VELOCITY: {x: 2, y: 2},
+		TRAVEL_VELOCITY: 0.45,
+		FPS_LIMIT: 140,
+		NUMBER_OF_CLOUDS: 30,
+		KEYS: { left: 37, up: 38, right: 39, down: 40, z: 90, x: 88, space: 32 },
+		ENTITY_TYPES: new game.dataStructures.ReversableEnum(['enemies', 'cloud', 'shot', 'player', 'uiProp'])
 	};
 
 	game.variables = {
@@ -111,7 +133,8 @@ var BOXED_GAME = (function init() {
 		now: 0,
 		dt: 0,
 		clouds: new game.dataStructures.CircularBuffer(game.constants.NUMBER_OF_CLOUDS),
-		keyMap: []
+		shots: new game.dataStructures.CircularBuffer(game.constants.MAX_SHOTS),
+		keyMap: [],
 	};
 
 	var consts = game.constants;

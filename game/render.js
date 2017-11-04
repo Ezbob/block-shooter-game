@@ -6,41 +6,40 @@ BOXED_GAME.draw = (function(game) {
 
 	function updateClouds() {
 		var size = game.variables.clouds.size;
-
 		for ( var i = 0; i < size; i += 6 ) {
 			var current1 = game.variables.clouds.next();
 			if ( current1.isEnabled() ) {
-				current1.move();
+				current1.update();
 			} else {
 				current1.reset();
 			}
 			var current2 = game.variables.clouds.next();
 			if ( current2.isEnabled() ) {
-				current2.move();
+				current2.update();
 			} else {
 				current2.reset();
 			}
 			var current3 = game.variables.clouds.next();
 			if ( current3.isEnabled() ) {
-				current3.move();
+				current3.update();
 			} else {
 				current3.reset();
 			}
 			var current4 = game.variables.clouds.next();
 			if ( current4.isEnabled() ) {
-				current4.move();
+				current4.update();
 			} else {
 				current4.reset();
 			}
 			var current5 = game.variables.clouds.next();
 			if ( current5.isEnabled() ) {
-				current5.move();
+				current5.update();
 			} else {
 				current5.reset();
 			}
 			var current6 = game.variables.clouds.next();
 			if ( current6.isEnabled() ) {
-				current6.move();
+				current6.update();
 			} else {
 				current6.reset();
 			}
@@ -81,13 +80,13 @@ BOXED_GAME.draw = (function(game) {
 		for ( var i = 0; i < size; i += 2 ) {
 			var current1 = game.actors.player.gun.shots.next();
 			if ( current1.isEnabled() ) {
-				current1.move()
+				current1.update()
 			} else {
 				current1.reset()
 			}
 			var current2 = game.actors.player.gun.shots.next();
 			if ( current2.isEnabled() ) {
-				current2.move()
+				current2.update()
 			} else {
 				current1.reset()
 			}
