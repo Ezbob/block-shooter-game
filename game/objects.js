@@ -49,25 +49,25 @@ BOXED_GAME.actors = (function(game) {
     var me = this;
     me.dimension = dimension;
     me.position = position;
-    me.draw = function() {
+    me.velocityOffset = utils.randomFloatBetween(0, 0.6);
 
-      var oldlinewidth = ctx.lineWidth;
+    me.draw = function() {
       ctx.lineWidth = 0.40;
-      ctx.strokeRect(position.x, position.y, dimension.width, dimension.height);
-      ctx.lineWidth = oldlinewidth;
+      ctx.strokeStyle = "black";
+      ctx.strokeRect(me.position.x, me.position.y, me.dimension.width, me.dimension.height);
     };
 
     me.move = function() {
-      me.position.y += game.constants.TRAVEL_VELOCITY * game.variables.dt;
-    }
+      me.position.y += (game.constants.TRAVEL_VELOCITY + me.velocityOffset) * game.variables.dt;
+    };
 
-    me.isOut = function() { 
-      return me.position.y > game.constants.CANVAS_HEIGHT; 
+    me.isEnabled = function() { 
+      return me.position.y < (game.constants.CANVAS_HEIGHT + me.dimension.height); 
     };
 
     me.reset = function() {
       me.position.x = utils.randomBetween(1, consts.CANVAS_WIDTH - 1)
-      me.position.y = utils.randomBetween(-15, 15)
+      me.position.y = -me.dimension.height;
     };
   }
 
@@ -227,7 +227,6 @@ BOXED_GAME.actors = (function(game) {
       ctx.strokeStyle = this.colors.border;
       ctx.strokeRect(this.position.x, this.position.y, this.dimension.width, this.dimension.height);
       
-
       var old = ctx.fillStyle;
       var oldFont = ctx.font;
       var color = getColor(this.colors, numberOfBeads, this.bead.max);
@@ -266,7 +265,7 @@ BOXED_GAME.backDrops = (function(game) {
         game.variables.clouds.push(
           new game.actors.cloud(
             { width: 20, height: 20 }, 
-            { x: utils.randomBetween(1, consts.CANVAS_WIDTH - 1), y: utils.randomBetween(-15, 15) }
+            { x: utils.randomBetween(1, consts.CANVAS_WIDTH - 1), y: utils.randomBetween(-15, consts.CANVAS_HEIGHT >> 1) }
             )
         );
     }

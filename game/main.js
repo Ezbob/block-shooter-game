@@ -31,6 +31,8 @@ BOXED_GAME.gameLoop = (function(game) {
 
 		game.actors.player.checkPlayerHit();
 		game.actors.player.checkDamage();
+		game.draw.updateClouds();
+		game.draw.updateShots();
 	}
 
 	function draw() {
