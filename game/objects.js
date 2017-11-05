@@ -6,27 +6,40 @@ BOXED_GAME.actors = (function(game) {
   var utils = game.utils;
   var Entity = game.dataStructures.Entity;
 
-  function Shot(shooter, velocity) {
+  function Shot() {
     var me = this;
     me.__proto__ = new Entity(consts.ENTITY_TYPES.get('shot'));
 
-    me.shooter = shooter;
-    me.color = "red";
+    me.shooter = null;
+    me.color = "#FF5800";
     me.isFired = false;
     me.dimension = { width: 4, height: 16 };
-    me.velocity = velocity;
+    me.velocity = 1.25;
+    me.direction = -1;
+    me.damage = 10;
 
-    me.fire = function() {
+    me.fire = function(shooter) {
+
+      me.shooter = shooter;
       var sX = me.shooter.position.x, sY = me.shooter.position.y;
       var sW = me.shooter.dimension.width, sH = me.shooter.dimension.height;
       var meW = me.dimension.width, meH = me.dimension.height;
       me.position.x = sX + ( sW >> 1 ) - ( meW >> 1 ); 
-      me.position.y = sY - sH;
+      
+
+      if ( shooter.type === consts.ENTITY_TYPES.get('enemy')) {
+        me.position.y = sY + 20;
+        me.direction = 1;
+      } else {
+        me.position.y = sY - sH;
+        me.direction = -1;
+      }
+
       me.isFired = true;
-    }
+    };
 
     me.isEnabled = function() {
-      return (me.position.y > -5) && me.isFired;
+      return ( me.position.y > -5 || me.position.y < consts.CANVAS_HEIGHT - 10 ) && me.isFired;
     };
 
     me.draw = function() {
@@ -37,12 +50,13 @@ BOXED_GAME.actors = (function(game) {
     };
 
     me.update = function() {
-      me.position.y -= me.velocity * game.variables.dt;  
+      me.position.y += me.direction * (me.velocity * game.variables.dt);
     };
 
     me.reset = function() {
-      me.position = {x: 0, y: 0}
+      me.position = { x: 0, y: 0 }
       me.isFired = false;
+      me.shooter = null;
     };
   };
 
@@ -82,40 +96,32 @@ BOXED_GAME.actors = (function(game) {
     var me = this;
     me.__proto__ = new Entity(consts.ENTITY_TYPES.get('player'));
 
-    me.health = { damage: 0, maxDamage: 400, isDead: false };
+    me.health = { current: 400, max: 400 };
     me.color = 'rgb(0,8,255)';
     me.velocity = (function(){ return {x: consts.BASE_VELOCITY.x, y: consts.BASE_VELOCITY.y} }());
-    me.acceleration = {x: 0.0002, y: 0.0002};
+    me.acceleration = { x: 0.0002, y: 0.0002 };
     me.velocityLimit = 0.55;
-    me.dimension = {width: 32, height: 32};
+    me.dimension = { width: 32, height: 32 };
     me.position = { x: consts.CANVAS_WIDTH / 2 - 32, y: consts.CANVAS_HEIGHT - ( consts.CANVAS_HEIGHT / 6 ) }
-    
     me.gun = (function() {
       var lim = 50, velocity = 1.22;
-      var buffer = new game.dataStructures.CircularBuffer(lim);
-      return {
-        shots: buffer, 
+      return { 
         limit: lim, 
         velocity: velocity
       } 
     })();
 
+    me.isEnabled = function() {
+      return me.health.current > 0;
+    }
+
     me.draw = function() {
-      if (!this.health.isDead) {
+      if ( me.isEnabled() ) {
         var old = ctx.fillStyle;
         ctx.fillStyle = this.color;
         ctx.fillRect(this.position.x, this.position.y, this.dimension.width, this.dimension.height);
         ctx.fillStyle = old;
       }
-    };
-
-    me.hide = function() {
-      this.health.isDead = true;
-      ctx.clearRect(this.position.x, this.position.y, this.dimension.width, this.dimension.height);  
-    }
-
-    me.unHide = function() {
-      this.health.isDead = false;
     };
 
     me.move = function(directX, directY) {
@@ -163,33 +169,27 @@ BOXED_GAME.actors = (function(game) {
     };
 
     me.shoot = function () {
-      this.gun.shots.next().fire();
+      var shot = game.variables.shots.next();
+      shot.fire(me);
     };
 
     me.update = function() {
-      for (var i = 0; i < me.gun.shots.size; ++i) {
-        var shot = me.gun.shots.buffer[i];
+
+      var shots = game.variables.shots;
+      for (var i = 0; i < shots.size; ++i) {
+        var shot = shots.next();
         if ( shot.isEnabled() && game.utils.intersectingRectangles(me, shot) ) {
-          me.health.damage++;
+          me.health.current -= shot.damage;
         }
       }
-
-      if ( me.health.damage >= me.health.maxDamage ) {
-        me.hide();
+        
+      if ( !me.isEnabled() ) {
         var oldFont = ctx.font;
         ctx.font = "42px Helvetica";
         ctx.fillStyle = "red";
         ctx.textAlign = "center";
         ctx.fillText("YOU DIED!", game.constants.CANVAS_WIDTH / 2, game.constants.CANVAS_HEIGHT / 2);
         ctx.font = oldFont;
-      } else {
-        me.unHide();
-      }
-    }
-
-    me.load = function() {
-      for ( var i = 0; i < me.gun.shots.size; ++i ) {
-        me.gun.shots.push(new Shot(me, me.gun.velocity));
       }
     }
   };
@@ -209,7 +209,7 @@ BOXED_GAME.actors = (function(game) {
     
       return {
         max: maxBeads,
-        number: Math.ceil( (player.health.maxDamage - player.health.damage) / Math.floor( (player.health.maxDamage / maxBeads) ) ),
+        number: Math.ceil( player.health.current / Math.floor( player.health.max / maxBeads ) ),
         dimension: { width: me.dimension.width / maxBeads, height: me.dimension.height - 2 }
       };
     })();
@@ -222,7 +222,7 @@ BOXED_GAME.actors = (function(game) {
     };
 
     me.update = function() {
-      me.beads.number = Math.ceil( (player.health.maxDamage - player.health.damage) / Math.floor( (player.health.maxDamage / me.beads.max) ) )
+      me.beads.number = Math.ceil( player.health.current / Math.floor( player.health.max / me.beads.max ) )
     }
 
     me.draw = function() {
@@ -265,7 +265,12 @@ BOXED_GAME.actors = (function(game) {
   }
 
   var p = new Player();
-  return {shot: Shot, cloud: Cloud, player: p, health_bar: new HealthBar(p) };
+  return { 
+    shot: Shot, 
+    cloud: Cloud, 
+    player: p, 
+    health_bar: new HealthBar(p) 
+  };
 
 }(BOXED_GAME));
 

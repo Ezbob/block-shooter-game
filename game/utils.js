@@ -1,6 +1,7 @@
 "use strict";
 
 BOXED_GAME.utils = (function(game) {
+	
 	function randomBetween(low,max) {
 		return low + Math.floor((Math.random() * max));
 	}

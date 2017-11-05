@@ -118,14 +118,16 @@ var BOXED_GAME = (function init() {
 	game.constants = { 	
 		CANVAS_HTML_ID: "playground",		
 		CANVAS_WIDTH: 900,
-		MAX_SHOTS: 1000,
+		MAX_SHOTS: 300,
+		MAX_ENEMIES: 25,
 		DIRECTION: 1, // if negative reverse the controls, if zero no controls, else normal
 		BASE_VELOCITY: {x: 2, y: 2},
 		TRAVEL_VELOCITY: 0.45,
 		FPS_LIMIT: 140,
 		NUMBER_OF_CLOUDS: 30,
 		KEYS: { left: 37, up: 38, right: 39, down: 40, z: 90, x: 88, space: 32 },
-		ENTITY_TYPES: new game.dataStructures.ReversableEnum(['enemies', 'cloud', 'shot', 'player', 'uiProp'])
+		ENTITY_TYPES: new game.dataStructures.ReversableEnum(['enemy', 'cloud', 'shot', 'player', 'uiProp']),
+		SCENARIO_TYPES: new game.dataStructures.ReversableEnum(['destroyall', 'timeout'])
 	};
 
 	game.variables = {
@@ -134,7 +136,9 @@ var BOXED_GAME = (function init() {
 		dt: 0,
 		clouds: new game.dataStructures.CircularBuffer(game.constants.NUMBER_OF_CLOUDS),
 		shots: new game.dataStructures.CircularBuffer(game.constants.MAX_SHOTS),
+		scenarios: [],
 		keyMap: [],
+		currentScenario: null
 	};
 
 	var consts = game.constants;

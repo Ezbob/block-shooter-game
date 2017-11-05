@@ -23,16 +23,23 @@ BOXED_GAME.gameLoop = (function(game) {
 	// first time load function
 	function load() {
 		game.backDrops.loadClouds();
-		game.actors.player.load();
+		game.draw.loadShots();
+		game.variables.currentScenario = game.scenario.scenarioStack.pop();
 	}
 
 	function update() {
+		game.variables.currentScenario.start();
 		game.keyboardInput.keyboardListner(); // tied to clock ticking of the main game loop
 
 		game.actors.player.update();
 		game.actors.health_bar.update();
 		game.draw.updateClouds();
 		game.draw.updateShots();
+		game.draw.updateEnemies();		
+
+		if ( !game.variables.currentScenario.isPlaying() && game.scenario.scenarioStack.length > 0 ) {
+			game.variables.currentScenario = game.scenario.scenarioStack.pop();
+		}
 	}
 
 	function draw() {
@@ -40,6 +47,7 @@ BOXED_GAME.gameLoop = (function(game) {
 		game.actors.health_bar.draw();
 		game.draw.drawClouds();
 		game.draw.drawShots();
+		game.draw.drawEnemies();
 	}
 
 	// "Game loop" this is where the continous function goes 
