@@ -87,7 +87,7 @@ BOXED_GAME.draw = (function(game) {
 			var current1 = game.variables.shots.next();
 			if ( current1.isEnabled() ) {
 				current1.update()
-			} else {
+			} else if ( !current1.isFired ) {
 				current1.reset()
 			}
 		}

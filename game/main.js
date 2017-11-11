@@ -1,17 +1,8 @@
 "use strict";
 
 BOXED_GAME.gameLoop = (function(game) {
-
-	var requestAniFrame = (function() {
-		return  window.requestAnimationFrame       || 
-				window.webkitRequestAnimationFrame || 
-				window.mozRequestAnimationFrame    || 
-				window.oRequestAnimationFrame      || 
-				window.msRequestAnimationFrame     || 
-				function(callback) {
-					window.setTimeout(callback, 1000 / game.dataConstants.FPS_LIMIT);
-				};
-	})();
+	var GameState = game.gameStates.GameState;
+	var stack = game.gameStates.stack;
 
 	// the timestemp needed in the Verlet integration (calculation of velocity and acceleration)
 	function updateTimeStep() {
@@ -20,16 +11,17 @@ BOXED_GAME.gameLoop = (function(game) {
 		game.variables.lastUpdate = game.variables.now;
 	}
 
-	// first time load function
-	function load() {
+	var firstStage = new GameState()
+
+	firstStage.load = function() {
 		game.backDrops.loadClouds();
 		game.draw.loadShots();
 		game.variables.currentScenario = game.scenario.scenarioStack.pop();
-	}
+	} 
 
-	function update() {
+	firstStage.update =	function() {
 		game.variables.currentScenario.start();
-		game.keyboardInput.keyboardListner(); // tied to clock ticking of the main game loop
+		game.keyboardInput.keyboardListner(); 
 
 		game.actors.player.update();
 		game.actors.health_bar.update();
@@ -42,7 +34,7 @@ BOXED_GAME.gameLoop = (function(game) {
 		}
 	}
 
-	function draw() {
+	firstStage.draw =	function() {
 		game.actors.player.draw();
 		game.actors.health_bar.draw();
 		game.draw.drawClouds();
@@ -50,19 +42,59 @@ BOXED_GAME.gameLoop = (function(game) {
 		game.draw.drawEnemies();
 	}
 
-	// "Game loop" this is where the continous function goes 
-	function tick() {
-		setTimeout(function() {
-			requestAniFrame(tick);
-			updateTimeStep();
-		}, 1000 / game.constants.FPS_LIMIT);
-		game.constants.CONTEXT2D.clearRect(0, 0, game.constants.CANVAS_WIDTH, game.constants.CANVAS_HEIGHT);
+	var introStage = new GameState()
 
-		update();
-		draw();
+	introStage.load = function() {
+		introStage.resources = { 
+			titleFontSize: '28pt',
+			subTitleFontSize: '18pt', 
+			font: 'Helvetica',
+			introTitle: "Block Shooter Game",
+			introSubtitle: "By Anders Busch"
+		}
+		setTimeout(introStage.stop, 4000);
 	}
 
-	load();
-	requestAniFrame(tick);
+	introStage.update = function() {
 
+	}
+
+	introStage.draw = function() {
+		var consts = game.constants;
+		var ctx = consts.CONTEXT2D;
+		var resources = introStage.resources;
+		ctx.font = resources.titleFontSize + " " + resources.font;
+		ctx.textAlign = "center"; 
+		ctx.fillText(resources.introTitle, consts.CANVAS_WIDTH / 2, consts.CANVAS_HEIGHT / 2);
+		ctx.font = resources.subTitleFontSize + " " + resources.font;
+		ctx.fillText(resources.introSubtitle, consts.CANVAS_WIDTH / 2, consts.CANVAS_HEIGHT / 2 + 26);
+	}
+
+	stack.push(firstStage);
+	stack.push(introStage);
+
+	game.variables.currentGameState = stack.pop();
+	game.variables.currentGameState.load();
+		
+	// "Game loop" this is where the continous function goes 
+	function tick() {
+		updateTimeStep();
+		game.constants.CONTEXT2D.clearRect(0, 0, game.constants.CANVAS_WIDTH, game.constants.CANVAS_HEIGHT);
+
+		game.variables.currentGameState.update();
+		game.variables.currentGameState.draw();
+		if ( !game.variables.currentGameState.isPlaying ) {
+			game.constants.CONTEXT2D.clearRect(0, 0, game.constants.CANVAS_WIDTH, game.constants.CANVAS_HEIGHT);
+
+			if (stack.length > 0) {
+				game.variables.currentGameState = stack.pop();
+				game.variables.currentGameState.load();
+			} else {
+				return;
+			}
+		}
+		requestAniFrame(tick);
+	}
+	requestAniFrame(tick);
+	
 }(BOXED_GAME));

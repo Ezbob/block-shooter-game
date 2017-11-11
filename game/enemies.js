@@ -17,15 +17,16 @@ BOXED_GAME.actors.enemies = (function(game) {
 	var utils = game.utils;
 	var consts = game.constants;
 	var ctx = consts.CONTEXT2D;
+	var Vector = game.dataStructures.Vector;
 
 	function Weako() {
 		var me = this;
 		me.__proto__ = new Entity(consts.ENTITY_TYPES.get('enemy'));
 		me.dimension = { width: 32, height: 32 }
-		me.position = { x: consts.CANVAS_WIDTH - 60, y: 40 };
+		me.position = new Vector(consts.CANVAS_WIDTH - 60, 40);
 		me.color = "red";
 		me.health = { current: 200, max: 200 };
-		me.velocity = { x: 0.2, y: 0.1 };
+		me.velocity = new Vector( 0.2, 0.1 );
 		me.counter = 0;
 		me.goingLeft = true;
 
@@ -41,44 +42,46 @@ BOXED_GAME.actors.enemies = (function(game) {
 			if ( me.isEnabled() ) {
 				var old = ctx.fillStyle;
 				ctx.fillStyle = me.color;
-				ctx.fillRect(me.position.x, me.position.y, me.dimension.width, me.dimension.height);
+				ctx.fillRect(me.position.getX(), me.position.getY(), me.dimension.width, me.dimension.height);
 				ctx.fillStyle = old;
 			}
 		}
 
 		me.shoot = function() {
-			var shot = game.variables.shots.next();
-			shot.fire(me);	
+			game.variables.shots.next().fire(me);	
 		}
 
 		me.path = function() {
 			var dt = game.variables.dt;
 			var aplitude = 0.25;
 			var player = game.actors.player;
+			var x = me.position.getX(), y = me.position.getY();
+			var velX = me.velocity.getX(), velY = me.velocity.getY();
 
-			if ( me.position.x <= 20 && me.goingLeft ) {
+			if ( x <= 20 && me.goingLeft ) {
 				me.goingLeft = false;
 			}
 
-			if ( me.position.x >= consts.CANVAS_WIDTH - (me.dimension.width + 20) && !me.goingLeft ) {
+			if ( x >= consts.CANVAS_WIDTH - (me.dimension.width + 20) && !me.goingLeft ) {
 				me.goingLeft = true;
 			}
 		
 			if ( me.goingLeft ) {
 				me.counter += 0.15;
-				me.position.x -= me.velocity.x * dt;
-				//me.position.y += me.velocity.y * dt;		
-				me.position.y += Math.sin(me.counter) * aplitude * dt;
+				
+
+				me.position.setX( x - velX * dt );
+				me.position.setY( y + Math.sin(me.counter) * aplitude * dt);
 			}
 
 			if ( !me.goingLeft ) {
 				me.counter += 0.15;
-				me.position.x += me.velocity.x * dt;
+				me.position.setX(x + velX * dt);
 				//me.position.y += me.velocity.y * dt;				
-				me.position.y += Math.sin(me.counter) * aplitude * dt;
+				me.position.setY(y + Math.sin(me.counter) * aplitude * dt);
 			}
 
-			if ( me.position.x >= player.position.x && me.position.x <= (player.position.x + player.dimension.width) ) {
+			if ( x >= player.position.getX() && x <= (player.position.getX() + player.dimension.width) ) {
 				me.shoot()
 			}
 		}

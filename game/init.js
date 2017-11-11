@@ -1,5 +1,7 @@
 "use strict";
 
+
+
 var BOXED_GAME = (function init() {
 	var game = {};
 
@@ -11,15 +13,15 @@ var BOXED_GAME = (function init() {
   			return Math.random() * (max - low) + low;
 		},
 		intersectingRectangles: function(rectA, rectB) {
-			var ALeft = rectA.position.x; // x1
-			var ARight = rectA.position.x + rectA.dimension.width; // x1 + w1
-			var ATop = rectA.position.y; // y1 
-			var ABottom = rectA.position.y + rectA.dimension.height; // y1 + h1 
+			var ALeft = rectA.position.getX(); // x1
+			var ARight = ALeft + rectA.dimension.width; // x1 + w1
+			var ATop = rectA.position.getY(); // y1 
+			var ABottom = ATop + rectA.dimension.height; // y1 + h1 
 
-			var BLeft = rectB.position.x; // x2
-			var BRight = rectB.position.x + rectB.dimension.width; // x2 + w2
-			var BTop = rectB.position.y; // y2
-			var BBottom = rectB.position.y + rectB.dimension.height; // y2 + h2
+			var BLeft = rectB.position.getX(); // x2
+			var BRight = BLeft + rectB.dimension.width; // x2 + w2
+			var BTop = rectB.position.getY(); // y2
+			var BBottom = BTop + rectB.dimension.height; // y2 + h2
 
 			var isSeparate = (ARight < BLeft || BRight < ALeft || 
 				ABottom < BTop || BBottom < ATop);
@@ -38,43 +40,31 @@ var BOXED_GAME = (function init() {
 				me.scalars[i] = arguments[i];
 			}
 
-			me.x = function() {
+			me.getX = function() {
 				return me.scalars[0];
 			}
 
-			me.y = function() {
+			me.getY = function() {
 				return me.scalars[1];
 			}
 
-			me.z = function() {
+			me.getZ = function() {
 				return me.scalars[2];
 			}
 
-			me.add = function(other) { 
-				var res = new Vector(); 
-				for (var i = 0; i < me.scalars.length; ++i) { 
-					res.scalars[i] = me.scalars[i] + other.scalars[i]; 
-				}
-				return res; 
+			me.setX = function(x) {
+				me.scalars[0] = x;
 			}
 
-			me.sub = function(other) {
-				var res = new Vector(); 
-				for (var i = 0; i < me.scalars.length; ++i) { 
-					res.scalars[i] = me.scalars[i] - other.scalars[i]; 
-				}
-				return res; 
+			me.setY = function(y) {
+				me.scalars[1] = y;
 			}
 
-			me.mul = function(scalar) {
-				var res = new Vector();
-				for (var i = 0; i < me.scalars.length; ++i) { 
-					res.scalars[i] = me.scalars[i] * scalar; 
-				}
-				return res; 
+			me.setZ = function(z) {
+				me.scalars[2] = z;
 			}
 
-			me.length = function() {
+			me.magnitude = function() {
 				var sum = 0;
 				for (var i = 0; i < me.scalars.length; ++i) {
 					sum += (me.scalars[i] * me.scalars[i]);
@@ -82,13 +72,71 @@ var BOXED_GAME = (function init() {
 				return Math.sqrt(sum);
 			}
 
-			me.norm = function() {
-				return me.mul(1 / me.length())
+			me.add = function(other) { 
+				var res = new game.dataStructures.Vector(); 
+				for (var i = 0; i < me.scalars.length; ++i) { 
+					res.scalars[i] = me.scalars[i] + other.scalars[i]; 
+				}
+				return res; 
+			}
+
+			me.addme = function(other) {  
+				for (var i = 0; i < me.scalars.length; ++i) { 
+					me.scalars[i] = me.scalars[i] + other.scalars[i]; 
+				}
+				return me; 
+			}
+
+			me.sub = function(other) {
+				var res = new game.dataStructures.Vector(); 
+				for (var i = 0; i < me.scalars.length; ++i) { 
+					res.scalars[i] = me.scalars[i] - other.scalars[i]; 
+				}
+				return res; 
+			}
+
+			me.subme = function(other) { 
+				for (var i = 0; i < me.scalars.length; ++i) { 
+					me.scalars[i] = me.scalars[i] - other.scalars[i]; 
+				}
+				return me; 
+			}
+
+			me.rotateme2d90 = function() {
+				me.scalars[0] = me.scalars[1]
+				me.scalars[1] = -me.scalars[0]
 			}
 
 			me.rotate2d = function() {
 				return new Vector(me.scalars[1], -me.scalars[0])
-			},
+			}
+
+			me.mul = function(scalar) {
+				var res = new game.dataStructures.Vector();
+				for (var i = 0; i < me.scalars.length; ++i) { 
+					res.scalars[i] = me.scalars[i] * scalar; 
+				}
+				return res; 
+			}
+
+			me.mulme = function(scalar) {
+				for (var i = 0; i < me.scalars.length; ++i) { 
+					me.scalars[i] = me.scalars[i] * scalar; 
+				}
+				return me;
+			}
+
+			me.mulmembers = function(other) {
+				var res = new game.dataStructures.Vector();
+				for (var i = 0; i < me.scalars.length; ++i) {
+					res.scalars[i] = me.scalars[i] * other.scalars[i];
+				}
+				return res;
+			}
+
+			me.norm = function() {
+				return me.mul(1 / me.magnitude())
+			}
 
 			me.equals = function(other) {
 				if ( me.scalars.length !== other.scalars.length ) {
@@ -174,20 +222,20 @@ var BOXED_GAME = (function init() {
 				} 
 			};
 		},
-
-		Entity: function(type, position, dimension, velocity) {
-			var me = this;
-			var x;
-			me.type = typeof type == "number" && (x = Math.floor(type)) === type ? x : -1;
-			me.position = position || { x: 0, y: 0 };
-			me.dimension = dimension || { width: 0, height: 0 };
-			me.velocity = velocity || { x: 0, y: 0 };
-
-			me.draw = function() { console.log("Draw not implemented"); }
-			me.update = function() { console.log("Update not implemented"); }
-			me.isEnabled = function() { console.log("isEnabled not implemented"); return true; }
-		}
 	};
+
+	game.dataStructures.Entity = function(type, position, dimension, velocity) {
+		var me = this;
+		var x;
+		me.type = typeof type == "number" && (x = Math.floor(type)) === type ? x : -1;
+		me.position = position || new game.dataStructures.Vector(0,0);
+		me.dimension = dimension || { width: 0, height: 0 };
+		me.velocity = velocity || new game.dataStructures.Vector(0,0);
+
+		me.draw = function() { console.log("Draw not implemented"); }
+		me.update = function() { console.log("Update not implemented"); }
+		me.isEnabled = function() { console.log("isEnabled not implemented"); return true; }
+	}
 
 	game.dataStructures.Vector.fromArray = function(array) {
 		var res = new game.dataStructures.Vector();
@@ -220,6 +268,7 @@ var BOXED_GAME = (function init() {
 		shots: new game.dataStructures.CircularBuffer(game.constants.MAX_SHOTS),
 		scenarios: [],
 		keyMap: [],
+		currentGameState: null,
 		currentScenario: null
 	};
 
@@ -232,4 +281,14 @@ var BOXED_GAME = (function init() {
 
 	return game;
 }(BOXED_GAME));
+
+// polyfilla for requestAnimationFrame
+var requestAniFrame = window.requestAnimationFrame || 
+		window.webkitRequestAnimationFrame || 
+		window.mozRequestAnimationFrame    || 
+		window.oRequestAnimationFrame      || 
+		window.msRequestAnimationFrame     || 
+		function(callback) {
+			window.setTimeout(callback, 1000 / BOXED_GAME.constants.FPS_LIMIT);
+		};
 
