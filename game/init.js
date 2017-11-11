@@ -30,6 +30,80 @@ var BOXED_GAME = (function init() {
 
 	game.dataStructures = {
 
+		Vector: function() { 
+			var me = this; 
+			me.scalars = [];
+
+			for (var i = 0; i < arguments.length; ++i) {
+				me.scalars[i] = arguments[i];
+			}
+
+			me.x = function() {
+				return me.scalars[0];
+			}
+
+			me.y = function() {
+				return me.scalars[1];
+			}
+
+			me.z = function() {
+				return me.scalars[2];
+			}
+
+			me.add = function(other) { 
+				var res = new Vector(); 
+				for (var i = 0; i < me.scalars.length; ++i) { 
+					res.scalars[i] = me.scalars[i] + other.scalars[i]; 
+				}
+				return res; 
+			}
+
+			me.sub = function(other) {
+				var res = new Vector(); 
+				for (var i = 0; i < me.scalars.length; ++i) { 
+					res.scalars[i] = me.scalars[i] - other.scalars[i]; 
+				}
+				return res; 
+			}
+
+			me.mul = function(scalar) {
+				var res = new Vector();
+				for (var i = 0; i < me.scalars.length; ++i) { 
+					res.scalars[i] = me.scalars[i] * scalar; 
+				}
+				return res; 
+			}
+
+			me.length = function() {
+				var sum = 0;
+				for (var i = 0; i < me.scalars.length; ++i) {
+					sum += (me.scalars[i] * me.scalars[i]);
+				}
+				return Math.sqrt(sum);
+			}
+
+			me.norm = function() {
+				return me.mul(1 / me.length())
+			}
+
+			me.rotate2d = function() {
+				return new Vector(me.scalars[1], -me.scalars[0])
+			},
+
+			me.equals = function(other) {
+				if ( me.scalars.length !== other.scalars.length ) {
+					return false;
+				}
+
+				for ( var i = 0; i < me.scalars.length; ++i ) {
+					if ( me.scalars[i] !== other.scalars[i] ) {
+						return false;
+					}
+				}
+				return true;
+			}
+		},
+
 		ReversableEnum: function(items) {
 			var me = this;
 			me.map = {};
@@ -114,6 +188,14 @@ var BOXED_GAME = (function init() {
 			me.isEnabled = function() { console.log("isEnabled not implemented"); return true; }
 		}
 	};
+
+	game.dataStructures.Vector.fromArray = function(array) {
+		var res = new game.dataStructures.Vector();
+		res.scalars = array;
+		return res;
+	}
+
+	game.dataStructures.Vector.v = game.dataStructures.Vector.fromArray;
 
 	game.constants = { 	
 		CANVAS_HTML_ID: "playground",		

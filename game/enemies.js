@@ -1,5 +1,17 @@
 "use strict";
 
+BOXED_GAME.actors.paths = (function(game) {
+
+	function sinePath() {
+		
+	}
+
+	return {
+		sinePath: sinePath
+	}
+})(BOXED_GAME);
+
+
 BOXED_GAME.actors.enemies = (function(game) {
 	var Entity = game.dataStructures.Entity;
 	var utils = game.utils;
@@ -39,9 +51,9 @@ BOXED_GAME.actors.enemies = (function(game) {
 			shot.fire(me);	
 		}
 
-		me.update = function() {
+		me.path = function() {
 			var dt = game.variables.dt;
-			var aplitude = 0.15;
+			var aplitude = 0.25;
 			var player = game.actors.player;
 
 			if ( me.position.x <= 20 && me.goingLeft ) {
@@ -53,28 +65,36 @@ BOXED_GAME.actors.enemies = (function(game) {
 			}
 		
 			if ( me.goingLeft ) {
-				me.counter += me.velocity.y;
+				me.counter += 0.15;
 				me.position.x -= me.velocity.x * dt;
 				//me.position.y += me.velocity.y * dt;		
-				me.position.y += (Math.cos(me.counter) * aplitude) * dt;
+				me.position.y += Math.sin(me.counter) * aplitude * dt;
 			}
 
 			if ( !me.goingLeft ) {
-				me.counter += me.velocity.y;
+				me.counter += 0.15;
 				me.position.x += me.velocity.x * dt;
 				//me.position.y += me.velocity.y * dt;				
-				me.position.y += (Math.cos(me.counter) * aplitude) * dt;
+				me.position.y += Math.sin(me.counter) * aplitude * dt;
 			}
 
 			if ( me.position.x >= player.position.x && me.position.x <= (player.position.x + player.dimension.width) ) {
 				me.shoot()
 			}
+		}
+
+		me.update = function() {
+			var dt = game.variables.dt;
+			var player = game.actors.player;
+
+			me.path();
 
 			var shots = game.variables.shots;
-      for (var i = 0; i < shots.size; ++i) {
+      for ( var i = 0; i < shots.size; ++i ) {
         var shot = shots.next();
         if ( shot.isEnabled() && game.utils.intersectingRectangles(me, shot) ) {
           me.health.current -= shot.damage;
+          shot.reset();
         }
       }
 		}

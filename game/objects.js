@@ -5,6 +5,7 @@ BOXED_GAME.actors = (function(game) {
   var ctx = consts.CONTEXT2D;
   var utils = game.utils;
   var Entity = game.dataStructures.Entity;
+  var Vector = game.dataStructures.Vector;
 
   function Shot() {
     var me = this;
@@ -14,6 +15,7 @@ BOXED_GAME.actors = (function(game) {
     me.color = "#FF5800";
     me.isFired = false;
     me.dimension = { width: 4, height: 16 };
+    me.position = new Vector(0, 0);
     me.velocity = 1.25;
     me.direction = -1;
     me.damage = 10;
@@ -26,9 +28,8 @@ BOXED_GAME.actors = (function(game) {
       var meW = me.dimension.width, meH = me.dimension.height;
       me.position.x = sX + ( sW >> 1 ) - ( meW >> 1 ); 
       
-
       if ( shooter.type === consts.ENTITY_TYPES.get('enemy')) {
-        me.position.y = sY + 20;
+        me.position.y = sY + sH + meH;
         me.direction = 1;
       } else {
         me.position.y = sY - sH;
@@ -88,6 +89,7 @@ BOXED_GAME.actors = (function(game) {
     me.reset = function() {
       me.position.x = utils.randomBetween(1, consts.CANVAS_WIDTH - 1)
       me.position.y = -me.dimension.height;
+      ctx.clearRect(me.position.x, me.position.y, me.dimension.width, me.dimension.height)
     };
   }
 
@@ -180,6 +182,7 @@ BOXED_GAME.actors = (function(game) {
         var shot = shots.next();
         if ( shot.isEnabled() && game.utils.intersectingRectangles(me, shot) ) {
           me.health.current -= shot.damage;
+          shot.reset();
         }
       }
         
