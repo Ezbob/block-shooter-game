@@ -278,14 +278,16 @@ BOXED_GAME.backDrops = (function(game) {
   function loadClouds() {
     
     for ( var i = 0; i < game.constants.NUMBER_OF_CLOUDS; ++i ) {
-        clouds.push(
-          new game.actors.cloud(
-            { width: 20, height: 20 }, 
-            new Vector(utils.randomBetween(1, consts.CANVAS_WIDTH - 1), utils.randomBetween(-15, consts.CANVAS_HEIGHT >> 1))
-            )
-        );
+      clouds.push(
+        new game.actors.cloud(
+          { width: 20, height: 20 }, 
+          new Vector(utils.randomBetween(1, consts.CANVAS_WIDTH - 1), utils.randomBetween(-15, consts.CANVAS_HEIGHT >> 1))
+        )
+      );
     }
   }
   
-  return {loadClouds: loadClouds};
+  return { 
+    loadClouds: loadClouds 
+  };
 }(BOXED_GAME));

@@ -245,6 +245,18 @@ var BOXED_GAME = (function init() {
 
 	game.dataStructures.Vector.v = game.dataStructures.Vector.fromArray;
 
+	game.dataStructures.Vector.prototype.toString = function vectorToString() {
+		var me = this;
+		var stringRepr = "Vector(";
+
+		for (var i = 0; i < me.scalars.length - 1; ++i) {
+			stringRepr += me.scalars[i] + ", ";
+		}
+		stringRepr += me.scalars[me.scalars.length - 1];
+
+		return stringRepr + ")"; 
+	}
+
 	game.constants = { 	
 		CANVAS_HTML_ID: "playground",		
 		CANVAS_WIDTH: 900,
@@ -255,7 +267,7 @@ var BOXED_GAME = (function init() {
 		TRAVEL_VELOCITY: 0.45,
 		FPS_LIMIT: 140,
 		NUMBER_OF_CLOUDS: 30,
-		KEYS: { left: 37, up: 38, right: 39, down: 40, z: 90, x: 88, space: 32 },
+		KEYS: { left: 37, up: 38, right: 39, down: 40, z: 90, x: 88, space: 32, enter: 13, control: 17, alt: 18 },
 		ENTITY_TYPES: new game.dataStructures.ReversableEnum(['enemy', 'cloud', 'shot', 'player', 'uiProp']),
 		SCENARIO_TYPES: new game.dataStructures.ReversableEnum(['destroyall', 'timeout'])
 	};
@@ -267,10 +279,17 @@ var BOXED_GAME = (function init() {
 		clouds: new game.dataStructures.CircularBuffer(game.constants.NUMBER_OF_CLOUDS),
 		shots: new game.dataStructures.CircularBuffer(game.constants.MAX_SHOTS),
 		scenarios: [],
+		stateStack: [],
 		keyMap: [],
-		currentGameState: null,
 		currentScenario: null
 	};
+
+	game.variables.getCurrentGameState = function() {
+		if ( game.variables.stateStack.length > 0 ) {
+			return game.variables.stateStack[game.variables.stateStack.length - 1];
+		}
+		return null;
+	} 
 
 	var consts = game.constants;
 	consts.CANVAS_HEIGHT = consts.CANVAS_WIDTH / 12 * 9;
@@ -292,3 +311,11 @@ var requestAniFrame = window.requestAnimationFrame ||
 			window.setTimeout(callback, 1000 / BOXED_GAME.constants.FPS_LIMIT);
 		};
 
+var puts = function() {
+	// converts objects to string representation and prints out to console
+	// useful for debugging objects with custom toString
+  var strings = Array.prototype.map.call(arguments, function(obj){
+      return '' + obj;
+  });
+  console.log.apply(console, strings);
+};

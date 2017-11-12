@@ -2,12 +2,59 @@
 
 BOXED_GAME.actors.paths = (function(game) {
 
-	function sinePath() {
-		
+	function SinePath(startPoint, endPoint, amplitude, numberOfPoints, numberOfWaves) {
+		var me = this;
+		var Vector = game.dataStructures.Vector;
+		me.points = new game.dataStructures.CircularBuffer(numberOfPoints);
+		me.end = endPoint;
+		me.start = startPoint;
+
+		/*
+			Calculate the path using simple linear algebra, and buffer the results
+		*/
+		me.next = function() {
+			if ( me.points.buffer.length === me.points.size ) {
+				// buffer is full, just cycle through it
+				return me.points.next();
+			} else if ( me.points.buffer.length === 0 ) {
+				// we start at starting point
+				me.points.push(me.start);
+				//console.log("FIRST ", me.points.);
+				return me.start;
+			}
+
+			// vector going from start to end point
+			var displacement = me.end.sub(me.start);
+			// the length of the sucker
+			var displacementLength = displacement.magnitude();
+			// incremental vector used as a stepping stone for calculating the curve
+			var normDisplacement = displacement.norm();
+
+			// the 90 ( or PI / 2 ) rotated normalized vector 
+			var perpendicular = normDisplacement.rotate2d();
+
+			// scales the components
+			var distanceScale = displacementLength / (numberOfPoints - 1);
+			var sineScale = 2 * Math.PI * (numberOfWaves / numberOfPoints);
+
+			var index = me.points.length; // index of the point we want to compute now
+			var previousPoint = me.points.buffer[index - 1]; // previous point
+			
+			// the sine value (vertical component)
+			var sineValue = amplitude * Math.sin(index * sineScale);
+
+			// move on the horizontal component (along the line)
+			var nextOnLine = previousPoint.add(parallel.mul(distanceScale));
+			// move by sine on the vectical component
+			var nextPoint = nextOnLine.add(perpendicular.mul(sineValue));
+
+			me.points.push(nextPoint);
+			return nextPoint;
+		}
 	}
 
 	return {
-		sinePath: sinePath
+		SinePath: SinePath
 	}
 })(BOXED_GAME);
 
@@ -67,21 +114,16 @@ BOXED_GAME.actors.enemies = (function(game) {
 			}
 		
 			if ( me.goingLeft ) {
-				me.counter += 0.15;
-				
-
-				me.position.setX( x - velX * dt );
-				me.position.setY( y + Math.sin(me.counter) * aplitude * dt);
+				me.counter += 0.1;
+				me.position.addme(new Vector(-velX * dt, Math.sin(me.counter) * aplitude * dt));
 			}
 
 			if ( !me.goingLeft ) {
-				me.counter += 0.15;
-				me.position.setX(x + velX * dt);
-				//me.position.y += me.velocity.y * dt;				
-				me.position.setY(y + Math.sin(me.counter) * aplitude * dt);
+				me.counter += 0.1;
+				me.position.addme(new Vector(velX * dt, Math.sin(me.counter) * aplitude * dt));
 			}
 
-			if ( x >= player.position.getX() && x <= (player.position.getX() + player.dimension.width) ) {
+			if ( x >= player.position.getX() && x <= (player.position.getX() + player.dimension.width) && player.isEnabled() ) {
 				me.shoot()
 			}
 		}
