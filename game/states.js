@@ -40,7 +40,6 @@ BOXED_GAME.gameStates = (function(game) {
 	} 
 
 	firstStage.update =	function() {
-		//game.variables.currentScenario.start();
 		game.actors.player.update();
 		game.actors.health_bar.update();
 		game.draw.updateClouds();

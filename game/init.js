@@ -108,7 +108,7 @@ var BOXED_GAME = (function init() {
 			}
 
 			me.rotate2d = function() {
-				return new Vector(me.scalars[1], -me.scalars[0])
+				return new game.dataStructures.Vector(me.scalars[1], -me.scalars[0])
 			}
 
 			me.mul = function(scalar) {
@@ -152,13 +152,13 @@ var BOXED_GAME = (function init() {
 			}
 		},
 
-		ReversableEnum: function(items) {
+		ReversableEnum: function() {
 			var me = this;
 			me.map = {};
 			me.reverseMap = {};
 
-			for (var i = 0; i < items.length; ++i) {
-				var curr = items[i];
+			for (var i = 0; i < arguments.length; ++i) {
+				var curr = arguments[i];
 				me.map[curr] = i;
 			}
 
@@ -193,6 +193,10 @@ var BOXED_GAME = (function init() {
 				}
 			}
 
+			me.length = function() {
+				return me.buffer.length;
+			};
+
 			me.push = function(element) {
 				if ( me.buffer.length < me.size ) {
 					me.buffer.push(element);
@@ -203,13 +207,20 @@ var BOXED_GAME = (function init() {
 			};
 
 			me.next = function() {
-				var res = me.buffer[me.next_index] || null;
-				me.next_index = (me.next_index + 1) % (me.size - (me.size - me.buffer.length));
+				var res = me.buffer[me.next_index];
+				me.next_index = (me.next_index + 1) % me.buffer.length;
+				return res;
+			};
+
+			me.prev = function() {
+				var res = me.buffer[me.next_index];
+				var nexti = (me.next_index - 1) % me.buffer.length;
+				me.next_index = nexti < 0 ? me.buffer.length - 1 : nexti;
 				return res;
 			};
 
 			me.hasNext = function() {
-				return (me.size - (me.size - me.buffer.length)) > 0;
+				return me.buffer.length > 0;
 			};
 
 			me.reset = function() {
@@ -224,6 +235,18 @@ var BOXED_GAME = (function init() {
 		},
 	};
 
+	game.dataStructures.CircularBuffer.prototype.toString = function vectorToString() {
+		var me = this;
+		var stringRepr = "CircularBuffer(";
+
+		for (var i = 0; i < me.buffer.length - 1; ++i) {
+			stringRepr += me.buffer[i] + ", ";
+		}
+		stringRepr += me.buffer[me.buffer.length - 1];
+
+		return stringRepr + ")"; 
+	}
+
 	game.dataStructures.Entity = function(type, position, dimension, velocity) {
 		var me = this;
 		var x;
@@ -234,7 +257,7 @@ var BOXED_GAME = (function init() {
 
 		me.draw = function() { console.log("Draw not implemented"); }
 		me.update = function() { console.log("Update not implemented"); }
-		me.isEnabled = function() { console.log("isEnabled not implemented"); return true; }
+		me.isEnabled = function() { console.log("isEnabled not implemented"); return false; }
 	}
 
 	game.dataStructures.Vector.fromArray = function(array) {
@@ -258,8 +281,9 @@ var BOXED_GAME = (function init() {
 	}
 
 	game.constants = { 	
-		CANVAS_HTML_ID: "playground",		
-		CANVAS_WIDTH: 900,
+		CANVAS_HTML_ID: "playground",
+		DEBUG_ON: true,
+		CANVAS_WIDTH: 1080,
 		MAX_SHOTS: 300,
 		MAX_ENEMIES: 25,
 		DIRECTION: 1, // if negative reverse the controls, if zero no controls, else normal
@@ -268,8 +292,8 @@ var BOXED_GAME = (function init() {
 		FPS_LIMIT: 140,
 		NUMBER_OF_CLOUDS: 30,
 		KEYS: { left: 37, up: 38, right: 39, down: 40, z: 90, x: 88, space: 32, enter: 13, control: 17, alt: 18 },
-		ENTITY_TYPES: new game.dataStructures.ReversableEnum(['enemy', 'cloud', 'shot', 'player', 'uiProp']),
-		SCENARIO_TYPES: new game.dataStructures.ReversableEnum(['destroyall', 'timeout'])
+		ENTITY_TYPES: new game.dataStructures.ReversableEnum('enemy', 'cloud', 'shot', 'player', 'uiProp'),
+		SCENARIO_TYPES: new game.dataStructures.ReversableEnum('destroyall', 'timeout')
 	};
 
 	game.variables = {
@@ -300,6 +324,49 @@ var BOXED_GAME = (function init() {
 
 	return game;
 }(BOXED_GAME));
+
+
+BOXED_GAME.debug = (function(game) {
+	var consts = game.constants;
+	var ctx = consts.CONTEXT2D;
+	var exportObj = {};
+
+	function drawLine(start, end, color) {
+		if ( consts.DEBUG_ON ) {
+			ctx.beginPath();
+			ctx.strokeStyle = color ? color : "black";
+			ctx.moveTo(start.getX(), start.getY());
+			ctx.lineTo(end.getX(), end.getY());
+			ctx.stroke();
+			ctx.closePath();	
+		}
+	}
+
+	function drawPath(points, color) {
+		var length = typeof points.length === "function" ? points.length() : points.length;
+		if ( consts.DEBUG_ON && length >= 2 ) {
+			ctx.beginPath();
+			ctx.strokeStyle = color ? color : "black";
+
+			var start = points[0];
+			ctx.moveTo(start.getX(), start.getY());
+			for ( var i = 1; i < length; ++i ) {
+				var curPoint = points[i];
+				ctx.lineTo(curPoint.getX(), curPoint.getY());
+			}
+			ctx.stroke();
+			ctx.closePath();
+		}
+	}
+
+	exportObj['drawLine'] = drawLine;
+	exportObj['drawPath'] = drawPath;
+
+	return exportObj;
+
+})(BOXED_GAME);
+
+
 
 // polyfilla for requestAnimationFrame
 var requestAniFrame = window.requestAnimationFrame || 
