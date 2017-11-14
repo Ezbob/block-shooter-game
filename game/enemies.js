@@ -2,13 +2,21 @@
 
 BOXED_GAME.actors.paths = (function(game) {
 
-	function SinePath(startPoint, endPoint, amplitude, numberOfPoints, numberOfWaves) {
+	function Path(startPoint, endPoint) {
 		var me = this;
-		var Vector = game.dataStructures.Vector;
-		me.points = new game.dataStructures.CircularBuffer(numberOfPoints);
 		me.end = endPoint;
 		me.start = startPoint;
 
+		me.next = function() { return null; }
+		me.prev = function() { return null; }
+
+	}
+
+	function SinePath(startPoint, endPoint, amplitude, numberOfPoints, numberOfWaves) {
+		var me = this;
+		me.__proto__ = new Path(startPoint, endPoint);
+		var Vector = game.dataStructures.Vector;
+		me.points = new game.dataStructures.CircularBuffer(numberOfPoints);
 
 		// vector going from start to end point
 		var displacement = me.end.sub(me.start);
@@ -50,7 +58,8 @@ BOXED_GAME.actors.paths = (function(game) {
 	}
 
 	return {
-		SinePath: SinePath
+		SinePath: SinePath,
+		Path: Path
 	}
 })(BOXED_GAME);
 
@@ -66,18 +75,25 @@ BOXED_GAME.actors.enemies = (function(game) {
 		var me = this;
 		me.__proto__ = new Entity(consts.ENTITY_TYPES.get('enemy'));
 		me.dimension = { width: 32, height: 32 }
-		me.position = new Vector(consts.CANVAS_WIDTH - 60, 40);
+		me.position = new Vector(consts.CANVAS_WIDTH - me.dimension.width, 40);
 		me.color = "red";
 		me.health = { current: 200, max: 200 };
 		me.velocity = new Vector( 0.2, 0.1 );
-		me.counter = 0;
-		me.goingLeft = true;
+		me.reverse = false;
 
 		me.gun = {
 			limit: 5
 		}
 
-		me.path = new BOXED_GAME.actors.paths.SinePath(me.position, new Vector(20, 40), 30, 30, 4);
+		me.path = new BOXED_GAME.actors.paths.SinePath(me.position.add(new Vector(1, 1)), new Vector(2, 40), 30, 40, 4);
+		me.next_waypoint = me.path.next();
+
+		me.hasReachedNextPoint = function(closeness) {
+			if ( me.next_waypoint !== null ) {
+				return closeness <= 16.5; // using some lower bound on closeness
+			}
+			return false;
+		}
 		
 		me.isEnabled = function() {
 			return me.health.current > 0;
@@ -92,6 +108,7 @@ BOXED_GAME.actors.enemies = (function(game) {
 			}
 
 			game.debug.drawPath(me.path.points.buffer)
+			game.debug.drawLine(me.position, me.next_waypoint, "green");
 		}
 
 		me.shoot = function() {
@@ -99,38 +116,45 @@ BOXED_GAME.actors.enemies = (function(game) {
 		}
 
 		me.travel = function() {
+			var me = this;
 			var dt = game.variables.dt;
 			var aplitude = 0.25;
 			var player = game.actors.player;
-			var x = me.position.getX(), y = me.position.getY();
-			var velX = me.velocity.getX(), velY = me.velocity.getY();
 
-			if ( me.path.points.next_index === (me.path.points.size - 1) && me.goingLeft ) {
-				me.goingLeft = false;
+			var displacement = me.next_waypoint.sub(me.position);
+			var distance = displacement.magnitude();
+			var unitDisplacement = displacement.norm();
+
+			me.position.addme(unitDisplacement.mulmembers(me.velocity.mul(dt)));
+
+			if (  me.path.points.next_index === (me.path.points.length() - 1) && !me.reverse ) {
+				me.reverse = true;
 			}
 
-			if ( me.path.points.next_index === 0 && !me.goingLeft ) {
-				me.goingLeft = true;
+			if ( me.path.points.next_index === 0 && me.reverse ) {
+				me.reverse = false;
 			}
 		
-			if ( me.goingLeft ) {
-				me.position = me.path.next();
+			if ( me.hasReachedNextPoint(distance) && !me.reverse ) {
+				me.next_waypoint = me.path.next();
 			}
 
-			if ( !me.goingLeft ) {
-				me.position = me.path.prev();
+			if ( me.hasReachedNextPoint(distance) && me.reverse ) {
+				me.next_waypoint = me.path.prev();
 			}
 
-			if ( x >= player.position.getX() && x <= (player.position.getX() + player.dimension.width) && player.isEnabled() ) {
-				me.shoot()
-			}
 		}
 
 		me.update = function() {
 			var dt = game.variables.dt;
 			var player = game.actors.player;
+			var x = me.position.getX(), y = me.position.getY();
 
 			me.travel();
+
+			if ( x >= player.position.getX() && x <= (player.position.getX() + player.dimension.width) && player.isEnabled() ) {
+				me.shoot();
+			}
 
 			var shots = game.variables.shots;
 			for ( var i = 0; i < shots.size; ++i ) {
