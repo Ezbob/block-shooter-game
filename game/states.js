@@ -1,12 +1,12 @@
 "use strict";
 
 BOXED_GAME.gameStates = (function(game) {
-
-	function GameState(load, update, draw, control) {
+	
+	function GameState(isPlaying, load, update, draw, control) {
 		var me = this;
 
 		// main boolean that determines the activation state of this game state
-		me.isPlaying = true;
+		me.isPlaying = typeof isPlaying === "undefined" || isPlaying === null ? true : isPlaying;
 
 		// single time loading procedure
 		me.load = load || function() {}
@@ -129,13 +129,49 @@ BOXED_GAME.gameStates = (function(game) {
 		}
 	}
 
+	var pauseScreen = new GameState();
+
+	pauseScreen.load = function() {
+		this.resources = {
+			font: "Helvetica",
+			pausedTitle: "Game Paused",
+			actionsText: "Press Enter to resume"
+		};
+	}
+
+	pauseScreen.draw = function() {
+		var consts = game.constants;
+		var ctx = consts.CONTEXT2D;
+		var resources = this.resources;
+
+		ctx.font = "28pt " + resources.font;
+		ctx.textAlign = "center";
+		ctx.fillText(resources.pausedTitle, consts.CANVAS_WIDTH / 2, consts.CANVAS_HEIGHT / 2);
+		ctx.font = "18pt " + resources.font;
+		ctx.fillText(resources.actionsText, consts.CANVAS_WIDTH / 2, consts.CANVAS_HEIGHT / 2.2 + 62);
+	}
+
+	pauseScreen.control = function() {
+		var keyMap = game.variables.keyMap;
+		var keyCodes = game.constants.KEYS;
+		
+		if ( keyMap[keyCodes.enter] ) {
+			game.variables.isPaused = false;
+			game.variables.stateStack.pop();
+		}
+	}
+
 	game.variables.stateStack.push(firstStage);
 	game.variables.stateStack.push(splashScreen);
+	game.variables.getCurrentGameState = function() {
+		return game.variables.stateStack.length > 0 ? game.variables.stateStack[game.variables.stateStack.length - 1] : new GameState(false);
+	} 
 
 	return {
 		firstStage: firstStage,
 		splashScreen: splashScreen,
-		GameState: GameState
+		pauseScreen: pauseScreen,
+		GameState: GameState,
 	}
 })(BOXED_GAME);
 

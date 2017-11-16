@@ -1,7 +1,6 @@
 "use strict";
 
 
-
 var BOXED_GAME = (function init() {
 	var game = {};
 
@@ -136,6 +135,14 @@ var BOXED_GAME = (function init() {
 
 			me.norm = function() {
 				return me.mul(1 / me.magnitude())
+			}
+
+			me.dot = function(other) {
+				var res = 0;
+				for ( var i = 0; i < me.scalars.length; ++i ) {
+					res += me.scalars[i] * other.scalars[i];
+				}
+				return res;
 			}
 
 			me.equals = function(other) {
@@ -305,15 +312,10 @@ var BOXED_GAME = (function init() {
 		scenarios: [],
 		stateStack: [],
 		keyMap: [],
-		currentScenario: null
+		currentScenario: null,
+		isPaused: false
 	};
 
-	game.variables.getCurrentGameState = function() {
-		if ( game.variables.stateStack.length > 0 ) {
-			return game.variables.stateStack[game.variables.stateStack.length - 1];
-		}
-		return null;
-	} 
 
 	var consts = game.constants;
 	consts.CANVAS_HEIGHT = consts.CANVAS_WIDTH / 12 * 9;

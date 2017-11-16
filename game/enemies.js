@@ -85,12 +85,12 @@ BOXED_GAME.actors.enemies = (function(game) {
 			limit: 5
 		}
 
-		me.path = new BOXED_GAME.actors.paths.SinePath(me.position.add(new Vector(1, 1)), new Vector(2, 40), 30, 40, 4);
+		me.path = new BOXED_GAME.actors.paths.SinePath(me.position.add(new Vector(1, 1)), new Vector(2, 40), 30, 25, 4);
 		me.next_waypoint = me.path.next();
 
 		me.hasReachedNextPoint = function(closeness) {
 			if ( me.next_waypoint !== null ) {
-				return closeness <= 16.5; // using some lower bound on closeness
+				return closeness <= 15; // using some lower bound on closeness
 			}
 			return false;
 		}
@@ -100,12 +100,10 @@ BOXED_GAME.actors.enemies = (function(game) {
 		}
 
 		me.draw = function() {
-			if ( me.isEnabled() ) {
-				var old = ctx.fillStyle;
-				ctx.fillStyle = me.color;
-				ctx.fillRect(me.position.getX(), me.position.getY(), me.dimension.width, me.dimension.height);
-				ctx.fillStyle = old;
-			}
+			var old = ctx.fillStyle;
+			ctx.fillStyle = me.color;
+			ctx.fillRect(me.position.getX(), me.position.getY(), me.dimension.width, me.dimension.height);
+			ctx.fillStyle = old;
 
 			game.debug.drawPath(me.path.points.buffer)
 			game.debug.drawLine(me.position, me.next_waypoint, "green");
