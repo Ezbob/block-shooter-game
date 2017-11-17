@@ -85,7 +85,7 @@ BOXED_GAME.actors.enemies = (function(game) {
 			limit: 5
 		}
 
-		me.path = new BOXED_GAME.actors.paths.SinePath(me.position.add(new Vector(1, 1)), new Vector(2, 40), 30, 25, 4);
+		me.path = new BOXED_GAME.actors.paths.SinePath(me.position.add(new Vector(1, 1)), new Vector(2, 40), 30, 20, 4);
 		me.next_waypoint = me.path.next();
 
 		me.hasReachedNextPoint = function(closeness) {
@@ -140,7 +140,6 @@ BOXED_GAME.actors.enemies = (function(game) {
 			if ( me.hasReachedNextPoint(distance) && me.reverse ) {
 				me.next_waypoint = me.path.prev();
 			}
-
 		}
 
 		me.update = function() {

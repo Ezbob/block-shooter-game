@@ -6,7 +6,7 @@ BOXED_GAME.draw = (function(game) {
 
 	function updateClouds() {
 		var size = game.variables.clouds.size;
-		for ( var i = 0; i < size; i += 6 ) {
+		for ( var i = 0; i < size; i += 8 ) {
 			var current1 = game.variables.clouds.next();
 			if ( current1.isEnabled() ) {
 				current1.update();
@@ -42,6 +42,30 @@ BOXED_GAME.draw = (function(game) {
 				current6.update();
 			} else {
 				current6.reset();
+			}
+			var current7 = game.variables.clouds.next();
+			if ( current7.isEnabled() ) {
+				current7.update();
+			} else {
+				current7.reset();
+			}
+			var current8 = game.variables.clouds.next();
+			if ( current8.isEnabled() ) {
+				current8.update();
+			} else {
+				current8.reset();
+			}
+			var current9 = game.variables.clouds.next();
+			if ( current9.isEnabled() ) {
+				current9.update();
+			} else {
+				current9.reset();
+			}
+			var current10 = game.variables.clouds.next();
+			if ( current10.isEnabled() ) {
+				current10.update();
+			} else {
+				current10.reset();
 			}
 		}
 	}

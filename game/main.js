@@ -39,13 +39,3 @@ BOXED_GAME.gameLoop = (function(game) {
 
 }(BOXED_GAME));
 
-window.onblur = function() {
-	var game = BOXED_GAME;
-	var pauseScreen = game.gameStates.pauseScreen;
-
-	if ( !game.variables.isPaused ) {
-		pauseScreen.load();
-		game.variables.isPaused = true;
-		game.variables.stateStack.push(pauseScreen);	
-	}
-}

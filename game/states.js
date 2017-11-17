@@ -145,6 +145,7 @@ BOXED_GAME.gameStates = (function(game) {
 		var resources = this.resources;
 
 		ctx.font = "28pt " + resources.font;
+		ctx.fillStyle = "black";
 		ctx.textAlign = "center";
 		ctx.fillText(resources.pausedTitle, consts.CANVAS_WIDTH / 2, consts.CANVAS_HEIGHT / 2);
 		ctx.font = "18pt " + resources.font;
