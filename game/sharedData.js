@@ -25,10 +25,8 @@
 		scenarios: [],
 		stateStack: [],
 		keyMap: [],
-		currentScenario: null,
 		isPaused: false
 	};
-
 
 	var consts = game.constants;
 	consts.CANVAS_HEIGHT = consts.CANVAS_WIDTH / 12 * 9;

@@ -118,7 +118,8 @@ BOXED_GAME.draw = (function(game) {
 	}
 
 	function updateEnemies() {
-		var scenario = game.variables.currentScenario;
+		var gameState = game.variables.getCurrentGameState();
+		var scenario = gameState.getCurrentScenario();
 		var enemies = scenario.currentEnemies;
 
 		for ( var i = 0; i < enemies.length; ++i ) {
@@ -130,7 +131,8 @@ BOXED_GAME.draw = (function(game) {
 	}
 
 	function drawEnemies() {
-		var scenario = game.variables.currentScenario;
+		var gameState = game.variables.getCurrentGameState();
+		var scenario = gameState.getCurrentScenario();
 		var enemies = scenario.currentEnemies;
 
 		for ( var i = 0; i < enemies.length; ++i ) {

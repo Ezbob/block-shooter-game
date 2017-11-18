@@ -134,21 +134,18 @@ BOXED_GAME.dataStructures = (function(game) {
       me.reverseMap = {};
 
       for (var i = 0; i < arguments.length; ++i) {
-        var curr = arguments[i];
-        me.map[curr] = i;
+        me.map[arguments[i]] = i;
       }
-
-      me.map['unknown'] = -1;
 
       var keys = Object.keys(me.map);
 
-      for (var i = 0; i < keys.length; ++i) {
+      for ( var i = 0; i < keys.length; ++i ) {
         var currkey = keys[i];
         me.reverseMap[me.map[currkey]] = currkey;
       }
 
       me.get = function(key) {
-        return me.map[key] || -1;
+        return typeof me.map[key] === "undefined" ? -1 : me.map[key];
       }
 
       me.getReverse = function(value) {
