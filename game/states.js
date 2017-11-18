@@ -18,7 +18,7 @@ BOXED_GAME.scenario = (function(game) {
 		me.load = function() {}
 
 		me.isPlaying = function() {
-			return me.currentEnemies > 0 && me.isStarted;
+			return me.currentEnemies.length > 0 && me.isStarted;
 		}
 
 		me.start = function() {
@@ -75,7 +75,7 @@ BOXED_GAME.gameStates = (function(game) {
 		me.scenarioStack = [];
 
 		me.getCurrentScenario = function() {
-			return me.scenarioStack.length > 0 ?  me.scenarioStack[me.scenarioStack.length - 1] : new Scenario(false)
+			return me.scenarioStack.length > 0 ?  me.scenarioStack[me.scenarioStack.length - 1] : new Scenario()
 		};
 	}
 
@@ -86,17 +86,11 @@ BOXED_GAME.gameStates = (function(game) {
 		game.backDrops.loadClouds();
 		game.draw.loadShots();
 		
-		function FirstEncounter() {
-			var me = this;
-			me.__proto__ = new game.scenario.Scenario()
-			var firstEnemy = new BOXED_GAME.actors.enemies.Weako();
-			me.currentEnemies.push(firstEnemy);
-		}
+		var firstEncounter = new game.scenario.Scenario();
+		firstEncounter.currentEnemies.push(new BOXED_GAME.actors.enemies.Weako());
+		firstStage.scenarioStack.push(firstEncounter);
 
-		console.log(new FirstEncounter())
-
-		firstStage.scenarioStack.push(new FirstEncounter());
-		console.log(firstStage.getCurrentScenario());
+		firstStage.getCurrentScenario().start();
 	} 
 
 	firstStage.update =	function() {
