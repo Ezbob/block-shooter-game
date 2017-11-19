@@ -21,6 +21,15 @@ BOXED_GAME.scenario = (function(game) {
 			return me.currentEnemies.length > 0 && me.isStarted;
 		}
 
+		me.update = function() {
+			for ( var i = 0; i < me.currentEnemies.length; ++i ) {
+				console.log(me.currentEnemies[i])
+				if ( !me.currentEnemies[i].isEnabled() ) {
+					me.currentEnemies = me.currentEnemies.splice(i);
+				}
+			}
+		}
+
 		me.start = function() {
 			me.isStarted = true;
 		}
@@ -85,12 +94,17 @@ BOXED_GAME.gameStates = (function(game) {
 
 		game.backDrops.loadClouds();
 		game.draw.loadShots();
+
+		var secondEncounter = new game.scenario.Scenario();
+		secondEncounter.currentEnemies.push(new BOXED_GAME.actors.enemies.Weako());
+		firstStage.scenarioStack.push(secondEncounter);
 		
 		var firstEncounter = new game.scenario.Scenario();
 		firstEncounter.currentEnemies.push(new BOXED_GAME.actors.enemies.Weako());
 		firstStage.scenarioStack.push(firstEncounter);
 
 		firstStage.getCurrentScenario().start();
+
 	} 
 
 	firstStage.update =	function() {
@@ -100,9 +114,14 @@ BOXED_GAME.gameStates = (function(game) {
 		game.draw.updateShots();
 		game.draw.updateEnemies();
 
+
 		var currentScenario = firstStage.getCurrentScenario();
+		currentScenario.update();
+
+
 		if ( !currentScenario.isPlaying() && firstStage.scenarioStack.length > 0 ) {
 			firstStage.scenarioStack.pop();
+			firstStage.scenarioStack.getCurrentScenario().start();
 		}
 	}
 

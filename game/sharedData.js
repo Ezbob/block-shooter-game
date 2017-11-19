@@ -2,7 +2,7 @@
 
 	game.constants = { 	
 		CANVAS_HTML_ID: "playground",
-		DEBUG_ON: true,
+		DEBUG_ON: false,
 		CANVAS_WIDTH: 1080,
 		MAX_SHOTS: 300,
 		MAX_ENEMIES: 25,
