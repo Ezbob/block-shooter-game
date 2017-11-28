@@ -23,7 +23,6 @@ BOXED_GAME.scenario = (function(game) {
 
 		me.update = function() {
 			for ( var i = 0; i < me.currentEnemies.length; ++i ) {
-				console.log(me.currentEnemies[i])
 				if ( !me.currentEnemies[i].isEnabled() ) {
 					me.currentEnemies = me.currentEnemies.splice(i);
 				}
@@ -47,23 +46,25 @@ BOXED_GAME.scenario = (function(game) {
 
 BOXED_GAME.gameStates = (function(game) {
 	
-	function GameState(isPlaying, load, update, draw, control) {
+	function GameState(type) {
 		var me = this;
 
 		// main boolean that determines the activation state of this game state
 		me.isPlaying = typeof isPlaying === "undefined" || isPlaying === null ? true : isPlaying;
 
+		me.type = type || game.constants.STATE_TYPES.get('action');
+
 		// single time loading procedure
-		me.load = load || function() {}
+		me.load = function() {}
 
 		// per loop update function; calculate positions for the elements of the frame / collision detection
-		me.update = update || function() {} 
+		me.update = function() {} 
 
 		// per loop drawing function; do the actual drawing of the frame
-		me.draw = draw || function() {}
+		me.draw = function() {}
 
 		// per loop control checker; define the control scheme for this state
-		me.control = control || function() {}
+		me.control = function() {}
 
 		// convience function for stopping the GameState. This will trigger a pop of the gamestate so that 
 		// the next game state will begin
@@ -76,11 +77,11 @@ BOXED_GAME.gameStates = (function(game) {
 		}
 	}
 
-	function ScenarioBasedState(isPlaying) {
+	function ScenarioBasedState() {
 		var me = this;
 		var Scenario = game.scenario.Scenario;
 
-		me.__proto__ = new GameState(isPlaying);
+		me.__proto__ = new GameState(game.constants.STATE_TYPES.get('action'));
 		me.scenarioStack = [];
 
 		me.getCurrentScenario = function() {
@@ -114,10 +115,8 @@ BOXED_GAME.gameStates = (function(game) {
 		game.draw.updateShots();
 		game.draw.updateEnemies();
 
-
 		var currentScenario = firstStage.getCurrentScenario();
 		currentScenario.update();
-
 
 		if ( !currentScenario.isPlaying() && firstStage.scenarioStack.length > 0 ) {
 			firstStage.scenarioStack.pop();
@@ -138,6 +137,17 @@ BOXED_GAME.gameStates = (function(game) {
 		var player = game.actors.player;
 		var consts = game.constants;
 		var keyMap = game.variables.keyMap;
+
+		if ( keyMap[keyCodes.escape] ) {
+			var pauseScreen = game.gameStates.pauseScreen;
+
+			if ( !game.variables.isPaused ) {
+				pauseScreen.load();
+				game.variables.isPaused = true;
+				game.variables.stateStack.push(pauseScreen);
+			}
+		}
+
 		if ( player.isEnabled() ) {
 			if ( keyMap[keyCodes.space] ) {
 				player.shoot();
@@ -163,7 +173,7 @@ BOXED_GAME.gameStates = (function(game) {
 		}
 	}
 
-	var splashScreen = new GameState()
+	var splashScreen = new GameState(game.constants.STATE_TYPES.get('intro'))
 
 	splashScreen.load = function() {
 		splashScreen.resources = { 

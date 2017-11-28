@@ -119,27 +119,32 @@ BOXED_GAME.draw = (function(game) {
 
 	function updateEnemies() {
 		var gameState = game.variables.getCurrentGameState();
-		var scenario = gameState.getCurrentScenario();
-		var enemies = scenario.currentEnemies;
+		if ( gameState.getCurrentScenario ) {
+			var scenario = gameState.getCurrentScenario();
+			var enemies = scenario.currentEnemies;
 
-		for ( var i = 0; i < enemies.length; ++i ) {
-			var current = enemies[i];
-			if ( current.isEnabled() ) {
-				current.update();	
+			for ( var i = 0; i < enemies.length; ++i ) {
+				var current = enemies[i];
+				if ( current.isEnabled() ) {
+					current.update();	
+				}
 			}
 		}
+
 	}
 
 	function drawEnemies() {
 		var gameState = game.variables.getCurrentGameState();
-		var scenario = gameState.getCurrentScenario();
-		var enemies = scenario.currentEnemies;
+		if ( gameState.getCurrentScenario ) {
+			var scenario = gameState.getCurrentScenario();
+			var enemies = scenario.currentEnemies;
 
-		for ( var i = 0; i < enemies.length; ++i ) {
-			var current = enemies[i];
-			if ( current.isEnabled() ) {
-				current.draw();	
-			}
+			for ( var i = 0; i < enemies.length; ++i ) {
+				var current = enemies[i];
+				if ( current.isEnabled() ) {
+					current.draw();	
+				}
+			}	
 		}
 	}
 

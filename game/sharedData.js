@@ -11,9 +11,10 @@
 		TRAVEL_VELOCITY: 0.45,
 		FPS_LIMIT: 140,
 		NUMBER_OF_CLOUDS: 30,
-		KEYS: { left: 37, up: 38, right: 39, down: 40, z: 90, x: 88, space: 32, enter: 13, control: 17, alt: 18 },
+		KEYS: { left: 37, up: 38, right: 39, down: 40, z: 90, x: 88, space: 32, enter: 13, control: 17, alt: 18, escape: 27 },
 		ENTITY_TYPES: new game.dataStructures.ReversableEnum('enemy', 'cloud', 'shot', 'player', 'uiProp'),
-		SCENARIO_TYPES: new game.dataStructures.ReversableEnum('destroyall', 'timeout')
+		SCENARIO_TYPES: new game.dataStructures.ReversableEnum('destroyall', 'timeout'),
+		STATE_TYPES: new game.dataStructures.ReversableEnum('pause', 'action', 'intro')
 	};
 
 	game.variables = {
