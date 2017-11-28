@@ -15,6 +15,10 @@ BOXED_GAME.scenario = (function(game) {
 		me.currentEnemies = [];
 		me.isStarted = false;
 
+		me.addEnemy = function(enemy) {
+			me.currentEnemies.push(enemy);
+		}
+
 		me.load = function() {}
 
 		me.isPlaying = function() {
@@ -24,7 +28,9 @@ BOXED_GAME.scenario = (function(game) {
 		me.update = function() {
 			for ( var i = 0; i < me.currentEnemies.length; ++i ) {
 				if ( !me.currentEnemies[i].isEnabled() ) {
-					me.currentEnemies = me.currentEnemies.splice(i);
+					console.log(me.currentEnemies, i)
+					me.currentEnemies.splice(i, 1);
+					console.log(me.currentEnemies, i)
 				}
 			}
 		}
@@ -50,7 +56,7 @@ BOXED_GAME.gameStates = (function(game) {
 		var me = this;
 
 		// main boolean that determines the activation state of this game state
-		me.isPlaying = typeof isPlaying === "undefined" || isPlaying === null ? true : isPlaying;
+		me.isPlaying =  true;
 
 		me.type = type || game.constants.STATE_TYPES.get('action');
 
@@ -97,11 +103,11 @@ BOXED_GAME.gameStates = (function(game) {
 		game.draw.loadShots();
 
 		var secondEncounter = new game.scenario.Scenario();
-		secondEncounter.currentEnemies.push(new BOXED_GAME.actors.enemies.Weako());
+		secondEncounter.addEnemy(new BOXED_GAME.actors.enemies.Weako());
 		firstStage.scenarioStack.push(secondEncounter);
 		
 		var firstEncounter = new game.scenario.Scenario();
-		firstEncounter.currentEnemies.push(new BOXED_GAME.actors.enemies.Weako());
+		firstEncounter.addEnemy(new BOXED_GAME.actors.enemies.Weako());
 		firstStage.scenarioStack.push(firstEncounter);
 
 		firstStage.getCurrentScenario().start();
@@ -120,7 +126,7 @@ BOXED_GAME.gameStates = (function(game) {
 
 		if ( !currentScenario.isPlaying() && firstStage.scenarioStack.length > 0 ) {
 			firstStage.scenarioStack.pop();
-			firstStage.scenarioStack.getCurrentScenario().start();
+			firstStage.getCurrentScenario().start();
 		}
 	}
 
