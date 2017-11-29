@@ -26,11 +26,9 @@ BOXED_GAME.scenario = (function(game) {
 		}
 
 		me.update = function() {
-			for ( var i = 0; i < me.currentEnemies.length; ++i ) {
+			for ( var i = me.currentEnemies.length - 1; i >= 0; --i ) {
 				if ( !me.currentEnemies[i].isEnabled() ) {
-					console.log(me.currentEnemies, i)
 					me.currentEnemies.splice(i, 1);
-					console.log(me.currentEnemies, i)
 				}
 			}
 		}
@@ -222,11 +220,30 @@ BOXED_GAME.gameStates = (function(game) {
 	var pauseScreen = new GameState();
 
 	pauseScreen.load = function() {
+		var consts = game.constants;
 		this.resources = {
 			font: "Helvetica",
-			pausedTitle: "Game Paused",
-			actionsText: "Press Enter to resume"
+			pausedTitle: {
+				text: "Game Paused",
+				position: new BOXED_GAME.dataStructures.Vector(consts.CANVAS_WIDTH >> 1, consts.CANVAS_HEIGHT / 2.4)
+			},
+			resumeText: { 
+				text: "Resume",
+				position: new BOXED_GAME.dataStructures.Vector(consts.CANVAS_WIDTH >> 1, (consts.CANVAS_HEIGHT / 2.5)  + 62)
+			},
+			restartText:  {
+				text: "Restart",
+				position: new BOXED_GAME.dataStructures.Vector(consts.CANVAS_WIDTH >> 1, (consts.CANVAS_HEIGHT / 2.5) + 115)
+			},
+			cursor: {
+				position: new BOXED_GAME.dataStructures.Vector(consts.CANVAS_WIDTH / 2, consts.CANVAS_HEIGHT / 2.5 + 62),
+				dimension: new BOXED_GAME.dataStructures.Vector(16, 16),
+				color: "black",
+				choices: new BOXED_GAME.dataStructures.ReversableEnum('resume', 'restart'),
+				pointingAt: null
+			}
 		};
+		this.resources.cursor.pointingAt = this.resources.cursor.choices.get('resume');
 	}
 
 	pauseScreen.draw = function() {
@@ -234,21 +251,63 @@ BOXED_GAME.gameStates = (function(game) {
 		var ctx = consts.CONTEXT2D;
 		var resources = this.resources;
 
-		ctx.font = "28pt " + resources.font;
+		ctx.font = "32px " + resources.font;
 		ctx.fillStyle = "black";
 		ctx.textAlign = "center";
-		ctx.fillText(resources.pausedTitle, consts.CANVAS_WIDTH / 2, consts.CANVAS_HEIGHT / 2);
-		ctx.font = "18pt " + resources.font;
-		ctx.fillText(resources.actionsText, consts.CANVAS_WIDTH / 2, consts.CANVAS_HEIGHT / 2.2 + 62);
+		ctx.fillText(resources.pausedTitle.text, resources.pausedTitle.position.getX(), resources.pausedTitle.position.getY());
+		
+		ctx.font = "24px " + resources.font;
+		ctx.fillText(resources.resumeText.text, resources.resumeText.position.getX(), resources.resumeText.position.getY());
+
+		ctx.font = "24px " + resources.font;
+		ctx.fillText(resources.restartText.text, resources.restartText.position.getX(), resources.restartText.position.getY());
+
+		var textWidth;
+		if (resources.cursor.pointingAt === resources.cursor.choices.get("resume")) {
+			textWidth = ctx.measureText(resources.resumeText.text).width;
+		} else {
+			textWidth = ctx.measureText(resources.restartText.text).width;
+		}
+
+		ctx.fillStyle = resources.cursor.color;
+		ctx.fillRect(
+			resources.cursor.position.getX() + ( textWidth >> 1 ) + 15, 
+			resources.cursor.position.getY() - resources.cursor.dimension.getY() + 2, 
+			resources.cursor.dimension.getX(), resources.cursor.dimension.getY()
+		);
+	}
+
+	pauseScreen.update = function() {
+		var resources = this.resources;
+		var cursor = resources.cursor;
+		if (cursor.pointingAt === cursor.choices.get("resume")) {
+			cursor.position = resources.resumeText.position;
+		} else {
+			cursor.position = resources.restartText.position;
+		}
 	}
 
 	pauseScreen.control = function() {
 		var keyMap = game.variables.keyMap;
 		var keyCodes = game.constants.KEYS;
-		
+		var resources = this.resources;
+		var cursor = resources.cursor
+
 		if ( keyMap[keyCodes.enter] ) {
-			game.variables.isPaused = false;
-			game.variables.stateStack.pop();
+
+			if ( cursor.pointingAt === cursor.choices.get("resume") ) {		
+				game.variables.isPaused = false;
+				game.variables.stateStack.pop();
+			} else {
+				location.reload();
+			} 
+		} else {
+			if ( keyMap[keyCodes.down] && cursor.pointingAt === cursor.choices.get("resume") ) {
+				cursor.pointingAt = cursor.choices.get("restart");
+			}
+			if ( keyMap[keyCodes.up] && cursor.pointingAt === cursor.choices.get("restart") ) {
+				cursor.pointingAt = cursor.choices.get("resume");
+			}
 		}
 	}
 
