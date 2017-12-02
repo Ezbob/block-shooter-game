@@ -122,18 +122,29 @@ BOXED_GAME.gameStates = (function(game) {
 		var currentScenario = firstStage.getCurrentScenario();
 		currentScenario.update();
 
-		if ( !currentScenario.isPlaying() && firstStage.scenarioStack.length > 0 ) {
+		if ( !currentScenario.isPlaying() && 
+			firstStage.scenarioStack.length > 0 ) {
 			firstStage.scenarioStack.pop();
 			firstStage.getCurrentScenario().start();
 		}
 	}
 
 	firstStage.draw = function() {
+		var ctx = game.constants.CONTEXT2D;
 		game.actors.player.draw();
 		game.actors.health_bar.draw();
 		game.draw.drawClouds();
 		game.draw.drawShots();
 		game.draw.drawEnemies();
+
+		if ( !game.actors.player.isEnabled() ) {
+      var oldFont = ctx.font;
+      ctx.font = "42px Helvetica";
+      ctx.fillStyle = "red";
+      ctx.textAlign = "center";
+      ctx.fillText("YOU DIED!", game.constants.CANVAS_WIDTH / 2, game.constants.CANVAS_HEIGHT / 2);
+      ctx.font = oldFont;
+    }
 	}
 
 	firstStage.control = function() {

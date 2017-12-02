@@ -169,7 +169,6 @@ BOXED_GAME.actors = (function(game) {
     };
 
     me.update = function() {
-
       var shots = game.variables.shots;
       for (var i = 0; i < shots.size; ++i) {
         var shot = shots.next();
@@ -177,15 +176,6 @@ BOXED_GAME.actors = (function(game) {
           me.health.current -= shot.damage;
           shot.reset();
         }
-      }
-        
-      if ( !me.isEnabled() ) {
-        var oldFont = ctx.font;
-        ctx.font = "42px Helvetica";
-        ctx.fillStyle = "red";
-        ctx.textAlign = "center";
-        ctx.fillText("YOU DIED!", game.constants.CANVAS_WIDTH / 2, game.constants.CANVAS_HEIGHT / 2);
-        ctx.font = oldFont;
       }
     }
   };
