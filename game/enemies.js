@@ -149,7 +149,7 @@ BOXED_GAME.actors.enemies = (function(game) {
 
 			me.travel();
 
-			if ( x >= player.position.getX() && x <= (player.position.getX() + player.dimension.width) && player.isEnabled() ) {
+			if ( x >= player.position.getX() - 10 && x <= (player.position.getX() + player.dimension.width) + 10 && player.isEnabled() ) {
 				me.shoot();
 			}
 

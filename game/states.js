@@ -179,6 +179,10 @@ BOXED_GAME.gameStates = (function(game) {
 
 	var splashScreen = new GameState(game.constants.STATE_TYPES.get('intro'))
 
+	splashScreen.update = function() {
+		game.variables.scheduler.update();
+	}
+
 	splashScreen.load = function() {
 		splashScreen.resources = { 
 			titleFontSize: '28pt',

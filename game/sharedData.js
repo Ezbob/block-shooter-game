@@ -26,7 +26,8 @@
 		scenarios: [],
 		stateStack: [],
 		keyMap: [],
-		isPaused: false
+		isPaused: false,
+		scheduler: new game.dataStructures.Scheduler()
 	};
 
 	var consts = game.constants;
