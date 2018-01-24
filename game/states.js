@@ -107,12 +107,11 @@ BOXED_GAME.gameStates = (function(game) {
 		var firstEncounter = new game.scenario.Scenario();
 		firstEncounter.addEnemy(new BOXED_GAME.actors.enemies.Weako());
 		firstStage.scenarioStack.push(firstEncounter);
-
 		firstStage.getCurrentScenario().start();
-
 	} 
 
 	firstStage.update =	function() {
+		game.variables.scheduler.update();
 		game.actors.player.update();
 		game.actors.health_bar.update();
 		game.draw.updateClouds();
@@ -126,6 +125,10 @@ BOXED_GAME.gameStates = (function(game) {
 			firstStage.scenarioStack.length > 0 ) {
 			firstStage.scenarioStack.pop();
 			firstStage.getCurrentScenario().start();
+		}
+
+		if ( firstStage.scenarioStack.length === 0 ) {
+			firstStage.isPlaying = false;
 		}
 	}
 
@@ -190,14 +193,10 @@ BOXED_GAME.gameStates = (function(game) {
 
 	var splashScreen = new GameState(game.constants.STATE_TYPES.get('intro'))
 
-	splashScreen.update = function() {
-		game.variables.scheduler.update();
-	}
-
 	splashScreen.load = function() {
 		splashScreen.resources = { 
 			titleFontSize: '28pt',
-			subTitleFontSize: '18pt', 
+			subTitleFontSize: '18pt',
 			font: 'Helvetica',
 			introTitle: "Block Shooter Game",
 			introSubtitle: "By Anders Busch",
@@ -231,6 +230,32 @@ BOXED_GAME.gameStates = (function(game) {
 			game.variables.getCurrentGameState().stop();
 		}
 	}
+
+    var winScreen = new GameState(game.constants.STATE_TYPES.get('intro'));
+
+    winScreen.load = function() {
+        var consts = game.constants;
+        this.resources = {};
+        this.resources.gameWinFont = {
+            font: "Helvetica",
+			position: new BOXED_GAME.dataStructures.Vector(consts.CANVAS_WIDTH >> 1, consts.CANVAS_HEIGHT >> 1),
+            color: "darkgreen",
+            text: "YOU'RE A WINNER!"
+        }
+    };
+
+    winScreen.draw = function() {
+        var resources = this.resources;
+        var ctx = game.constants.CONTEXT2D;
+        var utils = game.utils;
+
+		ctx.font = "32px " + resources.gameWinFont.font;
+		ctx.fillStyle = resources.gameWinFont.color;
+		ctx.textAlign = "center";
+        ctx.fillText(resources.gameWinFont.text, 
+            resources.gameWinFont.position.getX() + utils.randomBetween(-10, 10), 
+            resources.gameWinFont.position.getY() + utils.randomBetween(-10, 10))
+    };
 
 	var pauseScreen = new GameState();
 
@@ -326,6 +351,7 @@ BOXED_GAME.gameStates = (function(game) {
 		}
 	}
 
+  game.variables.stateStack.push(winScreen);
 	game.variables.stateStack.push(firstStage);
 	game.variables.stateStack.push(splashScreen);
 	game.variables.getCurrentGameState = function() {
@@ -339,6 +365,7 @@ BOXED_GAME.gameStates = (function(game) {
 		splashScreen: splashScreen,
 		pauseScreen: pauseScreen,
 		GameState: GameState,
+        winScreen: winScreen
 	}
 })(BOXED_GAME);
 

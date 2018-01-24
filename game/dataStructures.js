@@ -131,6 +131,14 @@ BOXED_GAME.dataStructures = (function(game) {
       return true;
     }
 
+    me.fromArray = function(array) {
+      var res = new game.dataStructures.Vector();
+      res.scalars = array;
+      return res;
+    }
+
+    me.v = game.dataStructures.Vector.fromArray;
+
     me.__proto__.toString = function() {
       return "Vector(" + game.utils.stringJoin(", ", me.scalars) + ")";
     }
@@ -237,8 +245,9 @@ BOXED_GAME.dataStructures = (function(game) {
    */
   exportObj.Scheduler = function() {
     var me = this;
+
     me.events = [];
-    me.EventType = new BOXED_GAME.dataStructures.ReversableEnum('after');
+    me.EventType = new BOXED_GAME.dataStructures.ReversableEnum('after', 'until');
 
     me.TimedEvent = function(type, action, startTimestamp, duration, activationTimes) {
       this.startTimestamp = startTimestamp;
@@ -259,8 +268,11 @@ BOXED_GAME.dataStructures = (function(game) {
           me.events.splice(i, 1);
         }
       }
-    }
+    };
 
+    /*
+     * do the action after milisecs passed
+    */
     me.after = function(milisec, action) {
       var now = game.variables.now;
       var event = new me.TimedEvent(me.EventType.get('after'), action, now, milisec);
@@ -271,12 +283,16 @@ BOXED_GAME.dataStructures = (function(game) {
           this.enabled = false;
         }
       };
-      me.events.push(event);
-    }
+      return me.events[me.events.push(event)];
+    };
 
+    /*
+     * do the action until milisecs passed
+    */
     me.until = function(milisec, action) {
       var now = game.variables.now;
-      var event = new me.TimedEvent(me.EventType.get('after'), action, now, milisec);
+      var event = new me.TimedEvent(me.EventType.get('until'), action, now, milisec);
+
       event.activate = function() {
         var now = game.variables.now;
         this.action();
@@ -284,21 +300,13 @@ BOXED_GAME.dataStructures = (function(game) {
           this.enabled = false;
         }
       };
-      me.events.push(event);
-    }
+      return me.events[me.events.push(event)];
+    };
 
     me.__proto__.toString = function() {
       return "Scheduler(" + game.utils.stringJoin(", ",  me.events) + ")";
-    }
+    };
   }
-
-  exportObj.Vector.fromArray = function(array) {
-    var res = new exportObj.Vector();
-    res.scalars = array;
-    return res;
-  }
-
-  exportObj.Vector.v = exportObj.Vector.fromArray;
 
   return exportObj;
 
