@@ -1,6 +1,6 @@
-(function(game) {
 
-	game.constants = { 	
+let sharedData = {
+	constants: {
 		CANVAS_HTML_ID: "playground",
 		DEBUG_ON: false,
 		CANVAS_WIDTH: 1080,
@@ -15,9 +15,9 @@
 		ENTITY_TYPES: new game.dataStructures.ReversableEnum('enemy', 'cloud', 'shot', 'player', 'uiProp'),
 		SCENARIO_TYPES: new game.dataStructures.ReversableEnum('destroyall', 'timeout'),
 		STATE_TYPES: new game.dataStructures.ReversableEnum('pause', 'action', 'intro')
-	};
+	},
 
-	game.variables = {
+	variables: {
 		lastUpdate: 0,
 		now: 0,
 		dt: 0,
@@ -28,13 +28,14 @@
 		keyMap: [],
 		isPaused: false,
 		scheduler: new game.dataStructures.Scheduler()
-	};
+	}
+};
 
-	var consts = game.constants;
-	consts.CANVAS_HEIGHT = consts.CANVAS_WIDTH / 12 * 9;
-	consts.CANVAS = document.getElementById(consts.CANVAS_HTML_ID);
-	consts.CONTEXT2D = consts.CANVAS.getContext('2d');
-	consts.CANVAS.setAttribute("width", consts.CANVAS_WIDTH);
-	consts.CANVAS.setAttribute("height", consts.CANVAS_HEIGHT);
+var consts = sharedData.constants;
+consts.CANVAS_HEIGHT = consts.CANVAS_WIDTH / 12 * 9;
+consts.CANVAS = document.getElementById(consts.CANVAS_HTML_ID);
+consts.CONTEXT2D = consts.CANVAS.getContext('2d');
+consts.CANVAS.setAttribute("width", consts.CANVAS_WIDTH);
+consts.CANVAS.setAttribute("height", consts.CANVAS_HEIGHT);
 
-})(BOXED_GAME);
+export default sharedData;

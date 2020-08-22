@@ -2,11 +2,7 @@
 
 BOXED_GAME.scenario = (function(game) {
 	// scenarios are thought as a substate of gamestates
-	var Entity = game.dataStructures.Entity;
-	var utils = game.utils;
 	var consts = game.constants;
-	var enemies = game.actors.enemies;
-	var scenarioStack = [];
 
 	function Scenario() {
 		// default Prototype

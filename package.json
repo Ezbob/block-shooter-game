@@ -1,0 +1,28 @@
+{
+  "name": "block-shooter-game",
+  "version": "0.1.0",
+  "description": "A Bullet hell game",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "build": "webpack-cli --config webpack.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ezbob/block-shooter-game.git"
+  },
+  "keywords": [
+    "game"
+  ],
+  "author": "Anders Busch",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ezbob/block-shooter-game/issues"
+  },
+  "homepage": "https://github.com/Ezbob/block-shooter-game#readme",
+  "devDependencies": {
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12"
+  },
+  "dependencies": {}
+}
