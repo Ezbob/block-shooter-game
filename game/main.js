@@ -4,17 +4,16 @@ import Constants from './sharedConstants.js';
 import SplashScreen from './states/splashScreen.js';
 import FirstStage from './states/firstStage.js';
 import WinScreen from './states/winScreen.js';
-import Runtime from './runtime.js';
 
 
 (function main() {
   window.onkeydown = function(event) {
-    
+    if (event.keyCode != 123 && event.keyCode != 116) event.preventDefault();
     Variables.keyMap[event.keyCode] = (event.type == 'keydown');
   };
 
   window.onkeyup = function(event) {
-    
+    event.preventDefault();
     Variables.keyMap[event.keyCode] = (event.type == 'keydown');
   };
 
@@ -28,8 +27,6 @@ import Runtime from './runtime.js';
     }
   };
   Variables.canvasManager.setup();
-
-  Variables.pauseScreen.load();
 
   Variables.stateStack.push(new WinScreen());
   Variables.stateStack.push(new FirstStage());
