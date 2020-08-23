@@ -12,7 +12,6 @@ export default function Runtime() {
   var me = this;
 
   me.gameLoop = function() {
-    me.__proto__ = Window
     Variables.frameClock.update();
     Variables.scheduler.update();
 
@@ -41,6 +40,7 @@ export default function Runtime() {
         return;
       }
     }
+
     window.requestAnimationFrame(me.gameLoop);
   };
 
