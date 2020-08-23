@@ -1,41 +1,77 @@
-"use strict";
+'use strict';
+import Variables from './sharedVariables.js';
+import Constants from './sharedConstants.js';
+import SplashScreen from './states/splashScreen.js';
+import FirstStage from './states/firstStage.js';
 
-BOXED_GAME.gameLoop = (function(game) {
-	var GameState = game.gameStates.GameState;
-	var stack = game.variables.stateStack;
-	var pauseState = game.gameStates.pauseState;
 
-	function updateTimeStep() {
-		game.variables.now = performance.now();
-		game.variables.dt = game.variables.now - (game.variables.lastUpdate || game.variables.now);
-		game.variables.lastUpdate = game.variables.now;
-	}
+(function main() {
+  window.onkeydown = function(event) {
+    Variables.keyMap[event.keyCode] = (event.type == 'keydown');
+  };
 
-	game.variables.getCurrentGameState().load();
-	// "Game loop" this is where the continous function goes 
-	function tick() {
+  window.onkeyup = function(event) {
+    Variables.keyMap[event.keyCode] = (event.type == 'keydown');
+  };
 
-		updateTimeStep();
-		game.constants.CONTEXT2D.clearRect(0, 0, game.constants.CANVAS_WIDTH, game.constants.CANVAS_HEIGHT);
-		var currentState = game.variables.getCurrentGameState();
+  window.onblur = function() {
+    /*
+    var game = BOXED_GAME;
+    var pauseScreen = game.gameStates.pauseScreen;
+    var currentState = Variables.getCurrentGameState();
 
-		currentState.control();
-		currentState.update();
-		currentState.draw();
-		if ( !currentState.isPlaying ) {
-			game.constants.CONTEXT2D.clearRect(0, 0, game.constants.CANVAS_WIDTH, game.constants.CANVAS_HEIGHT);
+    if (!Variables.isPaused &&
+        Constants.STATE_TYPES.get('action') === currentState.type) {
+      pauseScreen.load();
+      Variables.isPaused = true;
+      Variables.stateStack.push(pauseScreen);
+    }
+    */
+  };
 
-			if ( game.variables.stateStack.length > 0 ) {
-				game.variables.stateStack.pop();
-				currentState = game.variables.getCurrentGameState();
-				currentState.load();
-			} else {
-				return;
-			}
-		}
-		requestAniFrame(tick);
-	}
-	requestAniFrame(tick);
+  Variables.stateStack.push(new FirstStage());
+  Variables.stateStack.push(new SplashScreen());
 
-}(BOXED_GAME));
+  var requestAniFrame = window.requestAnimationFrame ||
+      window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame ||
+      window.oRequestAnimationFrame ||
+      window.msRequestAnimationFrame || function(callback) {
+        window.setTimeout(callback, 1000 / Constants.FPS_LIMIT);
+      };
 
+  function updateTimeStep() {
+    Variables.now = window.performance.now();
+    Variables.dt = (Variables.now - (Variables.lastUpdate || Variables.now));
+    Variables.lastUpdate = Variables.now;
+  }
+
+  Variables.stateStack.getCurrentGameState().load();
+
+  function tick() {
+    updateTimeStep();
+    Variables.scheduler.update();
+    Constants.CONTEXT2D.clearRect(
+        0, 0, Constants.CANVAS_WIDTH, Constants.CANVAS_HEIGHT);
+
+    var currentState = Variables.stateStack.getCurrentGameState();
+
+    currentState.control();
+    currentState.update();
+    currentState.draw();
+
+    if (!currentState.isPlaying) {
+      Constants.CONTEXT2D.clearRect(
+          0, 0, Constants.CANVAS_WIDTH, Constants.CANVAS_HEIGHT);
+
+      if (Variables.stateStack.length > 0) {
+        Variables.stateStack.pop();
+        currentState = Variables.stateStack.getCurrentGameState();
+        currentState.load();
+      } else {
+        return;
+      }
+    }
+    requestAniFrame(tick);
+  }
+  requestAniFrame(tick);
+})();
