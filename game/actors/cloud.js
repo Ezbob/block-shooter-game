@@ -1,7 +1,11 @@
+import Entity from '../dataStructures/entity.js';
+import Constants from '../sharedConstants.js';
+import Variables from '../sharedVariables.js';
+import Utils from '../utils.js';
 
 export default function Cloud(dimension, position) {
   var me = this;
-  me.velocityOffset = utils.randomFloatBetween(0, 0.6);
+  me.velocityOffset = Utils.randomFloatBetween(0, 0.6);
 
   var calculatedDimensions = (function() {
     var w = dimension.width * (me.velocityOffset + 0.6),
@@ -12,9 +16,10 @@ export default function Cloud(dimension, position) {
   })()
 
   me.__proto__ = new Entity(
-      consts.ENTITY_TYPES.get('cloud'), position, calculatedDimensions);
+      Constants.ENTITY_TYPES.get('cloud'), position, calculatedDimensions);
 
   me.draw = function() {
+    var ctx = Constants.CONTEXT2D;
     ctx.lineWidth = 0.40;
     ctx.strokeStyle = 'black';
     ctx.strokeRect(
@@ -23,19 +28,18 @@ export default function Cloud(dimension, position) {
   };
 
   me.isEnabled = function() {
-    return me.position.getY() <
-        (game.constants.CANVAS_HEIGHT + me.dimension.height);
+    return me.position.getY() < (Constants.CANVAS_HEIGHT + me.dimension.height);
   };
 
   me.update = function() {
     me.position.setY(
         me.position.getY() +
-        (game.constants.TRAVEL_VELOCITY + me.velocityOffset) *
-            game.variables.dt);
+        (Constants.TRAVEL_VELOCITY + me.velocityOffset) * Variables.dt);
   };
 
   me.reset = function() {
-    me.position.setX(utils.randomBetween(1, consts.CANVAS_WIDTH - 1));
+    var ctx = Constants.CONTEXT2D;
+    me.position.setX(Utils.randomBetween(1, Constants.CANVAS_WIDTH - 1));
     me.position.setY(-me.dimension.height);
     ctx.clearRect(
         me.position.getX(), me.position.getY(), me.dimension.width,

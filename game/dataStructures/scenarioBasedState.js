@@ -1,11 +1,11 @@
 import Scenario from './scenario.js';
 import GameState from './gameState.js';
-import SharedData from '../sharedVariables.js';
+import Constants from '../sharedConstants.js';
 
 export default function ScenarioBasedState() {
     var me = this;
 
-    me.__proto__ = new GameState(SharedData.constants.STATE_TYPES.get('action'));
+    me.__proto__ = new GameState(Constants.STATE_TYPES.get('action'));
     me.scenarioStack = [];
 
     me.getCurrentScenario = function() {

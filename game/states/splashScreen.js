@@ -1,5 +1,6 @@
 import Constants from '../sharedConstants.js';
 import Variables from '../sharedVariables.js';
+import GameState from '../dataStructures/gameState.js';
 
 export default function SplashScreen() {
   var me = this;

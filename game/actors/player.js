@@ -1,9 +1,13 @@
-import sharedData from '../sharedData.js';
+import Constants from '../sharedConstants.js';
+import Variables from '../sharedVariables.js';
+import Vector from '../dataStructures/vector.js';
 import utils from '../utils.js';
+import Entity from '../dataStructures/entity.js';
 
-export default function Player() {
-  var consts = sharedData.constants;
+export default function Player(shots) {
+  var consts = Constants;
   var me = this;
+  me.shots = shots;
   me.__proto__ = new Entity(consts.ENTITY_TYPES.get('player'));
 
   me.health = {current: 400, max: 400};
@@ -27,6 +31,7 @@ export default function Player() {
   };
 
   me.draw = function() {
+    var ctx = Constants.CONTEXT2D;
     if (me.isEnabled()) {
       var old = ctx.fillStyle;
       ctx.fillStyle = this.color;
@@ -38,7 +43,7 @@ export default function Player() {
   };
 
   me.move = function(directX, directY) {
-    var dt = sharedData.variables.dt;
+    var dt = Variables.dt;
     var x = me.position.getX(), y = me.position.getY();
     var xVel = me.velocity.getX(), yVel = me.velocity.getY();
 
@@ -70,11 +75,11 @@ export default function Player() {
   };
 
   me.shoot = function() {
-    sharedData.variables.shots.next().fire(me);
+    me.shots.next().fire(me);
   };
 
   me.update = function() {
-    var shots = sharedData.variables.shots;
+    var shots = me.shots;
     for (var i = 0; i < shots.size; ++i) {
       var shot = shots.next();
       if (shot.isEnabled() && utils.intersectingRectangles(me, shot)) {

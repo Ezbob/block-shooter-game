@@ -1,7 +1,10 @@
-import sharedData from './sharedData.js'
+import Entity from '../dataStructures/entity.js';
+import Constants from '../sharedConstants.js';
+import Vector from '../dataStructures/vector.js';
+import Variables from '../sharedVariables.js';
 
 export default function Shot() {
-  let consts = sharedData.constants;
+  let consts = Constants;
   var me = this;
   me.__proto__ = new Entity(consts.ENTITY_TYPES.get('shot'));
 
@@ -43,6 +46,7 @@ export default function Shot() {
   };
 
   me.draw = function() {
+    let ctx = Constants.CONTEXT2D;
     var old = ctx.fillStyle
     ctx.fillStyle = me.color;
     var translated = me.position.add(me.translater);
@@ -54,7 +58,7 @@ export default function Shot() {
 
   me.update = function() {
     me.position.addme(new Vector(
-        me.shooter.velocity.getX(), me.velocity * game.variables.dt));
+        me.shooter.velocity.getX(), me.velocity * Variables.dt));
   };
 
   me.reset = function() {

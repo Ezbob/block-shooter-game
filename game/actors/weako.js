@@ -1,14 +1,17 @@
 import Entity from '../dataStructures/entity.js';
-import Entity from '../dataStructures/entity.js';
 import Vector from '../dataStructures/vector.js';
-import SharedData from '../sharedVariables.js';
+import Constants from '../sharedConstants.js';
+import Variables from '../sharedVariables.js';
+import Utils from '../utils.js';
 
 import SinePath from '../dataStructures/sinePath.js';
 
-export default function Weako() {
+export default function Weako(player, shots) {
   var me = this;
+  me.player = player;
+  me.shots = shots;
 
-  let consts = SharedData.constants;
+  let consts = Constants;
 
   me.__proto__ = new Entity(consts.ENTITY_TYPES.get('enemy'));
   me.dimension = {width: 32, height: 32};
@@ -36,6 +39,7 @@ export default function Weako() {
   };
 
   me.draw = function() {
+    var ctx = Constants.CONTEXT2D;
     var old = ctx.fillStyle;
     ctx.fillStyle = me.color;
     ctx.fillRect(
@@ -43,17 +47,17 @@ export default function Weako() {
         me.dimension.height);
     ctx.fillStyle = old;
 
-    game.debug.drawPath(me.path.points.buffer)
-    game.debug.drawLine(me.position, me.next_waypoint, 'green');
+    //game.debug.drawPath(me.path.points.buffer)
+    //game.debug.drawLine(me.position, me.next_waypoint, 'green');
   };
 
   me.shoot = function() {
-    game.variables.shots.next().fire(me);
+    me.shots.next().fire(me);
   };
 
   me.travel = function() {
     var me = this;
-    var dt = game.variables.dt;
+    var dt = Variables.dt;
 
     var displacement = me.next_waypoint.sub(me.position);
     var distance = displacement.magnitude();
@@ -80,7 +84,7 @@ export default function Weako() {
   };
 
   me.update = function() {
-    var player = game.actors.player;
+    var player = me.player;
     var x = me.position.getX();
 
     me.travel();
@@ -91,10 +95,10 @@ export default function Weako() {
       me.shoot();
     }
 
-    var shots = game.variables.shots;
+    var shots = me.shots;
     for (var i = 0; i < shots.size; ++i) {
       var shot = shots.next();
-      if (shot.isEnabled() && game.utils.intersectingRectangles(me, shot)) {
+      if (shot.isEnabled() && Utils.intersectingRectangles(me, shot)) {
         me.health.current -= shot.damage;
         shot.reset();
       }

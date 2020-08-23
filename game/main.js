@@ -1,6 +1,9 @@
 'use strict';
 import Variables from './sharedVariables.js';
 import Constants from './sharedConstants.js';
+import SplashScreen from './states/splashScreen.js';
+import FirstStage from './states/firstStage.js';
+
 
 (function main() {
   window.onkeydown = function(event) {
@@ -25,6 +28,9 @@ import Constants from './sharedConstants.js';
     }
     */
   };
+
+  Variables.stateStack.push(new FirstStage());
+  Variables.stateStack.push(new SplashScreen());
 
   var requestAniFrame = window.requestAnimationFrame ||
       window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame ||

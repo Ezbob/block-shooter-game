@@ -1,12 +1,14 @@
 import Cloud from '../actors/cloud.js';
 import HealthBar from '../actors/healthBar.js';
 import Player from '../actors/player.js';
+import Shot from '../actors/shot.js';
 import Weako from '../actors/weako.js';
 import CircularBuffer from '../dataStructures/circularBuffer.js';
 import Scenario from '../dataStructures/scenario.js';
 import ScenarioBasedState from '../dataStructures/scenarioBasedState.js';
 import Vector from '../dataStructures/vector.js';
 import Constants from '../sharedConstants.js';
+import Variables from '../sharedVariables.js';
 import Utils from '../utils.js';
 
 function CloudCollection(maxClouds) {
@@ -86,8 +88,8 @@ export default function FirstStage() {
   me.__proto__ = new ScenarioBasedState();
   me.clouds = new CloudCollection(Constants.NUMBER_OF_CLOUDS);
   me.shots = new ShotCollection(Constants.MAX_SHOTS);
-  me.player = new Player();
-  me.healthBar = new HealthBar();
+  me.player = new Player(me.shots);
+  me.healthBar = new HealthBar(me.player);
 
   me.updateEnemies = function() {
     var scenario = me.getCurrentScenario();
@@ -118,11 +120,11 @@ export default function FirstStage() {
     me.shots.load();
 
     var secondEncounter = new Scenario();
-    secondEncounter.addEnemy(new Weako());
+    secondEncounter.addEnemy(new Weako(me.player, me.shots));
     me.scenarioStack.push(secondEncounter);
 
     var firstEncounter = new Scenario();
-    firstEncounter.addEnemy(new Weako());
+    firstEncounter.addEnemy(new Weako(me.player, me.shots));
     me.scenarioStack.push(firstEncounter);
     me.getCurrentScenario().start();
   };
@@ -137,13 +139,13 @@ export default function FirstStage() {
     var currentScenario = me.getCurrentScenario();
     currentScenario.update();
 
-    if (!currentScenario.isPlaying() && firstStage.scenarioStack.length > 0) {
-      firstStage.scenarioStack.pop();
-      firstStage.getCurrentScenario().start();
+    if (!currentScenario.isPlaying() && me.scenarioStack.length > 0) {
+      me.scenarioStack.pop();
+      me.getCurrentScenario().start();
     }
 
-    if (firstStage.scenarioStack.length === 0) {
-      firstStage.isPlaying = false;
+    if (me.scenarioStack.length === 0) {
+      me.stop();
     }
   };
 

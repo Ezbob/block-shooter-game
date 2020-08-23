@@ -1,7 +1,9 @@
-import sharedData from '../sharedData.js';
+import Constants from '../sharedConstants.js';
+import Vector from '../dataStructures/vector.js';
+import Entity from '../dataStructures/entity.js';
 
 export default function HealthBar(player) {
-  var consts = sharedData.constants;
+  var consts = Constants;
   var me = this;
   me.__proto__ = new Entity(consts.ENTITY_TYPES.get('uiProp'));
 
@@ -36,6 +38,7 @@ export default function HealthBar(player) {
   };
 
   me.draw = function() {
+    var ctx = Constants.CONTEXT2D;
     var startPosition = me.position.getX() + 3;
 
     function getColor(colors, numberOfBeads, maxBeads) {

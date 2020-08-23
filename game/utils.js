@@ -1,6 +1,6 @@
 'use strict';
 
-export default utils = {
+let utils = {
   randomBetween: function(low, max) {
     return low + Math.floor((Math.random() * max));
   },
@@ -38,6 +38,8 @@ export default utils = {
     var strings = Array.prototype.map.call(arguments, function(obj) {
       return '' + obj;
     });
-    console.log.apply(console, strings);
+    console.log(console, strings);
   }
 };
+
+export default utils;

@@ -1,3 +1,5 @@
+import Vector from '../dataStructures/vector.js';
+
 export default function Entity(type, position, dimension, velocity) {
   var me = this;
   var x;

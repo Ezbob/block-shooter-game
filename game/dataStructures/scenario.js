@@ -1,9 +1,9 @@
-import sharedData from '../sharedVariables.js';
+import Constants from '../sharedConstants.js';
 
 export default function Scenario() {
   // default Prototype
   var me = this;
-  me.type = sharedData.constants.SCENARIO_TYPES.get('destroyall');
+  me.type = Constants.SCENARIO_TYPES.get('destroyall');
   me.currentEnemies = [];
   me.isStarted = false;
 
