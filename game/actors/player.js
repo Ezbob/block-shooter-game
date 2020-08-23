@@ -7,12 +7,14 @@ import Entity from '../dataStructures/entity.js';
 export default function Player(shots) {
   var consts = Constants;
   var me = this;
+
+  me.BASE_VELOCITY = {x: 2, y: 2};
   me.shots = shots;
   me.__proto__ = new Entity(consts.ENTITY_TYPES.get('player'));
 
   me.health = {current: 400, max: 400};
   me.color = 'rgb(0,8,255)';
-  me.velocity = new Vector(consts.BASE_VELOCITY.x, consts.BASE_VELOCITY.y);
+  me.velocity = new Vector(me.BASE_VELOCITY.x, me.BASE_VELOCITY.y);
   me.acceleration = new Vector(0.5, 0.5);
   me.velocityLimit = 0.55;
   me.dimension = {width: 32, height: 32};

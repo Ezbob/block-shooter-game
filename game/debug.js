@@ -1,6 +1,6 @@
 import SharedData from './sharedVariables';
 
-export default debug = {
+let debug = {
   drawLine: function(start, end, color) {
     let ctx = SharedData.constants.CONTEXT2D;
     if (SharedData.constants.DEBUG_ON) {
@@ -32,3 +32,5 @@ export default debug = {
     }
   }
 };
+
+export default debug;

@@ -85,9 +85,11 @@ function ShotCollection(maxShots) {
 
 export default function FirstStage() {
   var me = this;
+  me.MAX_SHOTS = 300;
+  me.NUMBER_OF_CLOUDS = 30;
   me.__proto__ = new ScenarioBasedState();
-  me.clouds = new CloudCollection(Constants.NUMBER_OF_CLOUDS);
-  me.shots = new ShotCollection(Constants.MAX_SHOTS);
+  me.clouds = new CloudCollection(me.NUMBER_OF_CLOUDS);
+  me.shots = new ShotCollection(me.MAX_SHOTS);
   me.player = new Player(me.shots);
   me.healthBar = new HealthBar(me.player);
 
@@ -184,28 +186,29 @@ export default function FirstStage() {
     }
 
     if (player.isEnabled()) {
+      var direction = Constants.REVERSED_INPUT ? -1 : 1;
       if (keyMap[keyCodes.space]) {
         player.shoot();
       }
       if (keyMap[keyCodes.right]) {
-        player.move(Constants.DIRECTION, 0);
+        player.move(direction, 0);
       }
       if (keyMap[keyCodes.left]) {
-        player.move(-Constants.DIRECTION, 0);
+        player.move(-direction, 0);
       }
       if (keyMap[keyCodes.up]) {
-        player.move(0, -Constants.DIRECTION);
+        player.move(0, -direction);
       }
       if (keyMap[keyCodes.down]) {
-        player.move(0, Constants.DIRECTION);
+        player.move(0, direction);
       }
       if (!(keyMap[keyCodes.right] || keyMap[keyCodes.left])) {
         player.velocity.setX(
-            Math.min(Constants.BASE_VELOCITY.x, player.velocity.getX()));
+            Math.min(player.BASE_VELOCITY.x, player.velocity.getX()));
       }
       if (!(keyMap[keyCodes.up] || keyMap[keyCodes.down])) {
         player.velocity.setY(
-            Math.min(Constants.BASE_VELOCITY.y, player.velocity.getY()));
+            Math.min(player.BASE_VELOCITY.y, player.velocity.getY()));
       }
     }
   };

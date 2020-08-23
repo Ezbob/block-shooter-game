@@ -4,6 +4,7 @@ import Constants from './sharedConstants.js';
 import SplashScreen from './states/splashScreen.js';
 import FirstStage from './states/firstStage.js';
 import WinScreen from './states/winScreen.js';
+import Runtime from './runtime.js';
 
 
 (function main() {
@@ -31,40 +32,6 @@ import WinScreen from './states/winScreen.js';
   Variables.stateStack.push(new FirstStage());
   Variables.stateStack.push(new SplashScreen());
 
-  var requestAniFrame = window.requestAnimationFrame ||
-      window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame ||
-      window.oRequestAnimationFrame ||
-      window.msRequestAnimationFrame || function(callback) {
-        window.setTimeout(callback, 1000 / Constants.FPS_LIMIT);
-      };
-
-  Variables.stateStack.getCurrentGameState().load();
-
-  function tick() {
-    Variables.frameClock.update();
-    Variables.scheduler.update();
-    Constants.CONTEXT2D.clearRect(
-        0, 0, Constants.CANVAS_WIDTH, Constants.CANVAS_HEIGHT);
-
-    var currentState = Variables.stateStack.getCurrentGameState();
-
-    currentState.control();
-    currentState.update();
-    currentState.draw();
-
-    if (!currentState.isPlaying) {
-      Constants.CONTEXT2D.clearRect(
-          0, 0, Constants.CANVAS_WIDTH, Constants.CANVAS_HEIGHT);
-
-      if (Variables.stateStack.length > 0) {
-        Variables.stateStack.pop();
-        currentState = Variables.stateStack.getCurrentGameState();
-        currentState.load();
-      } else {
-        return;
-      }
-    }
-    requestAniFrame(tick);
-  }
-  requestAniFrame(tick);
+  let runtime = new Runtime();
+  runtime.run();
 })();
