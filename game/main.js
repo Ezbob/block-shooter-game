@@ -16,19 +16,16 @@ import WinScreen from './states/winScreen.js';
   };
 
   window.onblur = function() {
-    /*
-    var game = BOXED_GAME;
-    var pauseScreen = game.gameStates.pauseScreen;
-    var currentState = Variables.getCurrentGameState();
+    let currentState = Variables.stateStack.getCurrentGameState();
 
     if (!Variables.isPaused &&
         Constants.STATE_TYPES.get('action') === currentState.type) {
-      pauseScreen.load();
+      Variables.pauseScreen.load();
       Variables.isPaused = true;
-      Variables.stateStack.push(pauseScreen);
+      Variables.stateStack.push(Variables.pauseScreen);
     }
-    */
   };
+
   Variables.stateStack.push(new WinScreen());
   Variables.stateStack.push(new FirstStage());
   Variables.stateStack.push(new SplashScreen());

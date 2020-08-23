@@ -127,6 +127,7 @@ export default function FirstStage() {
     firstEncounter.addEnemy(new Weako(me.player, me.shots));
     me.scenarioStack.push(firstEncounter);
     me.getCurrentScenario().start();
+    me.isLoaded = true;
   };
 
   me.update = function() {

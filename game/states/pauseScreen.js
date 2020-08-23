@@ -37,6 +37,7 @@ export default function PauseScreen() {
   me.load = function() {
     this.resources.cursor.pointingAt =
         this.resources.cursor.choices.get('resume');
+    me.isLoaded = true;
   };
 
   me.draw = function() {
