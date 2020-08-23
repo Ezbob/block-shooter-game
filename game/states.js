@@ -1,93 +1,7 @@
 "use strict";
 
-BOXED_GAME.scenario = (function(game) {
-	// scenarios are thought as a substate of gamestates
-	var consts = game.constants;
-
-	function Scenario() {
-		// default Prototype
-		var me = this;
-		me.type = consts.SCENARIO_TYPES.get('destroyall');
-		me.currentEnemies = [];
-		me.isStarted = false;
-
-		me.addEnemy = function(enemy) {
-			me.currentEnemies.push(enemy);
-		}
-
-		me.load = function() {}
-
-		me.isPlaying = function() {
-			return me.currentEnemies.length > 0 && me.isStarted;
-		}
-
-		me.update = function() {
-			for ( var i = me.currentEnemies.length - 1; i >= 0; --i ) {
-				if ( !me.currentEnemies[i].isEnabled() ) {
-					me.currentEnemies.splice(i, 1);
-				}
-			}
-		}
-
-		me.start = function() {
-			me.isStarted = true;
-		}
-
-		me.stop = function() {
-			me.isStarted = false;
-		}
-	}
-
-	return {
-		Scenario: Scenario
-	};
-})(BOXED_GAME);
-
 
 BOXED_GAME.gameStates = (function(game) {
-	
-	function GameState(type) {
-		var me = this;
-
-		// main boolean that determines the activation state of this game state
-		me.isPlaying =  true;
-
-		me.type = type || game.constants.STATE_TYPES.get('action');
-
-		// single time loading procedure
-		me.load = function() {}
-
-		// per loop update function; calculate positions for the elements of the frame / collision detection
-		me.update = function() {} 
-
-		// per loop drawing function; do the actual drawing of the frame
-		me.draw = function() {}
-
-		// per loop control checker; define the control scheme for this state
-		me.control = function() {}
-
-		// convience function for stopping the GameState. This will trigger a pop of the gamestate so that 
-		// the next game state will begin
-		me.stop = function() {
-			me.isPlaying = false;
-		}
-		// opposite functionality of the stop function, but calling this does not reseat the state on the gamestate stack
-		me.start = function() {
-			me.isPlaying = true;
-		}
-	}
-
-	function ScenarioBasedState() {
-		var me = this;
-		var Scenario = game.scenario.Scenario;
-
-		me.__proto__ = new GameState(game.constants.STATE_TYPES.get('action'));
-		me.scenarioStack = [];
-
-		me.getCurrentScenario = function() {
-			return me.scenarioStack.length > 0 ?  me.scenarioStack[me.scenarioStack.length - 1] : new Scenario()
-		};
-	}
 
 	var firstStage = new ScenarioBasedState()
 
@@ -347,9 +261,10 @@ BOXED_GAME.gameStates = (function(game) {
 		}
 	}
 
-  game.variables.stateStack.push(winScreen);
+	game.variables.stateStack.push(winScreen);
 	game.variables.stateStack.push(firstStage);
 	game.variables.stateStack.push(splashScreen);
+
 	game.variables.getCurrentGameState = function() {
 		// if stateStack is empty then we get a generic gamestate that has the isPlaying flag set to false
 		// so this gamestate automatically stops the stack machinery
@@ -361,7 +276,7 @@ BOXED_GAME.gameStates = (function(game) {
 		splashScreen: splashScreen,
 		pauseScreen: pauseScreen,
 		GameState: GameState,
-        winScreen: winScreen
+		winScreen: winScreen
 	}
 })(BOXED_GAME);
 

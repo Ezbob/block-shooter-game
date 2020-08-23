@@ -1,7 +1,7 @@
 import Entity from '../dataStructures/entity.js';
 import Entity from '../dataStructures/entity.js';
 import Vector from '../dataStructures/vector.js';
-import SharedData from '../sharedData.js';
+import SharedData from '../sharedVariables.js';
 
 import SinePath from '../dataStructures/sinePath.js';
 

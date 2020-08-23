@@ -1,7 +1,7 @@
 const path = require('path')
 
 module.exports = {
-    mode: "production",
+    mode: "development",
 
     entry: "./game/main.js",
 
@@ -10,5 +10,8 @@ module.exports = {
         filename: 'bundle.js'
     },
 
-    devtool: "source-map"
+    devtool: 'inline-source-map',
+    devServer: {
+        contentBase: './dist'
+    }
 }

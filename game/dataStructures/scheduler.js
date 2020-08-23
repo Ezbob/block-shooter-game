@@ -1,3 +1,5 @@
+import ReversibleEnum from './reversibleEnum.js';
+
 export default function Scheduler() {
   var me = this;
 

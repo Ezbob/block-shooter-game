@@ -1,4 +1,5 @@
-import sharedData from '../sharedData.js'
+import Variables from '../sharedVariables.js'
+import Constants from '../sharedConstants.js'
 
 export default function GameState(type) {
   var me = this;
@@ -6,7 +7,7 @@ export default function GameState(type) {
   // main boolean that determines the activation state of this game state
   me.isPlaying = true;
 
-  me.type = type || sharedData.constants.STATE_TYPES.get('action');
+  me.type = type || Constants.STATE_TYPES.get('action');
 
   // single time loading procedure
   me.load = function() {};

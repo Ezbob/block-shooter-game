@@ -1,16 +1,18 @@
 'use strict';
-import sharedData from './sharedData.js';
+import Variables from './sharedVariables.js';
+import Constants from './sharedConstants.js';
 
 (function main() {
   window.onkeydown = function(event) {
-    sharedData.variables.keyMap[event.keyCode] = event.type == 'keydown';
+    Variables.keyMap[event.keyCode] = (event.type == 'keydown');
   };
 
   window.onkeyup = function(event) {
-    sharedData.variables.keyMap[event.keyCode] = event.type == 'keydown';
+    Variables.keyMap[event.keyCode] = (event.type == 'keydown');
   };
 
   window.onblur = function() {
+    /*
     var game = BOXED_GAME;
     var pauseScreen = game.gameStates.pauseScreen;
     var currentState = sharedData.variables.getCurrentGameState();
@@ -21,43 +23,42 @@ import sharedData from './sharedData.js';
       sharedData.variables.isPaused = true;
       sharedData.variables.stateStack.push(pauseScreen);
     }
+    */
   };
 
   var requestAniFrame = window.requestAnimationFrame ||
       window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame ||
       window.oRequestAnimationFrame ||
       window.msRequestAnimationFrame || function(callback) {
-        window.setTimeout(callback, 1000 / sharedData.constants.FPS_LIMIT);
+        window.setTimeout(callback, 1000 / Constants.FPS_LIMIT);
       };
 
   function updateTimeStep() {
-    sharedData.variables.now = window.performance.now();
-    sharedData.variables.dt =
-        game.variables.now - (game.variables.lastUpdate || game.variables.now);
-    sharedData.variables.lastUpdate = game.variables.now;
+    Variables.now = window.performance.now();
+    Variables.dt = (Variables.now - (Variables.lastUpdate || Variables.now));
+    Variables.lastUpdate = Variables.now;
   }
 
-  sharedData.variables.getCurrentGameState().load();
+  Variables.stateStack.getCurrentGameState().load();
 
   function tick() {
     updateTimeStep();
-    sharedData.constants.CONTEXT2D.clearRect(
-        0, 0, sharedData.constants.CANVAS_WIDTH,
-        sharedData.constants.CANVAS_HEIGHT);
-    var currentState = sharedData.variables.getCurrentGameState();
+    Constants.CONTEXT2D.clearRect(
+        0, 0, Constants.CANVAS_WIDTH, Constants.CANVAS_HEIGHT);
+
+    var currentState = Variables.stateStack.getCurrentGameState();
 
     currentState.control();
     currentState.update();
     currentState.draw();
 
     if (!currentState.isPlaying) {
-      sharedData.constants.CONTEXT2D.clearRect(
-          0, 0, sharedData.constants.CANVAS_WIDTH,
-          sharedData.constants.CANVAS_HEIGHT);
+      Constants.CONTEXT2D.clearRect(
+          0, 0, Constants.CANVAS_WIDTH, Constants.CANVAS_HEIGHT);
 
-      if (sharedData.variables.stateStack.length > 0) {
-        sharedData.variables.stateStack.pop();
-        currentState = sharedData.variables.getCurrentGameState();
+      if (Variables.stateStack.length > 0) {
+        Variables.stateStack.pop();
+        currentState = Variables.stateStack.getCurrentGameState();
         currentState.load();
       } else {
         return;
