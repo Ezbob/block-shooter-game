@@ -1,6 +1,6 @@
+import GameState from '../dataStructures/gameState.js';
 import Constants from '../sharedConstants.js';
 import Variables from '../sharedVariables.js';
-import GameState from '../dataStructures/gameState.js';
 
 export default function SplashScreen() {
   var me = this;
@@ -20,13 +20,18 @@ export default function SplashScreen() {
   };
 
   me.start = function() {
-    me.blinkHandel = setInterval(me.blinkText, 800);
+    if (!me.blinkHandel) me.blinkHandel = setInterval(me.blinkText, 800);
     me.isPlaying = true;
   };
 
   me.stop = function() {
     if (me.blinkHandel) clearInterval(me.blinkHandel);
     me.isPlaying = false;
+  };
+
+  me.load = function() {
+    me.blinkHandel = setInterval(me.blinkText, 800);
+    me.isLoaded = true;
   };
 
   me.draw = function() {

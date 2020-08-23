@@ -5,7 +5,7 @@ import Utils from '../utils.js';
 
 export default function WinScreen() {
   var me = this;
-  me.__proto__ = new GameState(game.constants.STATE_TYPES.get('intro'))
+  me.__proto__ = new GameState(Constants.STATE_TYPES.get('intro'))
   me.resources = {
     gameWinFont: {
       font: 'Helvetica',
@@ -17,23 +17,15 @@ export default function WinScreen() {
   };
 
   me.draw = function() {
+    var resources = this.resources;
     var ctx = Constants.CONTEXT2D;
 
-    ctx.font = '32px ' + me.resources.gameWinFont.font;
-    ctx.fillStyle = me.resources.gameWinFont.color;
+    ctx.font = '32px ' + resources.gameWinFont.font;
+    ctx.fillStyle = resources.gameWinFont.color;
     ctx.textAlign = 'center';
     ctx.fillText(
-        me.resources.gameWinFont.text,
-        me.resources.gameWinFont.position.getX() + Utils.randomBetween(-10, 10),
-        me.resources.gameWinFont.position.getY() + Utils.randomBetween(-10, 10))
-  };
-
-  me.update = function() {
-    var cursor = me.resources.cursor;
-    if (cursor.pointingAt === cursor.choices.get('resume')) {
-      cursor.position = resources.resumeText.position;
-    } else {
-      cursor.position = resources.restartText.position;
-    }
+        resources.gameWinFont.text,
+        resources.gameWinFont.position.getX() + Utils.randomBetween(-10, 10),
+        resources.gameWinFont.position.getY() + Utils.randomBetween(-10, 10))
   };
 };

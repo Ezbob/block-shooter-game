@@ -127,6 +127,7 @@ export default function FirstStage() {
     firstEncounter.addEnemy(new Weako(me.player, me.shots));
     me.scenarioStack.push(firstEncounter);
     me.getCurrentScenario().start();
+    me.isLoaded = true;
   };
 
   me.update = function() {
@@ -173,17 +174,14 @@ export default function FirstStage() {
     var player = me.player;
     var keyMap = Variables.keyMap;
 
-    /*
     if (keyMap[keyCodes.escape]) {
-      var pauseScreen = game.gameStates.pauseScreen;
+      var pauseScreen = Variables.pauseScreen;
 
-      if (!game.variables.isPaused) {
-        pauseScreen.load();
-        game.variables.isPaused = true;
-        game.variables.stateStack.push(pauseScreen);
+      if (!Variables.isPaused) {
+        Variables.isPaused = true;
+        Variables.stateStack.push(pauseScreen);
       }
     }
-    */
 
     if (player.isEnabled()) {
       if (keyMap[keyCodes.space]) {

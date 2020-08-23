@@ -7,10 +7,15 @@ export default function GameState(type) {
   // main boolean that determines the activation state of this game state
   me.isPlaying = true;
 
+  // triggered when loading
+  me.isLoaded = false;
+
   me.type = type || Constants.STATE_TYPES.get('action');
 
   // single time loading procedure
-  me.load = function() {};
+  me.load = function() {
+    me.isLoaded = true;
+  };
 
   // per loop update function; calculate positions for the elements of the frame
   // / collision detection
@@ -22,7 +27,7 @@ export default function GameState(type) {
   // per loop control checker; define the control scheme for this state
   me.control = function() {};
 
-  // convience function for stopping the GameState. This will trigger a pop of
+  // convenience function for stopping the GameState. This will trigger a pop of
   // the gamestate so that the next game state will begin
   me.stop = function() {
     me.isPlaying = false;

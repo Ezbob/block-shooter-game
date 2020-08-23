@@ -55,9 +55,8 @@ export default function Weako(player, shots) {
     me.shots.next().fire(me);
   };
 
-  me.travel = function() {
+  me.travel = function(dt) {
     var me = this;
-    var dt = Variables.dt;
 
     var displacement = me.next_waypoint.sub(me.position);
     var distance = displacement.magnitude();
@@ -84,10 +83,11 @@ export default function Weako(player, shots) {
   };
 
   me.update = function() {
+    var dt = Variables.frameClock.dt
     var player = me.player;
     var x = me.position.getX();
 
-    me.travel();
+    me.travel(dt);
 
     if (x >= player.position.getX() - 10 &&
         x <= (player.position.getX() + player.dimension.width) + 10 &&

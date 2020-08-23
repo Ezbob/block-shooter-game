@@ -3,6 +3,7 @@ import Variables from './sharedVariables.js';
 import Constants from './sharedConstants.js';
 import SplashScreen from './states/splashScreen.js';
 import FirstStage from './states/firstStage.js';
+import WinScreen from './states/winScreen.js';
 
 
 (function main() {
@@ -15,20 +16,18 @@ import FirstStage from './states/firstStage.js';
   };
 
   window.onblur = function() {
-    /*
-    var game = BOXED_GAME;
-    var pauseScreen = game.gameStates.pauseScreen;
-    var currentState = Variables.getCurrentGameState();
+    let currentState = Variables.stateStack.getCurrentGameState();
 
     if (!Variables.isPaused &&
         Constants.STATE_TYPES.get('action') === currentState.type) {
-      pauseScreen.load();
       Variables.isPaused = true;
-      Variables.stateStack.push(pauseScreen);
+      Variables.stateStack.push(Variables.pauseScreen);
     }
-    */
   };
 
+  Variables.pauseScreen.load();
+
+  Variables.stateStack.push(new WinScreen());
   Variables.stateStack.push(new FirstStage());
   Variables.stateStack.push(new SplashScreen());
 
@@ -39,16 +38,10 @@ import FirstStage from './states/firstStage.js';
         window.setTimeout(callback, 1000 / Constants.FPS_LIMIT);
       };
 
-  function updateTimeStep() {
-    Variables.now = window.performance.now();
-    Variables.dt = (Variables.now - (Variables.lastUpdate || Variables.now));
-    Variables.lastUpdate = Variables.now;
-  }
-
   Variables.stateStack.getCurrentGameState().load();
 
   function tick() {
-    updateTimeStep();
+    Variables.frameClock.update();
     Variables.scheduler.update();
     Constants.CONTEXT2D.clearRect(
         0, 0, Constants.CANVAS_WIDTH, Constants.CANVAS_HEIGHT);
