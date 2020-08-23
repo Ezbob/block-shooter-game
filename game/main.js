@@ -43,6 +43,7 @@ import Constants from './sharedConstants.js';
 
   function tick() {
     updateTimeStep();
+    Variables.scheduler.update();
     Constants.CONTEXT2D.clearRect(
         0, 0, Constants.CANVAS_WIDTH, Constants.CANVAS_HEIGHT);
 
