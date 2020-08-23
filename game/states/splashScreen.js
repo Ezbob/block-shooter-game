@@ -54,10 +54,7 @@ export default function SplashScreen() {
   };
 
   me.control = function() {
-    var keyMap = Variables.keyMap;
-    var keyCodes = Constants.KEYS;
-
-    if (keyMap[keyCodes.enter]) {
+    if (Variables.keyboardInput.isKeyPressed('enter')) {
       me.stop();
     }
   };

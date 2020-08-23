@@ -5,18 +5,7 @@ import SplashScreen from './states/splashScreen.js';
 import FirstStage from './states/firstStage.js';
 import WinScreen from './states/winScreen.js';
 
-
 (function main() {
-  window.onkeydown = function(event) {
-    event.preventDefault();
-    Variables.keyMap[event.keyCode] = (event.type == 'keydown');
-  };
-
-  window.onkeyup = function(event) {
-    event.preventDefault();
-    Variables.keyMap[event.keyCode] = (event.type == 'keydown');
-  };
-
   window.onblur = function() {
     let currentState = Variables.stateStack.getCurrentGameState();
 
@@ -26,6 +15,7 @@ import WinScreen from './states/winScreen.js';
       Variables.stateStack.push(Variables.pauseScreen);
     }
   };
+  Variables.keyboardInput.setup();
   Variables.canvasManager.setup();
 
   Variables.stateStack.push(new WinScreen());

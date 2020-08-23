@@ -172,11 +172,10 @@ export default function FirstStage() {
   };
 
   me.control = function() {
-    var keyCodes = Constants.KEYS;
     var player = me.player;
-    var keyMap = Variables.keyMap;
+    let keyboardInput = Variables.keyboardInput;
 
-    if (keyMap[keyCodes.escape]) {
+    if ( keyboardInput.isKeyPressed('escape') ) {
       var pauseScreen = Variables.pauseScreen;
 
       if (!Variables.isPaused) {
@@ -187,26 +186,26 @@ export default function FirstStage() {
 
     if (player.isEnabled()) {
       var direction = Constants.REVERSED_INPUT ? -1 : 1;
-      if (keyMap[keyCodes.space]) {
+      if ( keyboardInput.isKeyPressed('space') ) {
         player.shoot();
       }
-      if (keyMap[keyCodes.right]) {
+      if ( keyboardInput.isKeyPressed('right') ) {
         player.move(direction, 0);
       }
-      if (keyMap[keyCodes.left]) {
+      if ( keyboardInput.isKeyPressed('left') ) {
         player.move(-direction, 0);
       }
-      if (keyMap[keyCodes.up]) {
+      if ( keyboardInput.isKeyPressed('up') ) {
         player.move(0, -direction);
       }
-      if (keyMap[keyCodes.down]) {
+      if ( keyboardInput.isKeyPressed('down') ) {
         player.move(0, direction);
       }
-      if (!(keyMap[keyCodes.right] || keyMap[keyCodes.left])) {
+      if (!(keyboardInput.isKeyPressed('right') || keyboardInput.isKeyPressed('left'))) {
         player.velocity.setX(
             Math.min(player.BASE_VELOCITY.x, player.velocity.getX()));
       }
-      if (!(keyMap[keyCodes.up] || keyMap[keyCodes.down])) {
+      if (!(keyboardInput.isKeyPressed('up') || keyboardInput.isKeyPressed('down'))) {
         player.velocity.setY(
             Math.min(player.BASE_VELOCITY.y, player.velocity.getY()));
       }

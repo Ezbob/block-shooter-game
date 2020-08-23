@@ -78,12 +78,10 @@ export default function PauseScreen() {
   };
 
   me.control = function() {
-    var keyMap = Variables.keyMap;
-    var keyCodes = Constants.KEYS;
     var resources = me.resources;
     var cursor = resources.cursor
 
-    if (keyMap[keyCodes.enter]) {
+    if (Variables.keyboardInput.isKeyPressed('enter')) {
       if (cursor.pointingAt === cursor.choices.get('resume')) {
         Variables.isPaused = false;
         Variables.stateStack.pop();
@@ -92,11 +90,11 @@ export default function PauseScreen() {
       }
     }
     else {
-      if (keyMap[keyCodes.down] &&
+      if (Variables.keyboardInput.isKeyPressed('down') &&
           cursor.pointingAt === cursor.choices.get('resume')) {
         cursor.pointingAt = cursor.choices.get('restart');
       }
-      if (keyMap[keyCodes.up] &&
+      if (Variables.keyboardInput.isKeyPressed('up') &&
           cursor.pointingAt === cursor.choices.get('restart')) {
         cursor.pointingAt = cursor.choices.get('resume');
       }

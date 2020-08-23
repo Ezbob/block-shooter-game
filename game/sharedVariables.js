@@ -4,6 +4,7 @@ import PauseScreen from './states/pauseScreen.js';
 import FrameClock from './dataStructures/frameClock.js';
 import CanvasManager from './canvasManager.js';
 import Runtime from './runtime.js';
+import KeyboardInput from './keyboardInput.js';
 
 let Variables = {
   canvasManager: new CanvasManager(),
@@ -11,7 +12,7 @@ let Variables = {
   stateStack: new GameStateStack(),
   pauseScreen: new PauseScreen(),
   runtime: new Runtime(),
-  keyMap: [],
+  keyboardInput: new KeyboardInput(),
   isPaused: false,
   scheduler: new Scheduler()
 };
