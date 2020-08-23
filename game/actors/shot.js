@@ -57,8 +57,9 @@ export default function Shot() {
   };
 
   me.update = function() {
+    var dt = Variables.frameClock.dt
     me.position.addme(new Vector(
-        me.shooter.velocity.getX(), me.velocity * Variables.dt));
+        me.shooter.velocity.getX(), me.velocity * dt));
   };
 
   me.reset = function() {

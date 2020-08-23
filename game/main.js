@@ -38,16 +38,10 @@ import WinScreen from './states/winScreen.js';
         window.setTimeout(callback, 1000 / Constants.FPS_LIMIT);
       };
 
-  function updateTimeStep() {
-    Variables.now = window.performance.now();
-    Variables.dt = (Variables.now - (Variables.lastUpdate || Variables.now));
-    Variables.lastUpdate = Variables.now;
-  }
-
   Variables.stateStack.getCurrentGameState().load();
 
   function tick() {
-    updateTimeStep();
+    Variables.frameClock.update();
     Variables.scheduler.update();
     Constants.CONTEXT2D.clearRect(
         0, 0, Constants.CANVAS_WIDTH, Constants.CANVAS_HEIGHT);

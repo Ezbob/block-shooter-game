@@ -32,9 +32,10 @@ export default function Cloud(dimension, position) {
   };
 
   me.update = function() {
+    var dt = Variables.frameClock.dt
     me.position.setY(
         me.position.getY() +
-        (Constants.TRAVEL_VELOCITY + me.velocityOffset) * Variables.dt);
+        (Constants.TRAVEL_VELOCITY + me.velocityOffset) * dt);
   };
 
   me.reset = function() {

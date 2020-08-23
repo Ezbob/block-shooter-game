@@ -1,4 +1,5 @@
 import ReversibleEnum from './reversibleEnum.js';
+import Variables from '../sharedVariables.js';
 
 export default function Scheduler() {
   var me = this;
@@ -33,11 +34,11 @@ export default function Scheduler() {
    * do the action after milisecs passed
    */
   me.after = function(milisec, action) {
-    var now = game.variables.now;
+    var now = Variables.frameClock.now;
     var event =
         new me.TimedEvent(me.EventType.get('after'), action, now, milisec);
     event.activate = function() {
-      var now = game.variables.now;
+      var now = Variables.frameClock.now;
       if (now - this.startTimestamp >= this.duration && this.enabled) {
         this.action();
         this.enabled = false;
@@ -50,12 +51,12 @@ export default function Scheduler() {
    * do the action until milisecs passed
    */
   me.until = function(milisec, action) {
-    var now = game.variables.now;
+    var now = Variables.frameClock.now;
     var event =
         new me.TimedEvent(me.EventType.get('until'), action, now, milisec);
 
     event.activate = function() {
-      var now = game.variables.now;
+      var now = Variables.frameClock.now;
       this.action();
       if (now - this.startTimestamp >= this.duration && this.enabled) {
         this.enabled = false;

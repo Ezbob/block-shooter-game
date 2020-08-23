@@ -43,7 +43,7 @@ export default function Player(shots) {
   };
 
   me.move = function(directX, directY) {
-    var dt = Variables.dt;
+    var dt = Variables.frameClock.dt;
     var x = me.position.getX(), y = me.position.getY();
     var xVel = me.velocity.getX(), yVel = me.velocity.getY();
 

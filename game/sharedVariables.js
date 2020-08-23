@@ -1,11 +1,10 @@
 import GameStateStack from './dataStructures/gameStateStack.js';
 import Scheduler from './dataStructures/scheduler.js';
 import PauseScreen from './states/pauseScreen.js';
+import FrameClock from './dataStructures/frameClock.js';
 
 let Variables = {
-  lastUpdate: 0,
-  now: 0,
-  dt: 0,
+  frameClock: new FrameClock(),
   stateStack: new GameStateStack(),
   pauseScreen: new PauseScreen(),
   keyMap: [],
