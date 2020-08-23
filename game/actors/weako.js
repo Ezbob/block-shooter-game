@@ -4,6 +4,7 @@ import Vector from '../dataStructures/vector.js';
 import Constants from '../sharedConstants.js';
 import Variables from '../sharedVariables.js';
 import Utils from '../utils.js';
+import Debug from '../debug.js';
 
 export default function Weako(player, shots) {
   var me = this;
@@ -46,8 +47,8 @@ export default function Weako(player, shots) {
         me.dimension.height);
     ctx.fillStyle = old;
 
-    // game.debug.drawPath(me.path.points.buffer)
-    // game.debug.drawLine(me.position, me.next_waypoint, 'green');
+    Debug.drawPath(me.path.points.buffer)
+    Debug.drawLine(me.position, me.next_waypoint, 'green');
   };
 
   me.shoot = function() {

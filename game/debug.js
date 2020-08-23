@@ -1,9 +1,11 @@
-import Variables from './sharedVariables';
+import Variables from './sharedVariables.js';
+import Constants from './sharedConstants.js';
+
 
 let debug = {
   drawLine: function(start, end, color) {
     let ctx = Variables.canvasManager.getCanvasContext();
-    if (SharedData.constants.DEBUG_ON) {
+    if (Constants.DEBUG_ON) {
       ctx.beginPath();
       ctx.strokeStyle = color ? color : 'black';
       ctx.moveTo(start.getX(), start.getY());
@@ -17,7 +19,7 @@ let debug = {
     let ctx = Variables.canvasManager.getCanvasContext();
     let length =
         (typeof points.length === 'function' ? points.length() : points.length);
-    if (SharedData.constants.DEBUG_ON && length >= 2) {
+    if (Constants.DEBUG_ON && length >= 2) {
       ctx.beginPath();
       ctx.strokeStyle = color ? color : 'black';
 
