@@ -20,11 +20,12 @@ import WinScreen from './states/winScreen.js';
 
     if (!Variables.isPaused &&
         Constants.STATE_TYPES.get('action') === currentState.type) {
-      Variables.pauseScreen.load();
       Variables.isPaused = true;
       Variables.stateStack.push(Variables.pauseScreen);
     }
   };
+
+  Variables.pauseScreen.load();
 
   Variables.stateStack.push(new WinScreen());
   Variables.stateStack.push(new FirstStage());
