@@ -7,8 +7,6 @@ let Variables = {
   lastUpdate: 0,
   now: 0,
   dt: 0,
-
-  scenarios: [],
   stateStack: new GameStateStack(),
   keyMap: [],
   isPaused: false,

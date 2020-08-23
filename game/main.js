@@ -15,13 +15,13 @@ import Constants from './sharedConstants.js';
     /*
     var game = BOXED_GAME;
     var pauseScreen = game.gameStates.pauseScreen;
-    var currentState = sharedData.variables.getCurrentGameState();
+    var currentState = Variables.getCurrentGameState();
 
-    if (!sharedData.variables.isPaused &&
-        sharedData.constants.STATE_TYPES.get('action') === currentState.type) {
+    if (!Variables.isPaused &&
+        Constants.STATE_TYPES.get('action') === currentState.type) {
       pauseScreen.load();
-      sharedData.variables.isPaused = true;
-      sharedData.variables.stateStack.push(pauseScreen);
+      Variables.isPaused = true;
+      Variables.stateStack.push(pauseScreen);
     }
     */
   };
