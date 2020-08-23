@@ -3,6 +3,7 @@ import Variables from './sharedVariables.js';
 import Constants from './sharedConstants.js';
 import SplashScreen from './states/splashScreen.js';
 import FirstStage from './states/firstStage.js';
+import WinScreen from './states/winScreen.js';
 
 
 (function main() {
@@ -28,7 +29,7 @@ import FirstStage from './states/firstStage.js';
     }
     */
   };
-
+  Variables.stateStack.push(new WinScreen());
   Variables.stateStack.push(new FirstStage());
   Variables.stateStack.push(new SplashScreen());
 
