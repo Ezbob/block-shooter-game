@@ -1,8 +1,8 @@
-import SharedData from './sharedVariables';
+import Variables from './sharedVariables';
 
 let debug = {
   drawLine: function(start, end, color) {
-    let ctx = SharedData.constants.CONTEXT2D;
+    let ctx = Variables.canvasManager.getCanvasContext();
     if (SharedData.constants.DEBUG_ON) {
       ctx.beginPath();
       ctx.strokeStyle = color ? color : 'black';
@@ -14,7 +14,7 @@ let debug = {
   },
 
   drawPath: function(points, color) {
-    let ctx = SharedData.constants.CONTEXT2D;
+    let ctx = Variables.canvasManager.getCanvasContext();
     let length =
         (typeof points.length === 'function' ? points.length() : points.length);
     if (SharedData.constants.DEBUG_ON && length >= 2) {

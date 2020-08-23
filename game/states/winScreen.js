@@ -1,6 +1,7 @@
 import GameState from '../dataStructures/gameState.js';
 import Vector from '../dataStructures/vector.js';
 import Constants from '../sharedConstants.js';
+import Variables from '../sharedVariables.js';
 import Utils from '../utils.js';
 
 export default function WinScreen() {
@@ -18,7 +19,7 @@ export default function WinScreen() {
 
   me.draw = function() {
     var resources = this.resources;
-    var ctx = Constants.CONTEXT2D;
+    var ctx = Variables.canvasManager.getCanvasContext();
 
     ctx.font = '32px ' + resources.gameWinFont.font;
     ctx.fillStyle = resources.gameWinFont.color;

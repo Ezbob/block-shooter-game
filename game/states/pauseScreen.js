@@ -41,7 +41,7 @@ export default function PauseScreen() {
   };
 
   me.draw = function() {
-    var ctx = Constants.CONTEXT2D;
+    var ctx = Variables.canvasManager.getCanvasContext();
 
     ctx.font = '32px ' + me.resources.font;
     ctx.fillStyle = 'black';

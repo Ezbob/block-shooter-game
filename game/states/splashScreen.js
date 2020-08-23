@@ -35,7 +35,7 @@ export default function SplashScreen() {
   };
 
   me.draw = function() {
-    var ctx = Constants.CONTEXT2D;
+    var ctx = Variables.canvasManager.getCanvasContext();
     var resources = me.resources;
     ctx.font = resources.titleFontSize + ' ' + resources.font;
     ctx.textAlign = 'center';

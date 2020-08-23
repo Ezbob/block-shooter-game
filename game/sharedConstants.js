@@ -2,11 +2,9 @@ import ReversibleEnum from './dataStructures/reversibleEnum.js';
 
 let Constants = {
   CANVAS_HTML_ID: 'playground',
-  CANVAS: null,
-  CONTEXT2D: null,
-  DEBUG_ON: false,
   CANVAS_WIDTH: 1080,
   CANVAS_HEIGHT: 900,
+  DEBUG_ON: false,
   REVERSED_INPUT: false,
   FPS_LIMIT: 140,
   KEYS: {
@@ -28,10 +26,5 @@ let Constants = {
   SCENARIO_TYPES: new ReversibleEnum('destroyall', 'timeout'),
   STATE_TYPES: new ReversibleEnum('pause', 'action', 'intro')
 };
-
-Constants.CANVAS = document.getElementById(Constants.CANVAS_HTML_ID);
-Constants.CONTEXT2D = Constants.CANVAS.getContext('2d');
-Constants.CANVAS.setAttribute('width', Constants.CANVAS_WIDTH);
-Constants.CANVAS.setAttribute('height', Constants.CANVAS_HEIGHT);
 
 export default Constants;

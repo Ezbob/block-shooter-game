@@ -1,10 +1,9 @@
 import Entity from '../dataStructures/entity.js';
+import SinePath from '../dataStructures/sinePath.js';
 import Vector from '../dataStructures/vector.js';
 import Constants from '../sharedConstants.js';
 import Variables from '../sharedVariables.js';
 import Utils from '../utils.js';
-
-import SinePath from '../dataStructures/sinePath.js';
 
 export default function Weako(player, shots) {
   var me = this;
@@ -39,7 +38,7 @@ export default function Weako(player, shots) {
   };
 
   me.draw = function() {
-    var ctx = Constants.CONTEXT2D;
+    var ctx = Variables.canvasManager.getCanvasContext();
     var old = ctx.fillStyle;
     ctx.fillStyle = me.color;
     ctx.fillRect(
@@ -47,8 +46,8 @@ export default function Weako(player, shots) {
         me.dimension.height);
     ctx.fillStyle = old;
 
-    //game.debug.drawPath(me.path.points.buffer)
-    //game.debug.drawLine(me.position, me.next_waypoint, 'green');
+    // game.debug.drawPath(me.path.points.buffer)
+    // game.debug.drawLine(me.position, me.next_waypoint, 'green');
   };
 
   me.shoot = function() {

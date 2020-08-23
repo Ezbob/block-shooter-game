@@ -1,8 +1,8 @@
+import Entity from '../dataStructures/entity.js';
+import Vector from '../dataStructures/vector.js';
 import Constants from '../sharedConstants.js';
 import Variables from '../sharedVariables.js';
-import Vector from '../dataStructures/vector.js';
 import utils from '../utils.js';
-import Entity from '../dataStructures/entity.js';
 
 export default function Player(shots) {
   var consts = Constants;
@@ -33,7 +33,7 @@ export default function Player(shots) {
   };
 
   me.draw = function() {
-    var ctx = Constants.CONTEXT2D;
+    var ctx = Variables.canvasManager.getCanvasContext();
     if (me.isEnabled()) {
       var old = ctx.fillStyle;
       ctx.fillStyle = this.color;
@@ -50,8 +50,8 @@ export default function Player(shots) {
     var xVel = me.velocity.getX(), yVel = me.velocity.getY();
 
     var oldV = me.velocity.getX();
-    me.velocity.setX(Math.min(
-        oldV + me.acceleration.getX() * dt, me.velocityLimit));
+    me.velocity.setX(
+        Math.min(oldV + me.acceleration.getX() * dt, me.velocityLimit));
     var nextPosition = x + directX * dt * (oldV + xVel) / 2;
     var myLeft = nextPosition + me.dimension.width;
     if (nextPosition > 0 && myLeft <= consts.CANVAS_WIDTH) {
@@ -63,8 +63,8 @@ export default function Player(shots) {
     }
 
     var oldV = me.velocity.getY();
-    me.velocity.setY(Math.min(
-        oldV + me.acceleration.getY() * dt, me.velocityLimit));
+    me.velocity.setY(
+        Math.min(oldV + me.acceleration.getY() * dt, me.velocityLimit));
     var nextPosition = y + directY * dt * (oldV + yVel) / 2;
     var myBottom = nextPosition + me.dimension.height;
     if (nextPosition > 0 && myBottom <= consts.CANVAS_HEIGHT) {

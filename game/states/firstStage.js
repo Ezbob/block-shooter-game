@@ -153,7 +153,7 @@ export default function FirstStage() {
   };
 
   me.draw = function() {
-    var ctx = Constants.CONTEXT2D;
+    var ctx = Variables.canvasManager.getCanvasContext();
     me.player.draw();
     me.healthBar.draw();
     me.clouds.draw();

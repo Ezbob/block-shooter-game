@@ -1,13 +1,11 @@
 import Constants from './sharedConstants.js';
 import Variables from './sharedVariables.js';
 
-window.requestAnimationFrame = (function(){
-    return window.requestAnimationFrame ||
-        window.webkitRequestAnimationFrame ||
-        window.mozRequestAnimationFrame ||
-        function(callback){
-            window.setTimeout(callback, 1000 / Constants.FPS_LIMIT);
-        };
+window.requestAnimationFrame = (function() {
+  return window.requestAnimationFrame || window.webkitRequestAnimationFrame ||
+      window.mozRequestAnimationFrame || function(callback) {
+        window.setTimeout(callback, 1000 / Constants.FPS_LIMIT);
+      };
 })();
 
 export default function Runtime() {
@@ -18,13 +16,13 @@ export default function Runtime() {
     Variables.frameClock.update();
     Variables.scheduler.update();
 
-    Constants.CONTEXT2D.clearRect(
+    Variables.canvasManager.getCanvasContext().clearRect(
         0, 0, Constants.CANVAS_WIDTH, Constants.CANVAS_HEIGHT);
 
     var currentState = Variables.stateStack.getCurrentGameState();
 
     if (!currentState.isLoaded) {
-        currentState.load();
+      currentState.load();
     }
 
     currentState.control();
@@ -32,7 +30,7 @@ export default function Runtime() {
     currentState.draw();
 
     if (!currentState.isPlaying) {
-      Constants.CONTEXT2D.clearRect(
+      Variables.canvasManager.getCanvasContext().clearRect(
           0, 0, Constants.CANVAS_WIDTH, Constants.CANVAS_HEIGHT);
 
       if (Variables.stateStack.length > 0) {

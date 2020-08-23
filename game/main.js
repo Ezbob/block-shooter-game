@@ -9,10 +9,12 @@ import Runtime from './runtime.js';
 
 (function main() {
   window.onkeydown = function(event) {
+    
     Variables.keyMap[event.keyCode] = (event.type == 'keydown');
   };
 
   window.onkeyup = function(event) {
+    
     Variables.keyMap[event.keyCode] = (event.type == 'keydown');
   };
 
@@ -25,6 +27,7 @@ import Runtime from './runtime.js';
       Variables.stateStack.push(Variables.pauseScreen);
     }
   };
+  Variables.canvasManager.setup();
 
   Variables.pauseScreen.load();
 
@@ -32,6 +35,5 @@ import Runtime from './runtime.js';
   Variables.stateStack.push(new FirstStage());
   Variables.stateStack.push(new SplashScreen());
 
-  let runtime = new Runtime();
-  runtime.run();
+  Variables.runtime.run();
 })();

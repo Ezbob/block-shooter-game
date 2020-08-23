@@ -1,6 +1,6 @@
 import Entity from '../dataStructures/entity.js';
-import Constants from '../sharedConstants.js';
 import Vector from '../dataStructures/vector.js';
+import Constants from '../sharedConstants.js';
 import Variables from '../sharedVariables.js';
 
 export default function Shot() {
@@ -46,7 +46,7 @@ export default function Shot() {
   };
 
   me.draw = function() {
-    let ctx = Constants.CONTEXT2D;
+    let ctx = Variables.canvasManager.getCanvasContext();
     var old = ctx.fillStyle
     ctx.fillStyle = me.color;
     var translated = me.position.add(me.translater);
@@ -58,8 +58,7 @@ export default function Shot() {
 
   me.update = function() {
     var dt = Variables.frameClock.dt
-    me.position.addme(new Vector(
-        me.shooter.velocity.getX(), me.velocity * dt));
+    me.position.addme(new Vector(me.shooter.velocity.getX(), me.velocity * dt));
   };
 
   me.reset = function() {

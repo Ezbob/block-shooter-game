@@ -20,7 +20,7 @@ export default function Cloud(dimension, position) {
       Constants.ENTITY_TYPES.get('cloud'), position, calculatedDimensions);
 
   me.draw = function() {
-    var ctx = Constants.CONTEXT2D;
+    var ctx = Variables.canvasManager.getCanvasContext();
     ctx.lineWidth = 0.40;
     ctx.strokeStyle = 'black';
     ctx.strokeRect(
@@ -39,7 +39,7 @@ export default function Cloud(dimension, position) {
   };
 
   me.reset = function() {
-    var ctx = Constants.CONTEXT2D;
+    var ctx = Variables.canvasManager.getCanvasContext();
     me.position.setX(Utils.randomBetween(1, Constants.CANVAS_WIDTH - 1));
     me.position.setY(-me.dimension.height);
     ctx.clearRect(
