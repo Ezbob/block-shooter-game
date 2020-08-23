@@ -8,7 +8,7 @@ import WinScreen from './states/winScreen.js';
 
 (function main() {
   window.onkeydown = function(event) {
-    if (event.keyCode != 123 && event.keyCode != 116) event.preventDefault();
+    event.preventDefault();
     Variables.keyMap[event.keyCode] = (event.type == 'keydown');
   };
 
