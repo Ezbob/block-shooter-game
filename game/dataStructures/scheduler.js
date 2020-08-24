@@ -66,6 +66,6 @@ export default function Scheduler() {
   };
 
   me.__proto__.toString = function() {
-    return 'Scheduler(' + game.utils.stringJoin(', ', me.events) + ')';
+    return 'Scheduler(' + me.events.join(', ') + ')';
   };
 };

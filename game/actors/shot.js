@@ -57,7 +57,7 @@ export default class Shot extends Entity {
 
   update() {
     var dt = Variables.frameClock.dt
-    this.position.addme(new Vector(this.shooter.velocity.getX(), this.velocity * dt));
+    this.position.addmut(this.shooter.velocity.getX(), this.velocity * dt);
   };
 
   reset() {

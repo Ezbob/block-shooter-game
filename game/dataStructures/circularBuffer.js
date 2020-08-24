@@ -52,6 +52,6 @@ export default function CircularBuffer(size, FillPrototype) {
   };
 
   me.__proto__.toString = function() {
-    return 'CircularBuffer(' + game.utils.stringJoin(', ', me.buffer) + ')';
+    return 'CircularBuffer(' + me.buffer.join(', ') + ')';
   };
 };
