@@ -1,13 +1,14 @@
 
-export default function FrameClock() {
-    var me = this;
-    me.lastUpdate = 0;
-    me.now = 0;
-    me.dt = 0;
+export default class FrameClock {
+  constructor() {
+    this.lastUpdate = 0;
+    this.now = 0;
+    this.dt = 0;
+  }
 
-    me.update = function() {
-        me.now = window.performance.now();
-        me.dt = (me.now - (me.lastUpdate || me.now));
-        me.lastUpdate = me.now;
-    };
+  update() {
+    this.now = window.performance.now();
+    this.dt = (this.now - (this.lastUpdate || this.now));
+    this.lastUpdate = this.now;
+  };
 };

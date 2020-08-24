@@ -1,41 +1,41 @@
-import Variables from '../sharedVariables.js'
 import Constants from '../sharedConstants.js'
+import Variables from '../sharedVariables.js'
 
-export default function GameState(type) {
-  var me = this;
+export default class GameState {
+  constructor(type) {
+    // main boolean that determines the activation state of this game state
+    this.isPlaying = true;
 
-  // main boolean that determines the activation state of this game state
-  me.isPlaying = true;
+    // triggered when loading
+    this.isLoaded = false;
 
-  // triggered when loading
-  me.isLoaded = false;
-
-  me.type = type || Constants.STATE_TYPES.get('action');
+    this.type = type || Constants.STATE_TYPES.get('action');
+  }
 
   // single time loading procedure
-  me.load = function() {
-    me.isLoaded = true;
+  load() {
+    this.isLoaded = true;
   };
 
   // per loop update function; calculate positions for the elements of the frame
   // / collision detection
-  me.update = function() {};
+  update() {};
 
   // per loop drawing function; do the actual drawing of the frame
-  me.draw = function() {};
+  draw() {};
 
   // per loop control checker; define the control scheme for this state
-  me.control = function() {};
+  control() {};
 
   // convenience function for stopping the GameState. This will trigger a pop of
   // the gamestate so that the next game state will begin
-  me.stop = function() {
-    me.isPlaying = false;
+  stop() {
+    this.isPlaying = false;
   };
 
   // opposite functionality of the stop function, but calling this does not
   // reseat the state on the gamestate stack
-  me.start = function() {
-    me.isPlaying = true;
+  start() {
+    this.isPlaying = true;
   };
 }

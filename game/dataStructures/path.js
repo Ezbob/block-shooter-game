@@ -1,12 +1,14 @@
-export default function Path(startPoint, endPoint) {
-  var me = this;
-  me.end = endPoint;
-  me.start = startPoint;
+export default class Path {
+  constructor(startPoint, endPoint) {
+    this.end = endPoint;
+    this.start = startPoint;
+  }
 
-  me.next = function() {
+  next() {
     return null;
   };
-  me.prev = function() {
+
+  prev() {
     return null;
   };
 }
