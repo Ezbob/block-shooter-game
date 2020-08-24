@@ -1,105 +1,103 @@
 import Entity from '../dataStructures/entity.js';
 import SinePath from '../dataStructures/sinePath.js';
 import Vector from '../dataStructures/vector.js';
+import Debug from '../debug.js';
 import Constants from '../sharedConstants.js';
 import Variables from '../sharedVariables.js';
 import Utils from '../utils.js';
-import Debug from '../debug.js';
 
-export default function Weako(player, shots) {
-  var me = this;
-  me.player = player;
-  me.shots = shots;
+export default class Weako extends Entity {
 
-  let consts = Constants;
+  constructor(player, shots) {
+    super(Constants.ENTITY_TYPES.get('enemy'));
+    this.player = player;
+    this.shots = shots;
+    this.dimension = {width: 32, height: 32};
+    this.position =
+        new Vector(Constants.CANVAS_WIDTH - this.dimension.width, 40);
+    this.color = 'red';
+    this.health = {current: 200, max: 200};
+    this.velocity = new Vector(0.2, 0.1);
+    this.reverse = false;
 
-  me.__proto__ = new Entity(consts.ENTITY_TYPES.get('enemy'));
-  me.dimension = {width: 32, height: 32};
-  me.position = new Vector(consts.CANVAS_WIDTH - me.dimension.width, 40);
-  me.color = 'red';
-  me.health = {current: 200, max: 200};
-  me.velocity = new Vector(0.2, 0.1);
-  me.reverse = false;
+    this.gun = {limit: 5};
 
-  me.gun = {limit: 5};
+    this.path = new SinePath(
+        this.position.add(new Vector(1, 1)), new Vector(2, 40), 30, 20, 4);
+    this.next_waypoint = this.path.next();
+  }
 
-  me.path = new SinePath(
-      me.position.add(new Vector(1, 1)), new Vector(2, 40), 30, 20, 4);
-  me.next_waypoint = me.path.next();
-
-  me.hasReachedNextPoint = function(closeness) {
-    if (me.next_waypoint !== null) {
+  hasReachedNextPoint(closeness) {
+    if (this.next_waypoint !== null) {
       return closeness <= 15;  // using some lower bound on closeness
     }
     return false;
   };
 
-  me.isEnabled = function() {
-    return me.health.current > 0;
+  isEnabled() {
+    return this.health.current > 0;
   };
 
-  me.draw = function() {
+  draw() {
     var ctx = Variables.canvasManager.getCanvasContext();
     var old = ctx.fillStyle;
-    ctx.fillStyle = me.color;
+    ctx.fillStyle = this.color;
     ctx.fillRect(
-        me.position.getX(), me.position.getY(), me.dimension.width,
-        me.dimension.height);
+        this.position.getX(), this.position.getY(), this.dimension.width,
+        this.dimension.height);
     ctx.fillStyle = old;
 
-    Debug.drawPath(me.path.points.buffer)
-    Debug.drawLine(me.position, me.next_waypoint, 'green');
+    Debug.drawPath(this.path.points.buffer)
+    Debug.drawLine(this.position, this.next_waypoint, 'green');
   };
 
-  me.shoot = function() {
-    me.shots.next().fire(me);
+  shoot() {
+    this.shots.next().fire(this);
   };
 
-  me.travel = function(dt) {
-    var me = this;
-
-    var displacement = me.next_waypoint.sub(me.position);
+  travel(dt) {
+    var displacement = this.next_waypoint.sub(this.position);
     var distance = displacement.magnitude();
     var unitDisplacement = displacement.norm();
 
-    me.position.addme(unitDisplacement.mulmembers(me.velocity.mul(dt)));
+    this.position.addme(unitDisplacement.mulmembers(this.velocity.mul(dt)));
 
-    if (me.path.points.next_index === (me.path.points.length() - 1) &&
-        !me.reverse) {
-      me.reverse = true;
+    if (this.path.points.next_index === (this.path.points.length() - 1) &&
+        !this.reverse) {
+      this.reverse = true;
     }
 
-    if (me.path.points.next_index === 0 && me.reverse) {
-      me.reverse = false;
+    if (this.path.points.next_index === 0 && this.reverse) {
+      this.reverse = false;
     }
 
-    if (me.hasReachedNextPoint(distance) && !me.reverse) {
-      me.next_waypoint = me.path.next();
+    if (this.hasReachedNextPoint(distance) && !this.reverse) {
+      this.next_waypoint = this.path.next();
     }
 
-    if (me.hasReachedNextPoint(distance) && me.reverse) {
-      me.next_waypoint = me.path.prev();
+    if (this.hasReachedNextPoint(distance) && this.reverse) {
+      this.next_waypoint = this.path.prev();
     }
   };
 
-  me.update = function() {
+  update() {
     var dt = Variables.frameClock.dt
-    var player = me.player;
-    var x = me.position.getX();
+    var player = this.player;
+    var x = this.position.getX();
 
-    me.travel(dt);
+    this.travel(dt);
 
     if (x >= player.position.getX() - 10 &&
         x <= (player.position.getX() + player.dimension.width) + 10 &&
         player.isEnabled()) {
-      me.shoot();
+      this.shoot();
     }
 
-    var shots = me.shots;
+    var shots = this.shots;
     for (var i = 0; i < shots.size; ++i) {
       var shot = shots.next();
-      if (shot.isEnabled() && Utils.intersectingRectangles(me, shot)) {
-        me.health.current -= shot.damage;
+      if (shot.isEnabled() && Utils.intersectingRectangles(this, shot)) {
+        this.health.current -= shot.damage;
         shot.reset();
       }
     }

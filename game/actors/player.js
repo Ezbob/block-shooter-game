@@ -4,37 +4,33 @@ import Constants from '../sharedConstants.js';
 import Variables from '../sharedVariables.js';
 import utils from '../utils.js';
 
-export default function Player(shots) {
-  var consts = Constants;
-  var me = this;
+export default class Player extends Entity {
 
-  me.BASE_VELOCITY = {x: 2, y: 2};
-  me.shots = shots;
-  me.__proto__ = new Entity(consts.ENTITY_TYPES.get('player'));
+  constructor(shots) {
+    super(Constants.ENTITY_TYPES.get('player'));
 
-  me.health = {current: 400, max: 400};
-  me.color = 'rgb(0,8,255)';
-  me.velocity = new Vector(me.BASE_VELOCITY.x, me.BASE_VELOCITY.y);
-  me.acceleration = new Vector(0.5, 0.5);
-  me.velocityLimit = 0.55;
-  me.dimension = {width: 32, height: 32};
-  me.position = new Vector(
-      consts.CANVAS_WIDTH / 2 - 32,
-      consts.CANVAS_HEIGHT - (consts.CANVAS_HEIGHT / 6));
-  me.gun = (function() {
-    var lim = 50, velocity = 1.22;
-    return {
-      limit: lim, velocity: velocity
-    }
-  })();
+    this.BASE_VELOCITY = {x: 2, y: 2};
+    this.shots = shots;
 
-  me.isEnabled = function() {
-    return me.health.current > 0;
+    this.health = {current: 400, max: 400};
+    this.color = 'rgb(0,8,255)';
+    this.velocity = new Vector(this.BASE_VELOCITY.x, this.BASE_VELOCITY.y);
+    this.acceleration = new Vector(0.5, 0.5);
+    this.velocityLimit = 0.55;
+    this.dimension = {width: 32, height: 32};
+    this.position = new Vector(
+        Constants.CANVAS_WIDTH / 2 - 32,
+        Constants.CANVAS_HEIGHT - (Constants.CANVAS_HEIGHT / 6));
+    this.gun = {limit: 50, velocity: 1.22};
+  }
+
+  isEnabled() {
+    return this.health.current > 0;
   };
 
-  me.draw = function() {
+  draw() {
     var ctx = Variables.canvasManager.getCanvasContext();
-    if (me.isEnabled()) {
+    if (this.isEnabled()) {
       var old = ctx.fillStyle;
       ctx.fillStyle = this.color;
       ctx.fillRect(
@@ -44,48 +40,48 @@ export default function Player(shots) {
     }
   };
 
-  me.move = function(directX, directY) {
+  move(directX, directY) {
     var dt = Variables.frameClock.dt;
-    var x = me.position.getX(), y = me.position.getY();
-    var xVel = me.velocity.getX(), yVel = me.velocity.getY();
+    var x = this.position.getX(), y = this.position.getY();
+    var xVel = this.velocity.getX(), yVel = this.velocity.getY();
 
-    var oldV = me.velocity.getX();
-    me.velocity.setX(
-        Math.min(oldV + me.acceleration.getX() * dt, me.velocityLimit));
+    var oldV = this.velocity.getX();
+    this.velocity.setX(
+        Math.min(oldV + this.acceleration.getX() * dt, this.velocityLimit));
     var nextPosition = x + directX * dt * (oldV + xVel) / 2;
-    var myLeft = nextPosition + me.dimension.width;
-    if (nextPosition > 0 && myLeft <= consts.CANVAS_WIDTH) {
-      me.position.setX(nextPosition);
-    } else if (myLeft > consts.CANVAS_WIDTH) {
-      me.position.setX(consts.CANVAS_WIDTH - me.dimension.width);
+    var myLeft = nextPosition + this.dimension.width;
+    if (nextPosition > 0 && myLeft <= Constants.CANVAS_WIDTH) {
+      this.position.setX(nextPosition);
+    } else if (myLeft > Constants.CANVAS_WIDTH) {
+      this.position.setX(Constants.CANVAS_WIDTH - this.dimension.width);
     } else {
-      me.position.setX(0)
+      this.position.setX(0)
     }
 
-    var oldV = me.velocity.getY();
-    me.velocity.setY(
-        Math.min(oldV + me.acceleration.getY() * dt, me.velocityLimit));
+    var oldV = this.velocity.getY();
+    this.velocity.setY(
+        Math.min(oldV + this.acceleration.getY() * dt, this.velocityLimit));
     var nextPosition = y + directY * dt * (oldV + yVel) / 2;
-    var myBottom = nextPosition + me.dimension.height;
-    if (nextPosition > 0 && myBottom <= consts.CANVAS_HEIGHT) {
-      me.position.setY(nextPosition);
-    } else if (myBottom > consts.CANVAS_HEIGHT) {
-      me.position.setY(consts.CANVAS_HEIGHT - me.dimension.height);
+    var myBottom = nextPosition + this.dimension.height;
+    if (nextPosition > 0 && myBottom <= Constants.CANVAS_HEIGHT) {
+      this.position.setY(nextPosition);
+    } else if (myBottom > Constants.CANVAS_HEIGHT) {
+      this.position.setY(Constants.CANVAS_HEIGHT - this.dimension.height);
     } else {
-      me.position.setY(0);
+      this.position.setY(0);
     }
   };
 
-  me.shoot = function() {
-    me.shots.next().fire(me);
+  shoot() {
+    this.shots.next().fire(this);
   };
 
-  me.update = function() {
-    var shots = me.shots;
+  update() {
+    var shots = this.shots;
     for (var i = 0; i < shots.size; ++i) {
       var shot = shots.next();
-      if (shot.isEnabled() && utils.intersectingRectangles(me, shot)) {
-        me.health.current -= shot.damage;
+      if (shot.isEnabled() && utils.intersectingRectangles(this, shot)) {
+        this.health.current -= shot.damage;
         shot.reset();
       }
     }

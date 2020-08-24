@@ -3,47 +3,45 @@ import Constants from '../sharedConstants.js';
 import Variables from '../sharedVariables.js';
 import Utils from '../utils.js';
 
-export default function Cloud(dimension, position) {
-  var me = this;
-  me.velocityOffset = Utils.randomFloatBetween(0, 0.6);
-  me.TRAVEL_VELOCITY = 0.45;
+export default class Cloud extends Entity {
 
-  var calculatedDimensions = (function() {
-    var w = dimension.width * (me.velocityOffset + 0.6),
-        h = dimension.height * (me.velocityOffset + 0.6);
-    return {
-      width: w, height: h
-    }
-  })()
+  constructor(dimension, position) {
+    let velocityOffset = Utils.randomFloatBetween(0, 0.6);
+    super(Constants.ENTITY_TYPES.get('cloud'), position, {
+      width: dimension.width * (velocityOffset + 0.6),
+      height: dimension.height * (velocityOffset + 0.6)
+    });
+    this.dimension = dimension;
+    this.position = position;
+    this.velocityOffset = velocityOffset;
+    this.TRAVEL_VELOCITY = 0.45;
+  }
 
-  me.__proto__ = new Entity(
-      Constants.ENTITY_TYPES.get('cloud'), position, calculatedDimensions);
-
-  me.draw = function() {
+  draw() {
     var ctx = Variables.canvasManager.getCanvasContext();
     ctx.lineWidth = 0.40;
     ctx.strokeStyle = 'black';
     ctx.strokeRect(
-        me.position.getX(), me.position.getY(), me.dimension.width,
-        me.dimension.height);
-  };
+        this.position.getX(), this.position.getY(), this.dimension.width,
+        this.dimension.height);
+  }
 
-  me.isEnabled = function() {
-    return me.position.getY() < (Constants.CANVAS_HEIGHT + me.dimension.height);
-  };
+  isEnabled() {
+    return this.position.getY() < (Constants.CANVAS_HEIGHT + this.dimension.height);
+  }
 
-  me.update = function() {
+  update() {
     var dt = Variables.frameClock.dt
-    me.position.setY(
-        me.position.getY() + (me.TRAVEL_VELOCITY + me.velocityOffset) * dt);
-  };
+    this.position.setY(
+        this.position.getY() + (this.TRAVEL_VELOCITY + this.velocityOffset) * dt);
+  }
 
-  me.reset = function() {
+  reset() {
     var ctx = Variables.canvasManager.getCanvasContext();
-    me.position.setX(Utils.randomBetween(1, Constants.CANVAS_WIDTH - 1));
-    me.position.setY(-me.dimension.height);
+    this.position.setX(Utils.randomBetween(1, Constants.CANVAS_WIDTH - 1));
+    this.position.setY(-this.dimension.height);
     ctx.clearRect(
-        me.position.getX(), me.position.getY(), me.dimension.width,
-        me.dimension.height)
-  };
+        this.position.getX(), this.position.getY(), this.dimension.width,
+        this.dimension.height)
+  }
 }

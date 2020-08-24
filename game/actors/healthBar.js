@@ -3,44 +3,44 @@ import Vector from '../dataStructures/vector.js';
 import Constants from '../sharedConstants.js';
 import Variables from '../sharedVariables.js';
 
-export default function HealthBar(player) {
-  var consts = Constants;
-  var me = this;
-  me.__proto__ = new Entity(consts.ENTITY_TYPES.get('uiProp'));
+export default class HealthBar extends Entity {
 
-  me.position =
-      new Vector(20, consts.CANVAS_HEIGHT - (consts.CANVAS_HEIGHT >> 4));
-  me.dimension = {width: 150, height: 20};
+  constructor(player) {
+    super(Constants.ENTITY_TYPES.get('uiProp'));
+    this.player = player;
+    this.position = new Vector(
+        20, Constants.CANVAS_HEIGHT - (Constants.CANVAS_HEIGHT >> 4));
+    this.dimension = {width: 150, height: 20};
 
-  me.beads = (function() {
     var maxBeads = 8;
-
-    return {
+    this.beads = {
       max: maxBeads,
       number: Math.ceil(
-          player.health.current / Math.floor(player.health.max / maxBeads)),
+          this.player.health.current /
+          Math.floor(this.player.health.max / maxBeads)),
       dimension: {
-        width: me.dimension.width / maxBeads,
-        height: me.dimension.height - 2
+        width: this.dimension.width / maxBeads,
+        height: this.dimension.height - 2
       }
     };
-  })();
 
-  me.colors = {
-    ok: 'rgb(103, 229, 25)',
-    warning: 'rgb(255, 203, 33)',  //'rgb(239, 228, 9)',
-    critical: 'rgb(219, 6, 6)',
-    border: 'rgb(19, 25, 53)'
+    this.colors = {
+      ok: 'rgb(103, 229, 25)',
+      warning: 'rgb(255, 203, 33)',  //'rgb(239, 228, 9)',
+      critical: 'rgb(219, 6, 6)',
+      border: 'rgb(19, 25, 53)'
+    };
+  }
+
+  update() {
+    this.beads.number = Math.ceil(
+        this.player.health.current /
+        Math.floor(this.player.health.max / this.beads.max))
   };
 
-  me.update = function() {
-    me.beads.number = Math.ceil(
-        player.health.current / Math.floor(player.health.max / me.beads.max))
-  };
-
-  me.draw = function() {
+  draw() {
     var ctx = Variables.canvasManager.getCanvasContext();
-    var startPosition = me.position.getX() + 3;
+    var startPosition = this.position.getX() + 3;
 
     function getColor(colors, numberOfBeads, maxBeads) {
       var mid = Math.floor(maxBeads * 0.5);
@@ -55,26 +55,26 @@ export default function HealthBar(player) {
     }
 
     var oldstroke = ctx.strokeStyle;
-    ctx.strokeStyle = me.colors.border;
+    ctx.strokeStyle = this.colors.border;
     ctx.strokeRect(
-        me.position.getX(), me.position.getY(), me.dimension.width,
-        me.dimension.height);
+        this.position.getX(), this.position.getY(), this.dimension.width,
+        this.dimension.height);
 
     var old = ctx.fillStyle;
     var oldFont = ctx.font;
-    var color = getColor(me.colors, me.beads.number, me.beads.max);
+    var color = getColor(this.colors, this.beads.number, this.beads.max);
     ctx.fillStyle = color;
 
-    for (var i = 1; i <= me.beads.number; ++i) {
+    for (var i = 1; i <= this.beads.number; ++i) {
       ctx.fillRect(
-          startPosition, me.position.getY() + 2, me.beads.dimension.width - 5,
-          me.beads.dimension.height - 2);
-      startPosition += me.beads.dimension.width;
+          startPosition, this.position.getY() + 2,
+          this.beads.dimension.width - 5, this.beads.dimension.height - 2);
+      startPosition += this.beads.dimension.width;
     }
 
     ctx.font = '14px Helvetica';
     ctx.textAlign = 'start';
-    ctx.fillText('power', me.position.getX(), me.position.getY() - 8);
+    ctx.fillText('power', this.position.getX(), this.position.getY() - 8);
 
     ctx.fillStyle = old;
     ctx.strokeStyle = oldstroke;
