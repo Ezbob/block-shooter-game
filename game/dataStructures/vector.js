@@ -1,6 +1,5 @@
 
 export default class Vector extends Array {
-
   constructor(...args) {
     super(...args)
   }
@@ -45,14 +44,14 @@ export default class Vector extends Array {
     return res;
   };
 
-  addme(other) {
+  addMut(other) {
     for (var i = 0; i < this.length; ++i) {
       this[i] = this[i] + other[i];
     }
     return this;
   };
 
-  addmut(...scalars) {
+  addMutScalars(...scalars) {
     for (var i = 0; i < this.length; ++i) {
       this[i] = this[i] + scalars[i];
     }
@@ -67,16 +66,23 @@ export default class Vector extends Array {
     return res;
   };
 
-  subme(other) {
+  subMut(other) {
     for (var i = 0; i < this.length; ++i) {
       this[i] = this[i] - other[i];
     }
     return this;
   };
 
-  rotateme2d90() {
-    this[0] = this[1]
-    this[1] = -this[0]
+  subMutScalars(...scalars) {
+    for (var i = 0; i < this.length; ++i) {
+      this[i] = this[i] - scalars[i];
+    }
+    return this;
+  };
+
+  rotateMut2d90() {
+    this[0] = this[1];
+    this[1] = -this[0];
   };
 
   rotate2d() {
@@ -91,14 +97,14 @@ export default class Vector extends Array {
     return res;
   };
 
-  mulme(scalar) {
+  mulMut(scalar) {
     for (var i = 0; i < this.length; ++i) {
       this[i] = this[i] * scalar;
     }
     return this;
   };
 
-  mulmembers(other) {
+  mulMembers(other) {
     var res = new Vector();
     for (var i = 0; i < this.length; ++i) {
       res[i] = this[i] * other[i];
@@ -142,6 +148,6 @@ export default class Vector extends Array {
   };
 
   toString() {
-    return 'Vector(' + this.join(", ") + ')';
+    return 'Vector(' + this.join(', ') + ')';
   }
 };

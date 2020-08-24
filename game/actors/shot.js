@@ -4,7 +4,6 @@ import Constants from '../sharedConstants.js';
 import Variables from '../sharedVariables.js';
 
 export default class Shot extends Entity {
-
   constructor() {
     super(Constants.ENTITY_TYPES.get('shot'));
     this.shooter = null;
@@ -56,8 +55,9 @@ export default class Shot extends Entity {
   };
 
   update() {
-    var dt = Variables.frameClock.dt
-    this.position.addmut(this.shooter.velocity.getX(), this.velocity * dt);
+    var dt = Variables.frameClock.dt;
+    this.position.addMutScalars(
+        this.shooter.velocity.getX(), this.velocity * dt);
   };
 
   reset() {

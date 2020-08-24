@@ -7,7 +7,6 @@ import Variables from '../sharedVariables.js';
 import Utils from '../utils.js';
 
 export default class Weako extends Entity {
-
   constructor(player, shots) {
     super(Constants.ENTITY_TYPES.get('enemy'));
     this.player = player;
@@ -60,7 +59,7 @@ export default class Weako extends Entity {
     var distance = displacement.magnitude();
     var unitDisplacement = displacement.norm();
 
-    this.position.addme(unitDisplacement.mulmembers(this.velocity.mul(dt)));
+    this.position.addMut(unitDisplacement.mulMembers(this.velocity.mul(dt)));
 
     if (this.path.points.next_index === (this.path.points.length() - 1) &&
         !this.reverse) {
