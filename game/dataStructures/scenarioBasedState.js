@@ -1,15 +1,17 @@
-import Scenario from './scenario.js';
-import GameState from './gameState.js';
 import Constants from '../sharedConstants.js';
 
-export default function ScenarioBasedState() {
-    var me = this;
+import GameState from './gameState.js';
+import Scenario from './scenario.js';
 
-    me.__proto__ = new GameState(Constants.STATE_TYPES.get('action'));
-    me.scenarioStack = [];
+export default class ScenarioBasedState extends GameState {
+  constructor() {
+    super(Constants.STATE_TYPES.get('action'));
+    this.scenarioStack = [];
+  }
 
-    me.getCurrentScenario = function() {
-        return me.scenarioStack.length > 0 ?  me.scenarioStack[me.scenarioStack.length - 1] : new Scenario()
-    };
+  getCurrentScenario() {
+    return this.scenarioStack.length > 0 ?
+        this.scenarioStack[this.scenarioStack.length - 1] :
+        new Scenario()
+  };
 };
-

@@ -1,35 +1,36 @@
 import Constants from '../sharedConstants.js';
 
-export default function Scenario() {
-  // default Prototype
-  var me = this;
-  me.type = Constants.SCENARIO_TYPES.get('destroyall');
-  me.currentEnemies = [];
-  me.isStarted = false;
+export default class Scenario {
 
-  me.addEnemy = function(enemy) {
-    me.currentEnemies.push(enemy);
+  constructor() {
+    this.type = Constants.SCENARIO_TYPES.get('destroyall');
+    this.currentEnemies = [];
+    this.isStarted = false;
+  }
+
+  addEnemy(enemy) {
+    this.currentEnemies.push(enemy);
   };
 
-  me.load = function() {};
+  load() {};
 
-  me.isPlaying = function() {
-    return me.currentEnemies.length > 0 && me.isStarted;
+  isPlaying() {
+    return this.currentEnemies.length > 0 && this.isStarted;
   };
 
-  me.update = function() {
-    for (var i = me.currentEnemies.length - 1; i >= 0; --i) {
-      if (!me.currentEnemies[i].isEnabled()) {
-        me.currentEnemies.splice(i, 1);
+  update() {
+    for (var i = this.currentEnemies.length - 1; i >= 0; --i) {
+      if (!this.currentEnemies[i].isEnabled()) {
+        this.currentEnemies.splice(i, 1);
       }
     }
   };
 
-  me.start = function() {
-    me.isStarted = true;
+  start() {
+    this.isStarted = true;
   };
 
-  me.stop = function() {
-    me.isStarted = false;
+  stop() {
+    this.isStarted = false;
   };
 };

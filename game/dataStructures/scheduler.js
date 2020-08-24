@@ -1,14 +1,10 @@
-import ReversibleEnum from './reversibleEnum.js';
 import Variables from '../sharedVariables.js';
 
-export default function Scheduler() {
-  var me = this;
+import ReversibleEnum from './reversibleEnum.js';
 
-  me.events = [];
-  me.EventType = new ReversibleEnum('after', 'until');
 
-  me.TimedEvent = function(
-      type, action, startTimestamp, duration, activationTimes) {
+class TimedEvent {
+  constructor(type, action, startTimestamp, duration, activationTimes) {
     this.startTimestamp = startTimestamp;
     this.type = type;
     this.action = action;
@@ -16,16 +12,23 @@ export default function Scheduler() {
     this.duration = typeof duration !== 'number' ? 0 : duration;
     this.activationTimes =
         typeof activationTimes !== 'number' ? 0 : activationTimes;
-    this.activate = function() {};
-  };
+  }
+  activate() {};
+};
 
-  me.update = function() {
-    for (var i = me.events.length - 1; i >= 0; --i) {
-      var current = me.events[i];
+export default class Scheduler {
+  constructor() {
+    this.events = [];
+    this.EventType = new ReversibleEnum('after', 'until');
+  }
+
+  update() {
+    for (var i = this.events.length - 1; i >= 0; --i) {
+      var current = this.events[i];
       if (current.enabled) {
         current.activate();
       } else {
-        me.events.splice(i, 1);
+        this.events.splice(i, 1);
       }
     }
   };
@@ -33,10 +36,10 @@ export default function Scheduler() {
   /*
    * do the action after milisecs passed
    */
-  me.after = function(milisec, action) {
+  after(milisec, action) {
     var now = Variables.frameClock.now;
     var event =
-        new me.TimedEvent(me.EventType.get('after'), action, now, milisec);
+        new TimedEvent(this.EventType.get('after'), action, now, milisec);
     event.activate = function() {
       var now = Variables.frameClock.now;
       if (now - this.startTimestamp >= this.duration && this.enabled) {
@@ -44,16 +47,16 @@ export default function Scheduler() {
         this.enabled = false;
       }
     };
-    return me.events[me.events.push(event)];
+    return this.events[this.events.push(event)];
   };
 
   /*
    * do the action until milisecs passed
    */
-  me.until = function(milisec, action) {
+  until(milisec, action) {
     var now = Variables.frameClock.now;
     var event =
-        new me.TimedEvent(me.EventType.get('until'), action, now, milisec);
+        new TimedEvent(this.EventType.get('until'), action, now, milisec);
 
     event.activate = function() {
       var now = Variables.frameClock.now;
@@ -62,10 +65,10 @@ export default function Scheduler() {
         this.enabled = false;
       }
     };
-    return me.events[me.events.push(event)];
+    return this.events[this.events.push(event)];
   };
 
-  me.__proto__.toString = function() {
-    return 'Scheduler(' + me.events.join(', ') + ')';
+  toString() {
+    return 'Scheduler(' + this.events.join(', ') + ')';
   };
 };
