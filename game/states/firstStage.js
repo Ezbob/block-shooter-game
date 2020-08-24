@@ -11,25 +11,26 @@ import Constants from '../sharedConstants.js';
 import Variables from '../sharedVariables.js';
 import Utils from '../utils.js';
 
-function CloudCollection(maxClouds) {
-  var me = this;
-  me.maxClouds = maxClouds;
-  me.__proto__ = new CircularBuffer(maxClouds)
+class CloudCollection extends CircularBuffer {
+  constructor(maxClouds) {
+    super(maxClouds);
+    this.maxClouds = maxClouds;
+  };
 
-  me.load = function() {
-    for (var i = 0; i < me.maxClouds; ++i) {
+  load() {
+    for (var i = 0; i < this.maxClouds; ++i) {
       let newCloudPos = new Vector(
           Utils.randomBetween(1, Constants.CANVAS_WIDTH - 1),
           Utils.randomBetween(-15, Constants.CANVAS_HEIGHT >> 1));
 
-      me.push(new Cloud({width: 20, height: 20}, newCloudPos));
+      this.push(new Cloud({width: 20, height: 20}, newCloudPos));
     }
   };
 
-  me.update = function() {
-    var size = me.size;
+  update() {
+    var size = this.size;
     for (var i = 0; i < size; i++) {
-      var current1 = me.next();
+      var current1 = this.next();
       if (current1.isEnabled()) {
         current1.update();
       } else {
@@ -38,10 +39,10 @@ function CloudCollection(maxClouds) {
     }
   };
 
-  me.draw = function() {
-    var size = me.size;
+  draw() {
+    var size = this.size;
     for (var i = 0; i < size; i += 2) {
-      var current1 = me[i];
+      var current1 = this[i];
       if (current1.isEnabled()) {
         current1.draw();
       }
@@ -49,21 +50,22 @@ function CloudCollection(maxClouds) {
   };
 };
 
-function ShotCollection(maxShots) {
-  var me = this;
-  me.maxShots = maxShots;
-  me.__proto__ = new CircularBuffer(maxShots)
+class ShotCollection extends CircularBuffer {
+  constructor(maxShots) {
+    super(maxShots);
+    this.maxShots = maxShots;
+  }
 
-  me.load = function() {
-    for (var i = 0; i < me.maxShots; ++i) {
-      me.push(new Shot());
+  load() {
+    for (var i = 0; i < this.maxShots; ++i) {
+      this.push(new Shot());
     }
   };
 
-  me.update = function() {
-    var size = me.size;
+  update() {
+    var size = this.size;
     for (var i = 0; i < size; i++) {
-      var current1 = me.next();
+      var current1 = this.next();
       if (current1.isEnabled()) {
         current1.update();
       } else {
@@ -72,10 +74,10 @@ function ShotCollection(maxShots) {
     }
   };
 
-  me.draw = function() {
-    var size = me.size;
+  draw() {
+    var size = this.size;
     for (var i = 0; i < size; i += 2) {
-      var current1 = me[i];
+      var current1 = this[i];
       if (current1.isEnabled()) {
         current1.draw();
       }
@@ -83,18 +85,19 @@ function ShotCollection(maxShots) {
   };
 };
 
-export default function FirstStage() {
-  var me = this;
-  me.MAX_SHOTS = 300;
-  me.NUMBER_OF_CLOUDS = 30;
-  me.__proto__ = new ScenarioBasedState();
-  me.clouds = new CloudCollection(me.NUMBER_OF_CLOUDS);
-  me.shots = new ShotCollection(me.MAX_SHOTS);
-  me.player = new Player(me.shots);
-  me.healthBar = new HealthBar(me.player);
+export default class FirstStage extends ScenarioBasedState {
+  constructor() {
+    super();
+    this.MAX_SHOTS = 300;
+    this.NUMBER_OF_CLOUDS = 30;
+    this.clouds = new CloudCollection(this.NUMBER_OF_CLOUDS);
+    this.shots = new ShotCollection(this.MAX_SHOTS);
+    this.player = new Player(this.shots);
+    this.healthBar = new HealthBar(this.player);
+  }
 
-  me.updateEnemies = function() {
-    var scenario = me.getCurrentScenario();
+  updateEnemies() {
+    var scenario = this.getCurrentScenario();
     var enemies = scenario.currentEnemies;
 
     for (var i = 0; i < enemies.length; ++i) {
@@ -105,8 +108,8 @@ export default function FirstStage() {
     }
   };
 
-  me.drawEnemies = function() {
-    var scenario = me.getCurrentScenario();
+  drawEnemies() {
+    var scenario = this.getCurrentScenario();
     var enemies = scenario.currentEnemies;
 
     for (var i = 0; i < enemies.length; ++i) {
@@ -117,50 +120,50 @@ export default function FirstStage() {
     }
   };
 
-  me.load = function() {
-    me.clouds.load();
-    me.shots.load();
+  load() {
+    this.clouds.load();
+    this.shots.load();
 
     var secondEncounter = new Scenario();
-    secondEncounter.addEnemy(new Weako(me.player, me.shots));
-    me.scenarioStack.push(secondEncounter);
+    secondEncounter.addEnemy(new Weako(this.player, this.shots));
+    this.scenarioStack.push(secondEncounter);
 
     var firstEncounter = new Scenario();
-    firstEncounter.addEnemy(new Weako(me.player, me.shots));
-    me.scenarioStack.push(firstEncounter);
-    me.getCurrentScenario().start();
-    me.isLoaded = true;
+    firstEncounter.addEnemy(new Weako(this.player, this.shots));
+    this.scenarioStack.push(firstEncounter);
+    this.getCurrentScenario().start();
+    this.isLoaded = true;
   };
 
-  me.update = function() {
-    me.player.update();
-    me.healthBar.update();
-    me.clouds.update();
-    me.shots.update();
-    me.updateEnemies();
+  update() {
+    this.player.update();
+    this.healthBar.update();
+    this.clouds.update();
+    this.shots.update();
+    this.updateEnemies();
 
-    var currentScenario = me.getCurrentScenario();
+    var currentScenario = this.getCurrentScenario();
     currentScenario.update();
 
-    if (!currentScenario.isPlaying() && me.scenarioStack.length > 0) {
-      me.scenarioStack.pop();
-      me.getCurrentScenario().start();
+    if (!currentScenario.isPlaying() && this.scenarioStack.length > 0) {
+      this.scenarioStack.pop();
+      this.getCurrentScenario().start();
     }
 
-    if (me.scenarioStack.length === 0) {
-      me.stop();
+    if (this.scenarioStack.length === 0) {
+      this.stop();
     }
   };
 
-  me.draw = function() {
+  draw() {
     var ctx = Variables.canvasManager.getCanvasContext();
-    me.player.draw();
-    me.healthBar.draw();
-    me.clouds.draw();
-    me.shots.draw();
-    me.drawEnemies();
+    this.player.draw();
+    this.healthBar.draw();
+    this.clouds.draw();
+    this.shots.draw();
+    this.drawEnemies();
 
-    if (!me.player.isEnabled()) {
+    if (!this.player.isEnabled()) {
       var oldFont = ctx.font;
       ctx.font = '42px Helvetica';
       ctx.fillStyle = 'red';
@@ -171,11 +174,11 @@ export default function FirstStage() {
     }
   };
 
-  me.control = function() {
-    var player = me.player;
+  control() {
+    var player = this.player;
     let keyboardInput = Variables.keyboardInput;
 
-    if ( keyboardInput.isKeyPressed('escape') ) {
+    if (keyboardInput.isKeyPressed('escape')) {
       var pauseScreen = Variables.pauseScreen;
 
       if (!Variables.isPaused) {
@@ -186,26 +189,28 @@ export default function FirstStage() {
 
     if (player.isEnabled()) {
       var direction = Constants.REVERSED_INPUT ? -1 : 1;
-      if ( keyboardInput.isKeyPressed('space') ) {
+      if (keyboardInput.isKeyPressed('space')) {
         player.shoot();
       }
-      if ( keyboardInput.isKeyPressed('right') ) {
+      if (keyboardInput.isKeyPressed('right')) {
         player.move(direction, 0);
       }
-      if ( keyboardInput.isKeyPressed('left') ) {
+      if (keyboardInput.isKeyPressed('left')) {
         player.move(-direction, 0);
       }
-      if ( keyboardInput.isKeyPressed('up') ) {
+      if (keyboardInput.isKeyPressed('up')) {
         player.move(0, -direction);
       }
-      if ( keyboardInput.isKeyPressed('down') ) {
+      if (keyboardInput.isKeyPressed('down')) {
         player.move(0, direction);
       }
-      if (!(keyboardInput.isKeyPressed('right') || keyboardInput.isKeyPressed('left'))) {
+      if (!(keyboardInput.isKeyPressed('right') ||
+            keyboardInput.isKeyPressed('left'))) {
         player.velocity.setX(
             Math.min(player.BASE_VELOCITY.x, player.velocity.getX()));
       }
-      if (!(keyboardInput.isKeyPressed('up') || keyboardInput.isKeyPressed('down'))) {
+      if (!(keyboardInput.isKeyPressed('up') ||
+            keyboardInput.isKeyPressed('down'))) {
         player.velocity.setY(
             Math.min(player.BASE_VELOCITY.y, player.velocity.getY()));
       }

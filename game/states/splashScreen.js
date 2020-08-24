@@ -2,41 +2,43 @@ import GameState from '../dataStructures/gameState.js';
 import Constants from '../sharedConstants.js';
 import Variables from '../sharedVariables.js';
 
-export default function SplashScreen() {
-  var me = this;
-  me.__proto__ = new GameState(Constants.STATE_TYPES.get('intro'));
-  me.resources = {
-    titleFontSize: '28pt',
-    subTitleFontSize: '18pt',
-    font: 'Helvetica',
-    introTitle: 'Block Shooter Game',
-    introSubtitle: 'By Anders Busch',
-    instructionsText: 'Press Enter to Start',
-    drawInstructions: false
+export default class SplashScreen extends GameState {
+
+  constructor() {
+    super(Constants.STATE_TYPES.get('intro'));
+    this.resources = {
+      titleFontSize: '28pt',
+      subTitleFontSize: '18pt',
+      font: 'Helvetica',
+      introTitle: 'Block Shooter Game',
+      introSubtitle: 'By Anders Busch',
+      instructionsText: 'Press Enter to Start',
+      drawInstructions: false
+    };
+  }
+
+  blinkText() {
+    this.resources.drawInstructions = !this.resources.drawInstructions;
   };
 
-  me.blinkText = function() {
-    me.resources.drawInstructions = !me.resources.drawInstructions;
+  start() {
+    if (!this.blinkHandel) this.blinkHandel = setInterval(this.blinkText.bind(this), 800);
+    this.isPlaying = true;
   };
 
-  me.start = function() {
-    if (!me.blinkHandel) me.blinkHandel = setInterval(me.blinkText, 800);
-    me.isPlaying = true;
+  stop() {
+    if (this.blinkHandel) clearInterval(this.blinkHandel);
+    this.isPlaying = false;
   };
 
-  me.stop = function() {
-    if (me.blinkHandel) clearInterval(me.blinkHandel);
-    me.isPlaying = false;
+  load() {
+    this.blinkHandel = setInterval(this.blinkText.bind(this), 800);
+    this.isLoaded = true;
   };
 
-  me.load = function() {
-    me.blinkHandel = setInterval(me.blinkText, 800);
-    me.isLoaded = true;
-  };
-
-  me.draw = function() {
+  draw() {
     var ctx = Variables.canvasManager.getCanvasContext();
-    var resources = me.resources;
+    var resources = this.resources;
     ctx.font = resources.titleFontSize + ' ' + resources.font;
     ctx.textAlign = 'center';
     ctx.fillText(
@@ -53,9 +55,9 @@ export default function SplashScreen() {
     }
   };
 
-  me.control = function() {
+  control() {
     if (Variables.keyboardInput.isKeyPressed('enter')) {
-      me.stop();
+      this.stop();
     }
   };
 };

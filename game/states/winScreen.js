@@ -4,20 +4,21 @@ import Constants from '../sharedConstants.js';
 import Variables from '../sharedVariables.js';
 import Utils from '../utils.js';
 
-export default function WinScreen() {
-  var me = this;
-  me.__proto__ = new GameState(Constants.STATE_TYPES.get('intro'))
-  me.resources = {
-    gameWinFont: {
-      font: 'Helvetica',
-      position:
-          new Vector(Constants.CANVAS_WIDTH >> 1, Constants.CANVAS_HEIGHT >> 1),
-      color: 'darkgreen',
-      text: 'YOU\'RE A WINNER!'
-    }
+export default class WinScreen extends GameState {
+  constructor() {
+    super(Constants.STATE_TYPES.get('intro'));
+    this.resources = {
+      gameWinFont: {
+        font: 'Helvetica',
+        position: new Vector(
+            Constants.CANVAS_WIDTH >> 1, Constants.CANVAS_HEIGHT >> 1),
+        color: 'darkgreen',
+        text: 'YOU\'RE A WINNER!'
+      }
+    };
   };
 
-  me.draw = function() {
+  draw() {
     var resources = this.resources;
     var ctx = Variables.canvasManager.getCanvasContext();
 
