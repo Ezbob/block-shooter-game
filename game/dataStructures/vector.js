@@ -1,143 +1,147 @@
 
-export default function Vector() {
-  var me = this;
-  me.scalars = [];
+export default class Vector extends Array {
 
-  /*
-   * This enabled variable arguments for scalars
-   */
-  for (var i = 0; i < arguments.length; ++i) {
-    me.scalars[i] = arguments[i];
+  constructor(...args) {
+    super(...args)
   }
 
-  me.getX = function() {
-    return me.scalars[0];
+  getX() {
+    return this[0];
   };
 
-  me.getY = function() {
-    return me.scalars[1];
+  getY() {
+    return this[1];
   };
 
-  me.getZ = function() {
-    return me.scalars[2];
+  getZ() {
+    return this[2];
   };
 
-  me.setX = function(x) {
-    me.scalars[0] = x;
+  setX(x) {
+    this[0] = x;
   };
 
-  me.setY = function(y) {
-    me.scalars[1] = y;
+  setY(y) {
+    this[1] = y;
   };
 
-  me.setZ = function(z) {
-    me.scalars[2] = z;
+  setZ(z) {
+    this[2] = z;
   };
 
-  me.magnitude = function() {
+  magnitude() {
     var sum = 0;
-    for (var i = 0; i < me.scalars.length; ++i) {
-      sum += (me.scalars[i] * me.scalars[i]);
+    for (var i = 0; i < this.length; ++i) {
+      sum += (this[i] * this[i]);
     }
     return Math.sqrt(sum);
   };
 
-  me.add = function(other) {
+  add(other) {
     var res = new Vector();
-    for (var i = 0; i < me.scalars.length; ++i) {
-      res.scalars[i] = me.scalars[i] + other.scalars[i];
+    for (var i = 0; i < this.length; ++i) {
+      res[i] = this[i] + other[i];
     }
     return res;
   };
 
-  me.addme = function(other) {
-    for (var i = 0; i < me.scalars.length; ++i) {
-      me.scalars[i] = me.scalars[i] + other.scalars[i];
+  addme(other) {
+    for (var i = 0; i < this.length; ++i) {
+      this[i] = this[i] + other[i];
     }
-    return me;
+    return this;
   };
 
-  me.sub = function(other) {
+  addmut(...scalars) {
+    for (var i = 0; i < this.length; ++i) {
+      this[i] = this[i] + scalars[i];
+    }
+    return this;
+  };
+
+  sub(other) {
     var res = new Vector();
-    for (var i = 0; i < me.scalars.length; ++i) {
-      res.scalars[i] = me.scalars[i] - other.scalars[i];
+    for (var i = 0; i < this.length; ++i) {
+      res[i] = this[i] - other[i];
     }
     return res;
   };
 
-  me.subme = function(other) {
-    for (var i = 0; i < me.scalars.length; ++i) {
-      me.scalars[i] = me.scalars[i] - other.scalars[i];
+  subme(other) {
+    for (var i = 0; i < this.length; ++i) {
+      this[i] = this[i] - other[i];
     }
-    return me;
+    return this;
   };
 
-  me.rotateme2d90 = function() {
-    me.scalars[0] = me.scalars[1]
-    me.scalars[1] = -me.scalars[0]
+  rotateme2d90() {
+    this[0] = this[1]
+    this[1] = -this[0]
   };
 
-  me.rotate2d = function() {
-    return new Vector(me.scalars[1], -me.scalars[0])
+  rotate2d() {
+    return new Vector(this[1], -this[0])
   };
 
-  me.mul = function(scalar) {
+  mul(scalar) {
     var res = new Vector();
-    for (var i = 0; i < me.scalars.length; ++i) {
-      res.scalars[i] = me.scalars[i] * scalar;
+    for (var i = 0; i < this.length; ++i) {
+      res[i] = this[i] * scalar;
     }
     return res;
   };
 
-  me.mulme = function(scalar) {
-    for (var i = 0; i < me.scalars.length; ++i) {
-      me.scalars[i] = me.scalars[i] * scalar;
+  mulme(scalar) {
+    for (var i = 0; i < this.length; ++i) {
+      this[i] = this[i] * scalar;
     }
-    return me;
+    return this;
   };
 
-  me.mulmembers = function(other) {
+  mulmembers(other) {
     var res = new Vector();
-    for (var i = 0; i < me.scalars.length; ++i) {
-      res.scalars[i] = me.scalars[i] * other.scalars[i];
+    for (var i = 0; i < this.length; ++i) {
+      res[i] = this[i] * other[i];
     }
     return res;
   };
 
-  me.norm = function() {
-    return me.mul(1 / me.magnitude())
+  norm() {
+    return this.mul(1 / this.magnitude())
   };
 
-  me.dot = function(other) {
+  dot(other) {
     var res = 0;
-    for (var i = 0; i < me.scalars.length; ++i) {
-      res += me.scalars[i] * other.scalars[i];
+    for (var i = 0; i < this.length; ++i) {
+      res += this[i] * other[i];
     }
     return res;
   };
 
-  me.equals = function(other) {
-    if (me.scalars.length !== other.scalars.length) {
+  equals(other) {
+    if (this.length !== other.length) {
       return false;
     }
 
-    for (var i = 0; i < me.scalars.length; ++i) {
-      if (me.scalars[i] !== other.scalars[i]) {
+    for (var i = 0; i < this.length; ++i) {
+      if (this[i] !== other[i]) {
         return false;
       }
     }
     return true;
   };
 
-  me.fromArray = function(array) {
+  fromArray(array) {
     var res = new Vector();
-    res.scalars = array;
+    res = array;
     return res;
   };
 
-  me.v = me.fromArray;
+  v(a) {
+    return this.fromArray(a)
+  };
 
-  me.__proto__.toString = function() {
-    return 'Vector(' + game.utils.stringJoin(', ', me.scalars) + ')';
+  toString() {
+    return 'Vector(' + this.join(", ") + ')';
   }
 };
