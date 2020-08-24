@@ -46,7 +46,7 @@ export default class Weako extends Entity {
         this.dimension.height);
     ctx.fillStyle = old;
 
-    Debug.drawPath(this.path.points.buffer)
+    Debug.drawPath(this.path.points)
     Debug.drawLine(this.position, this.next_waypoint, 'green');
   };
 
@@ -61,7 +61,7 @@ export default class Weako extends Entity {
 
     this.position.addMut(unitDisplacement.mulMembers(this.velocity.mul(dt)));
 
-    if (this.path.points.next_index === (this.path.points.length() - 1) &&
+    if (this.path.points.next_index === (this.path.points.length - 1) &&
         !this.reverse) {
       this.reverse = true;
     }

@@ -41,7 +41,7 @@ function CloudCollection(maxClouds) {
   me.draw = function() {
     var size = me.size;
     for (var i = 0; i < size; i += 2) {
-      var current1 = me.buffer[i];
+      var current1 = me[i];
       if (current1.isEnabled()) {
         current1.draw();
       }
@@ -75,7 +75,7 @@ function ShotCollection(maxShots) {
   me.draw = function() {
     var size = me.size;
     for (var i = 0; i < size; i += 2) {
-      var current1 = me.buffer[i];
+      var current1 = me[i];
       if (current1.isEnabled()) {
         current1.draw();
       }
