@@ -1,40 +1,41 @@
 import Constants from './sharedConstants.js';
 
-export default function CanvasManager(elementId) {
-  var me = this;
-  me.isAttached = false;
-  me.elementId = elementId ? elementId : Constants.CANVAS_HTML_ID;
+export default class CanvasManager {
+  constructor(elementId) {
+    this.isAttached = false;
+    this.elementId = elementId ? elementId : Constants.CANVAS_HTML_ID;
+  }
 
-  me.setup = function() {
+  setup() {
     try {
-      me.html_element = document.getElementById(me.elementId);
-      me.context = me.html_element.getContext('2d');
-      me.html_element.setAttribute('width', Constants.CANVAS_WIDTH);
-      me.html_element.setAttribute('height', Constants.CANVAS_HEIGHT);
+      this.html_element = document.getElementById(this.elementId);
+      this.context = this.html_element.getContext('2d');
+      this.html_element.setAttribute('width', Constants.CANVAS_WIDTH);
+      this.html_element.setAttribute('height', Constants.CANVAS_HEIGHT);
     } catch (exception) {
-      me.isAttached = false;
+      this.isAttached = false;
       throw exception;
     }
-    if (me.context && me.html_element) {
-      me.isAttached = true;
+    if (this.context && this.html_element) {
+      this.isAttached = true;
     } else {
-      me.isAttached = false;
+      this.isAttached = false;
     }
   };
 
-  me.getCanvasDOMId = function() {
-    return me.elementId;
+  getCanvasDOMId() {
+    return this.elementId;
   };
 
-  me.getCanvasContext = function() {
-    return me.context;
+  getCanvasContext() {
+    return this.context;
   };
 
-  me.getCanvasElement = function() {
-    return me.html_element;
+  getCanvasElement() {
+    return this.html_element;
   };
 
-  me.isAttached = function() {
-    return me.isAttached;
+  isAttached() {
+    return this.isAttached;
   };
 };

@@ -1,6 +1,6 @@
 import Variables from '../sharedVariables.js';
 
-import ReversibleEnum from './reversibleEnum.js';
+import Enum from './reversibleEnum.js';
 
 
 class TimedEvent {
@@ -19,7 +19,7 @@ class TimedEvent {
 export default class Scheduler {
   constructor() {
     this.events = [];
-    this.EventType = new ReversibleEnum('after', 'until');
+    this.EventType = new Enum('after', 'until');
   }
 
   update() {

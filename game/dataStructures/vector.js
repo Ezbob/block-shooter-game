@@ -4,27 +4,27 @@ export default class Vector extends Array {
     super(...args)
   }
 
-  getX() {
+  get x() {
     return this[0];
   };
 
-  getY() {
+  get y() {
     return this[1];
   };
 
-  getZ() {
+  get z() {
     return this[2];
   };
 
-  setX(x) {
+  set x(x) {
     this[0] = x;
   };
 
-  setY(y) {
+  set y(y) {
     this[1] = y;
   };
 
-  setZ(z) {
+  set z(z) {
     this[2] = z;
   };
 

@@ -206,13 +206,13 @@ export default class FirstStage extends ScenarioBasedState {
       }
       if (!(keyboardInput.isKeyPressed('right') ||
             keyboardInput.isKeyPressed('left'))) {
-        player.velocity.setX(
-            Math.min(player.BASE_VELOCITY.x, player.velocity.getX()));
+        player.velocity.x = (
+            Math.min(player.BASE_VELOCITY.x, player.velocity.x));
       }
       if (!(keyboardInput.isKeyPressed('up') ||
             keyboardInput.isKeyPressed('down'))) {
-        player.velocity.setY(
-            Math.min(player.BASE_VELOCITY.y, player.velocity.getY()));
+        player.velocity.y = (
+            Math.min(player.BASE_VELOCITY.y, player.velocity.y));
       }
     }
   };

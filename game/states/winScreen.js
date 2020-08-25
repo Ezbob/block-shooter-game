@@ -27,7 +27,7 @@ export default class WinScreen extends GameState {
     ctx.textAlign = 'center';
     ctx.fillText(
         resources.gameWinFont.text,
-        resources.gameWinFont.position.getX() + Utils.randomBetween(-10, 10),
-        resources.gameWinFont.position.getY() + Utils.randomBetween(-10, 10))
+        resources.gameWinFont.position.x + Utils.randomBetween(-10, 10),
+        resources.gameWinFont.position.y + Utils.randomBetween(-10, 10))
   };
 };

@@ -42,7 +42,7 @@ export default class Weako extends Entity {
     var old = ctx.fillStyle;
     ctx.fillStyle = this.color;
     ctx.fillRect(
-        this.position.getX(), this.position.getY(), this.dimension.width,
+        this.position.x, this.position.y, this.dimension.width,
         this.dimension.height);
     ctx.fillStyle = old;
 
@@ -82,12 +82,12 @@ export default class Weako extends Entity {
   update() {
     var dt = Variables.frameClock.dt
     var player = this.player;
-    var x = this.position.getX();
+    var x = this.position.x;
 
     this.travel(dt);
 
-    if (x >= player.position.getX() - 10 &&
-        x <= (player.position.getX() + player.dimension.width) + 10 &&
+    if (x >= player.position.x - 10 &&
+        x <= (player.position.x + player.dimension.width) + 10 &&
         player.isEnabled()) {
       this.shoot();
     }

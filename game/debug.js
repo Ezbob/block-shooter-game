@@ -1,21 +1,21 @@
-import Variables from './sharedVariables.js';
 import Constants from './sharedConstants.js';
+import Variables from './sharedVariables.js';
 
 
-let debug = {
-  drawLine: function(start, end, color) {
+export default {
+  drawLine: (start, end, color) => {
     let ctx = Variables.canvasManager.getCanvasContext();
     if (Constants.DEBUG_ON) {
       ctx.beginPath();
       ctx.strokeStyle = color ? color : 'black';
-      ctx.moveTo(start.getX(), start.getY());
-      ctx.lineTo(end.getX(), end.getY());
+      ctx.moveTo(start.x, start.y);
+      ctx.lineTo(end.x, end.y);
       ctx.stroke();
       ctx.closePath();
     }
   },
 
-  drawPath: function(points, color) {
+  drawPath: (points, color) => {
     let ctx = Variables.canvasManager.getCanvasContext();
     let length =
         (typeof points.length === 'function' ? points.length() : points.length);
@@ -24,15 +24,13 @@ let debug = {
       ctx.strokeStyle = color ? color : 'black';
 
       var start = points[0];
-      ctx.moveTo(start.getX(), start.getY());
+      ctx.moveTo(start.x, start.y);
       for (var i = 1; i < length; ++i) {
         var curPoint = points[i];
-        ctx.lineTo(curPoint.getX(), curPoint.getY());
+        ctx.lineTo(curPoint.x, curPoint.y);
       }
       ctx.stroke();
       ctx.closePath();
     }
   }
 };
-
-export default debug;

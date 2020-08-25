@@ -1,17 +1,10 @@
 import Constants from './sharedConstants.js';
 import Variables from './sharedVariables.js';
 
-window.requestAnimationFrame = (function() {
-  return window.requestAnimationFrame || window.webkitRequestAnimationFrame ||
-      window.mozRequestAnimationFrame || function(callback) {
-        window.setTimeout(callback, 1000 / Constants.FPS_LIMIT);
-      };
-})();
 
-export default function Runtime() {
-  var me = this;
+export default class Runtime {
 
-  me.gameLoop = function() {
+  gameLoop() {
     Variables.frameClock.update();
     Variables.scheduler.update();
 
@@ -41,10 +34,10 @@ export default function Runtime() {
       }
     }
 
-    window.requestAnimationFrame(me.gameLoop);
+    window.requestAnimationFrame(this.gameLoop.bind(this));
   };
 
-  me.run = function() {
-    window.requestAnimationFrame(me.gameLoop);
+  run() {
+    window.requestAnimationFrame(this.gameLoop.bind(this));
   };
 };

@@ -19,17 +19,17 @@ export default class Shot extends Entity {
 
   fire(shooter) {
     this.shooter = shooter;
-    var sX = this.shooter.position.getX(), sY = this.shooter.position.getY();
+    var sX = this.shooter.position.x, sY = this.shooter.position.y;
     var sW = this.shooter.dimension.width, sH = this.shooter.dimension.height;
     var meW = this.dimension.width, meH = this.dimension.height;
-    this.position.setX(sX + (sW >> 1) - (meW >> 1));
+    this.position.x = (sX + (sW >> 1) - (meW >> 1));
 
     if (shooter.type === Constants.ENTITY_TYPES.get('enemy')) {
-      this.position.setY(sY + sH + meH);
+      this.position.y = (sY + sH + meH);
       this.velocity = Math.max(this.velocity, this.velocity * -1);
       this.direction = 1;
     } else {
-      this.position.setY((sY - sH));
+      this.position.y = ((sY - sH));
       this.velocity = Math.min(this.velocity, this.velocity * -1);
       this.direction = -1;
     }
@@ -38,8 +38,8 @@ export default class Shot extends Entity {
   };
 
   isEnabled() {
-    return (this.position.getY() > -5 ||
-            this.position.getY() < Constants.CANVAS_HEIGHT - 10) &&
+    return (this.position.y > -5 ||
+            this.position.y < Constants.CANVAS_HEIGHT - 10) &&
         this.isFired;
   };
 
@@ -49,7 +49,7 @@ export default class Shot extends Entity {
     ctx.fillStyle = this.color;
     var translated = this.position.add(this.translater);
     ctx.fillRect(
-        translated.getX(), translated.getY(), this.dimension.width,
+        translated.x, translated.y, this.dimension.width,
         this.dimension.height);
     ctx.fillStyle = old;
   };
@@ -57,7 +57,7 @@ export default class Shot extends Entity {
   update() {
     var dt = Variables.frameClock.dt;
     this.position.addMutScalars(
-        this.shooter.velocity.getX(), this.velocity * dt);
+        this.shooter.velocity.x, this.velocity * dt);
   };
 
   reset() {

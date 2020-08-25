@@ -40,7 +40,7 @@ export default class HealthBar extends Entity {
 
   draw() {
     var ctx = Variables.canvasManager.getCanvasContext();
-    var startPosition = this.position.getX() + 3;
+    var startPosition = this.position.x + 3;
 
     function getColor(colors, numberOfBeads, maxBeads) {
       var mid = Math.floor(maxBeads * 0.5);
@@ -57,7 +57,7 @@ export default class HealthBar extends Entity {
     var oldstroke = ctx.strokeStyle;
     ctx.strokeStyle = this.colors.border;
     ctx.strokeRect(
-        this.position.getX(), this.position.getY(), this.dimension.width,
+        this.position.x, this.position.y, this.dimension.width,
         this.dimension.height);
 
     var old = ctx.fillStyle;
@@ -67,14 +67,14 @@ export default class HealthBar extends Entity {
 
     for (var i = 1; i <= this.beads.number; ++i) {
       ctx.fillRect(
-          startPosition, this.position.getY() + 2,
+          startPosition, this.position.y + 2,
           this.beads.dimension.width - 5, this.beads.dimension.height - 2);
       startPosition += this.beads.dimension.width;
     }
 
     ctx.font = '14px Helvetica';
     ctx.textAlign = 'start';
-    ctx.fillText('power', this.position.getX(), this.position.getY() - 8);
+    ctx.fillText('power', this.position.x, this.position.y - 8);
 
     ctx.fillStyle = old;
     ctx.strokeStyle = oldstroke;

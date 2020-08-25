@@ -34,7 +34,7 @@ export default class Player extends Entity {
       var old = ctx.fillStyle;
       ctx.fillStyle = this.color;
       ctx.fillRect(
-          this.position.getX(), this.position.getY(), this.dimension.width,
+          this.position.x, this.position.y, this.dimension.width,
           this.dimension.height);
       ctx.fillStyle = old;
     }
@@ -42,33 +42,33 @@ export default class Player extends Entity {
 
   move(directX, directY) {
     var dt = Variables.frameClock.dt;
-    var x = this.position.getX(), y = this.position.getY();
-    var xVel = this.velocity.getX(), yVel = this.velocity.getY();
+    var x = this.position.x, y = this.position.y;
+    var xVel = this.velocity.x, yVel = this.velocity.y;
 
-    var oldV = this.velocity.getX();
-    this.velocity.setX(
-        Math.min(oldV + this.acceleration.getX() * dt, this.velocityLimit));
+    var oldV = this.velocity.x;
+    this.velocity.x = (
+        Math.min(oldV + this.acceleration.x * dt, this.velocityLimit));
     var nextPosition = x + directX * dt * (oldV + xVel) / 2;
     var myLeft = nextPosition + this.dimension.width;
     if (nextPosition > 0 && myLeft <= Constants.CANVAS_WIDTH) {
-      this.position.setX(nextPosition);
+      this.position.x = (nextPosition);
     } else if (myLeft > Constants.CANVAS_WIDTH) {
-      this.position.setX(Constants.CANVAS_WIDTH - this.dimension.width);
+      this.position.x = (Constants.CANVAS_WIDTH - this.dimension.width);
     } else {
-      this.position.setX(0)
+      this.position.x = (0)
     }
 
-    var oldV = this.velocity.getY();
-    this.velocity.setY(
-        Math.min(oldV + this.acceleration.getY() * dt, this.velocityLimit));
+    var oldV = this.velocity.y;
+    this.velocity.y = (
+        Math.min(oldV + this.acceleration.y * dt, this.velocityLimit));
     var nextPosition = y + directY * dt * (oldV + yVel) / 2;
     var myBottom = nextPosition + this.dimension.height;
     if (nextPosition > 0 && myBottom <= Constants.CANVAS_HEIGHT) {
-      this.position.setY(nextPosition);
+      this.position.y = (nextPosition);
     } else if (myBottom > Constants.CANVAS_HEIGHT) {
-      this.position.setY(Constants.CANVAS_HEIGHT - this.dimension.height);
+      this.position.y = (Constants.CANVAS_HEIGHT - this.dimension.height);
     } else {
-      this.position.setY(0);
+      this.position.y = (0);
     }
   };
 

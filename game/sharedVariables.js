@@ -6,7 +6,7 @@ import CanvasManager from './canvasManager.js';
 import Runtime from './runtime.js';
 import KeyboardInput from './keyboardInput.js';
 
-let Variables = {
+export default {
   canvasManager: new CanvasManager(),
   frameClock: new FrameClock(),
   stateStack: new GameStateStack(),
@@ -16,5 +16,3 @@ let Variables = {
   isPaused: false,
   scheduler: new Scheduler()
 };
-
-export default Variables;

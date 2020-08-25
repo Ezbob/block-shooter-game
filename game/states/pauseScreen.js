@@ -1,5 +1,5 @@
 import GameState from '../dataStructures/gameState.js';
-import ReversibleEnum from '../dataStructures/reversibleEnum.js';
+import Enum from '../dataStructures/reversibleEnum.js';
 import Vector from '../dataStructures/vector.js';
 import Constants from '../sharedConstants.js';
 import Variables from '../sharedVariables.js';
@@ -29,7 +29,7 @@ export default class PauseScreen extends GameState {
             Constants.CANVAS_WIDTH / 2, Constants.CANVAS_HEIGHT / 2.5 + 62),
         dimension: new Vector(16, 16),
         color: 'black',
-        choices: new ReversibleEnum('resume', 'restart'),
+        choices: new Enum('resume', 'restart'),
         pointingAt: null
       }
     };
@@ -50,20 +50,20 @@ export default class PauseScreen extends GameState {
     ctx.textAlign = 'center';
     ctx.fillText(
         this.resources.pausedTitle.text,
-        this.resources.pausedTitle.position.getX(),
-        this.resources.pausedTitle.position.getY());
+        this.resources.pausedTitle.position.x,
+        this.resources.pausedTitle.position.y);
 
     ctx.font = '24px ' + this.resources.font;
     ctx.fillText(
         this.resources.resumeText.text,
-        this.resources.resumeText.position.getX(),
-        this.resources.resumeText.position.getY());
+        this.resources.resumeText.position.x,
+        this.resources.resumeText.position.y);
 
     ctx.font = '24px ' + this.resources.font;
     ctx.fillText(
         this.resources.restartText.text,
-        this.resources.restartText.position.getX(),
-        this.resources.restartText.position.getY());
+        this.resources.restartText.position.x,
+        this.resources.restartText.position.y);
 
     var textWidth;
     if (this.resources.cursor.pointingAt ===
@@ -75,11 +75,11 @@ export default class PauseScreen extends GameState {
 
     ctx.fillStyle = this.resources.cursor.color;
     ctx.fillRect(
-        this.resources.cursor.position.getX() + (textWidth >> 1) + 15,
-        this.resources.cursor.position.getY() -
-            this.resources.cursor.dimension.getY() + 2,
-        this.resources.cursor.dimension.getX(),
-        this.resources.cursor.dimension.getY());
+        this.resources.cursor.position.x + (textWidth >> 1) + 15,
+        this.resources.cursor.position.y -
+            this.resources.cursor.dimension.y + 2,
+        this.resources.cursor.dimension.x,
+        this.resources.cursor.dimension.y);
   };
 
   control() {
