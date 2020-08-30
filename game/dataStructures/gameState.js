@@ -1,5 +1,4 @@
 import Constants from '../sharedConstants.js'
-import Variables from '../sharedVariables.js'
 
 export default class GameState {
   constructor(type) {

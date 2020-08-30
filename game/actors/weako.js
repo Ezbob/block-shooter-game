@@ -5,12 +5,16 @@ import Debug from '../debug.js';
 import Constants from '../sharedConstants.js';
 import Variables from '../sharedVariables.js';
 import Utils from '../utils.js';
+import ShotCollection from './shotCollection.js';
 
 export default class Weako extends Entity {
-  constructor(player, shots) {
+  constructor(player) {
     super(Constants.ENTITY_TYPES.get('enemy'));
     this.player = player;
-    this.shots = shots;
+
+    this.gun = {limit: 6, velocity: 1.22, timeInBetween: 400, previous_time: 0};
+
+    this.shots = new ShotCollection(this.gun.limit, 1);
     this.dimension = {width: 32, height: 32};
     this.position =
         new Vector(Constants.CANVAS_WIDTH - this.dimension.width, 40);
@@ -18,8 +22,6 @@ export default class Weako extends Entity {
     this.health = {current: 200, max: 200};
     this.velocity = new Vector(0.2, 0.1);
     this.reverse = false;
-
-    this.gun = {limit: 5};
 
     this.path = new SinePath(
         this.position.add(new Vector(1, 1)), new Vector(2, 40), 30, 20, 4);
@@ -38,6 +40,7 @@ export default class Weako extends Entity {
   };
 
   draw() {
+    this.shots.draw();
     var ctx = Variables.canvasManager.getCanvasContext();
     var old = ctx.fillStyle;
     ctx.fillStyle = this.color;
@@ -51,7 +54,10 @@ export default class Weako extends Entity {
   };
 
   shoot() {
-    this.shots.next().fire(this);
+    if ( (Variables.frameClock.now - this.gun.previous_time) >= this.gun.timeInBetween ) {
+      this.gun.previous_time = Variables.frameClock.now;
+      this.shots.fire_next(this);
+    }
   };
 
   travel(dt) {
@@ -82,23 +88,24 @@ export default class Weako extends Entity {
   update() {
     var dt = Variables.frameClock.dt
     var player = this.player;
-    var x = this.position.x;
-
     this.travel(dt);
+    
+    this.shots.update()
 
-    if (x >= player.position.x - 10 &&
-        x <= (player.position.x + player.dimension.width) + 10 &&
+    if (/*x >= player.position.x - 10 &&
+        x <= (player.position.x + player.dimension.width) + 10 && */
         player.isEnabled()) {
       this.shoot();
     }
 
-    var shots = this.shots;
+    var shots = this.shots.buffer;
     for (var i = 0; i < shots.size; ++i) {
       var shot = shots.next();
-      if (shot.isEnabled() && Utils.intersectingRectangles(this, shot)) {
-        this.health.current -= shot.damage;
+      if (shot.isEnabled() && Utils.intersectingRectangles(player, shot)) {
+        player.health.current -= shot.damage;
         shot.reset();
       }
     }
+    
   };
 }

@@ -8,7 +8,7 @@ export default {
   REVERSED_INPUT: false,
   FPS_LIMIT: 140,
 
-  ENTITY_TYPES: new Enum('enemy', 'cloud', 'shot', 'player', 'uiProp'),
+  ENTITY_TYPES: new Enum('enemy', 'shot', 'player', 'uiProp'),
   SCENARIO_TYPES: new Enum('destroyall', 'timeout'),
   STATE_TYPES: new Enum('pause', 'action', 'intro')
 };

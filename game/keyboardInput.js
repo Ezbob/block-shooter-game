@@ -20,7 +20,7 @@ export default class KeyboardInput {
 
   setup() {
     window.onkeydown = (event) => {
-      event.preventDefault();
+      if (event.keyCode != 123) event.preventDefault();
       this.keyMap[event.keyCode] = (event.type == 'keydown');
     };
 

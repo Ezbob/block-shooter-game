@@ -1,98 +1,18 @@
-import Cloud from '../actors/cloud.js';
 import HealthBar from '../actors/healthBar.js';
 import Player from '../actors/player.js';
-import Shot from '../actors/shot.js';
 import Weako from '../actors/weako.js';
-import CircularBuffer from '../dataStructures/circularBuffer.js';
 import Scenario from '../dataStructures/scenario.js';
 import ScenarioBasedState from '../dataStructures/scenarioBasedState.js';
-import Vector from '../dataStructures/vector.js';
 import Constants from '../sharedConstants.js';
 import Variables from '../sharedVariables.js';
-import Utils from '../utils.js';
-
-class CloudCollection extends CircularBuffer {
-  constructor(maxClouds) {
-    super(maxClouds);
-    this.maxClouds = maxClouds;
-  };
-
-  load() {
-    for (var i = 0; i < this.maxClouds; ++i) {
-      let newCloudPos = new Vector(
-          Utils.randomBetween(1, Constants.CANVAS_WIDTH - 1),
-          Utils.randomBetween(-15, Constants.CANVAS_HEIGHT >> 1));
-
-      this.push(new Cloud({width: 20, height: 20}, newCloudPos));
-    }
-  };
-
-  update() {
-    var size = this.size;
-    for (var i = 0; i < size; i++) {
-      var current1 = this.next();
-      if (current1.isEnabled()) {
-        current1.update();
-      } else {
-        current1.reset();
-      }
-    }
-  };
-
-  draw() {
-    var size = this.size;
-    for (var i = 0; i < size; i += 2) {
-      var current1 = this[i];
-      if (current1.isEnabled()) {
-        current1.draw();
-      }
-    }
-  };
-};
-
-class ShotCollection extends CircularBuffer {
-  constructor(maxShots) {
-    super(maxShots);
-    this.maxShots = maxShots;
-  }
-
-  load() {
-    for (var i = 0; i < this.maxShots; ++i) {
-      this.push(new Shot());
-    }
-  };
-
-  update() {
-    var size = this.size;
-    for (var i = 0; i < size; i++) {
-      var current1 = this.next();
-      if (current1.isEnabled()) {
-        current1.update();
-      } else {
-        current1.reset();
-      }
-    }
-  };
-
-  draw() {
-    var size = this.size;
-    for (var i = 0; i < size; i += 2) {
-      var current1 = this[i];
-      if (current1.isEnabled()) {
-        current1.draw();
-      }
-    }
-  };
-};
 
 export default class FirstStage extends ScenarioBasedState {
   constructor() {
     super();
-    this.MAX_SHOTS = 300;
+    //this.MAX_SHOTS = 300;
     this.NUMBER_OF_CLOUDS = 30;
-    this.clouds = new CloudCollection(this.NUMBER_OF_CLOUDS);
-    this.shots = new ShotCollection(this.MAX_SHOTS);
-    this.player = new Player(this.shots);
+    //this.shots = new ShotCollection(this.MAX_SHOTS);
+    this.player = new Player();
     this.healthBar = new HealthBar(this.player);
   }
 
@@ -121,15 +41,13 @@ export default class FirstStage extends ScenarioBasedState {
   };
 
   load() {
-    this.clouds.load();
-    this.shots.load();
 
     var secondEncounter = new Scenario();
-    secondEncounter.addEnemy(new Weako(this.player, this.shots));
+    secondEncounter.addEnemy(new Weako(this.player));
     this.scenarioStack.push(secondEncounter);
 
     var firstEncounter = new Scenario();
-    firstEncounter.addEnemy(new Weako(this.player, this.shots));
+    firstEncounter.addEnemy(new Weako(this.player));
     this.scenarioStack.push(firstEncounter);
     this.getCurrentScenario().start();
     this.isLoaded = true;
@@ -138,8 +56,6 @@ export default class FirstStage extends ScenarioBasedState {
   update() {
     this.player.update();
     this.healthBar.update();
-    this.clouds.update();
-    this.shots.update();
     this.updateEnemies();
 
     var currentScenario = this.getCurrentScenario();
@@ -159,8 +75,7 @@ export default class FirstStage extends ScenarioBasedState {
     var ctx = Variables.canvasManager.getCanvasContext();
     this.player.draw();
     this.healthBar.draw();
-    this.clouds.draw();
-    this.shots.draw();
+    //this.shots.draw();
     this.drawEnemies();
 
     if (!this.player.isEnabled()) {

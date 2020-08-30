@@ -3,14 +3,14 @@ import Vector from '../dataStructures/vector.js';
 import Constants from '../sharedConstants.js';
 import Variables from '../sharedVariables.js';
 import utils from '../utils.js';
+import ShotCollection from './shotCollection.js';
 
 export default class Player extends Entity {
-
-  constructor(shots) {
+  constructor() {
     super(Constants.ENTITY_TYPES.get('player'));
 
     this.BASE_VELOCITY = {x: 2, y: 2};
-    this.shots = shots;
+    this.shots = new ShotCollection(50);
 
     this.health = {current: 400, max: 400};
     this.color = 'rgb(0,8,255)';
@@ -21,7 +21,8 @@ export default class Player extends Entity {
     this.position = new Vector(
         Constants.CANVAS_WIDTH / 2 - 32,
         Constants.CANVAS_HEIGHT - (Constants.CANVAS_HEIGHT / 6));
-    this.gun = {limit: 50, velocity: 1.22};
+    this.gun =
+        {limit: 50, velocity: 1.22, timeInBetween: 100, previous_time: 0};
   }
 
   isEnabled() {
@@ -29,6 +30,7 @@ export default class Player extends Entity {
   };
 
   draw() {
+    this.shots.draw();
     var ctx = Variables.canvasManager.getCanvasContext();
     if (this.isEnabled()) {
       var old = ctx.fillStyle;
@@ -46,8 +48,8 @@ export default class Player extends Entity {
     var xVel = this.velocity.x, yVel = this.velocity.y;
 
     var oldV = this.velocity.x;
-    this.velocity.x = (
-        Math.min(oldV + this.acceleration.x * dt, this.velocityLimit));
+    this.velocity.x =
+        (Math.min(oldV + this.acceleration.x * dt, this.velocityLimit));
     var nextPosition = x + directX * dt * (oldV + xVel) / 2;
     var myLeft = nextPosition + this.dimension.width;
     if (nextPosition > 0 && myLeft <= Constants.CANVAS_WIDTH) {
@@ -59,8 +61,8 @@ export default class Player extends Entity {
     }
 
     var oldV = this.velocity.y;
-    this.velocity.y = (
-        Math.min(oldV + this.acceleration.y * dt, this.velocityLimit));
+    this.velocity.y =
+        (Math.min(oldV + this.acceleration.y * dt, this.velocityLimit));
     var nextPosition = y + directY * dt * (oldV + yVel) / 2;
     var myBottom = nextPosition + this.dimension.height;
     if (nextPosition > 0 && myBottom <= Constants.CANVAS_HEIGHT) {
@@ -73,10 +75,17 @@ export default class Player extends Entity {
   };
 
   shoot() {
-    this.shots.next().fire(this);
+    if ((Variables.frameClock.now - this.gun.previous_time) >=
+        this.gun.timeInBetween) {
+      this.gun.previous_time = Variables.frameClock.now;
+      this.shots.fire_next(this);
+    }
   };
 
   update() {
+    this.shots.update()
+
+    /*
     var shots = this.shots;
     for (var i = 0; i < shots.size; ++i) {
       var shot = shots.next();
@@ -85,5 +94,6 @@ export default class Player extends Entity {
         shot.reset();
       }
     }
+    */
   };
 };
