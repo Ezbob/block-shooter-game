@@ -11,18 +11,18 @@ export default class ControlSystem {
     for (let e of entities) {
         let [pv, cv] =  e;
         if (Variables.keyboardInput.isKeyPressed('down')) {
-            pv.velocity.y = velocityNudge * (cv.inverse ? -1 : 1);
+            pv.velocity.y = velocityNudge * cv.inverse.y;
         }
         if (Variables.keyboardInput.isKeyPressed('up')) {
-            pv.velocity.y = -velocityNudge * (cv.inverse ? -1 : 1);
+            pv.velocity.y = -velocityNudge * cv.inverse.y;
         }
 
         if (Variables.keyboardInput.isKeyPressed('left')) {
-            pv.velocity.x = -velocityNudge * (cv.inverse ? -1 : 1);
+            pv.velocity.x = -velocityNudge * cv.inverse.x;
         }
 
         if (Variables.keyboardInput.isKeyPressed('right')) {
-            pv.velocity.x = velocityNudge * (cv.inverse ? -1 : 1);
+            pv.velocity.x = velocityNudge * cv.inverse.x;
         }
     }
   }

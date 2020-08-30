@@ -13,19 +13,35 @@ import PhysicsSystem from '../systems/physicsSystem.js';
 export default class ComponentStage extends GameState {
 
     load() {
-        this.player = entityManager.createNewEntity(
+        entityManager.createNewEntity(
             new PositionalComponent(),
             new DimensionalComponent(new Vector(32, 32)),
             new DrawableComponent(),
             new ControllableComponent()
         );
 
-        this.player2 = entityManager.createNewEntity(
+        entityManager.createNewEntity(
             new PositionalComponent(
                 new Vector( sharedConstants.CANVAS_WIDTH - 32, sharedConstants.CANVAS_HEIGHT - 32)),
             new DimensionalComponent(new Vector(32, 32)),
             new DrawableComponent('red'),
-            new ControllableComponent(true)
+            new ControllableComponent(0, {inverseX: true, inverseY: true})
+        );
+
+        entityManager.createNewEntity(
+            new PositionalComponent(
+                new Vector( 0, sharedConstants.CANVAS_HEIGHT - 32)),
+            new DimensionalComponent(new Vector(32, 32)),
+            new DrawableComponent('green'),
+            new ControllableComponent(0, {inverseX: false, inverseY: true})
+        );
+
+        entityManager.createNewEntity(
+            new PositionalComponent(
+                new Vector( sharedConstants.CANVAS_WIDTH - 32, 0)),
+            new DimensionalComponent(new Vector(32, 32)),
+            new DrawableComponent('violet'),
+            new ControllableComponent(0, {inverseX: true, inverseY: false})
         );
 
         this.systems = [
