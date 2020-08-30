@@ -8,7 +8,7 @@ import DrawingSystem from '../systems/drawingSystem.js';
 import ControllableComponent from '../components/controllableComponent.js';
 import ControlSystem from '../systems/controlSystem.js';
 import sharedConstants from '../sharedConstants.js';
-import PhysicsSystem from '../systems/physisSystem.js';
+import PhysicsSystem from '../systems/physicsSystem.js';
 
 export default class ComponentStage extends GameState {
 
