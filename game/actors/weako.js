@@ -54,7 +54,8 @@ export default class Weako extends Entity {
   };
 
   shoot() {
-    if ( (Variables.frameClock.now - this.gun.previous_time) >= this.gun.timeInBetween ) {
+    if ((Variables.frameClock.now - this.gun.previous_time) >=
+        this.gun.timeInBetween) {
       this.gun.previous_time = Variables.frameClock.now;
       this.shots.fire_next(this);
     }
@@ -67,12 +68,12 @@ export default class Weako extends Entity {
 
     this.position.addMut(unitDisplacement.mulMembers(this.velocity.mul(dt)));
 
-    if (this.path.points.next_index === (this.path.points.length - 1) &&
+    if (this.path.points.nextIndex === (this.path.points.length - 1) &&
         !this.reverse) {
       this.reverse = true;
     }
 
-    if (this.path.points.next_index === 0 && this.reverse) {
+    if (this.path.points.nextIndex === 0 && this.reverse) {
       this.reverse = false;
     }
 
@@ -89,7 +90,7 @@ export default class Weako extends Entity {
     var dt = Variables.frameClock.dt
     var player = this.player;
     this.travel(dt);
-    
+
     this.shots.update()
 
     if (/*x >= player.position.x - 10 &&
@@ -106,6 +107,5 @@ export default class Weako extends Entity {
         shot.reset();
       }
     }
-    
   };
 }
