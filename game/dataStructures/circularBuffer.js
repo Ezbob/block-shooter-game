@@ -1,12 +1,15 @@
 
 export default class CircularBuffer extends Array {
 
-  constructor(size, FillPrototype) {
-    super();
+  constructor(...args) {
+    super(...args);
 
-    this.size = size || 15;
+    this.size = args.length;
     this.next_index = 0;
-  
+  }
+
+  fill(size, FillPrototype) {
+    this.size = size;
     if (!(typeof FillPrototype == 'undefined' || FillPrototype == null)) {
       for (var i = 0; i < this.size; ++i) {
         this.push(new FillPrototype(arguments.slice(2)));
