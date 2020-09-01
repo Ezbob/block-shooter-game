@@ -1,7 +1,8 @@
 
-export default class Vector extends Array {
-  constructor(...args: number[]) {
-    super(...args)
+export default class Vector2D extends Array<number> {
+
+  constructor(x: number, y: number) {
+    super(x, y);
   }
 
   get x() {
@@ -12,20 +13,12 @@ export default class Vector extends Array {
     return this[1];
   };
 
-  get z() {
-    return this[2];
-  };
-
   set x(x) {
     this[0] = x;
   };
 
   set y(y) {
     this[1] = y;
-  };
-
-  set z(z) {
-    this[2] = z;
   };
 
   magnitude() {
@@ -36,37 +29,30 @@ export default class Vector extends Array {
     return Math.sqrt(sum);
   };
 
-  add(other: Vector) {
-    let res = new Vector();
+  add(other: Vector2D) : Vector2D {
+    let res = new Vector2D(0, 0);
     for (let i = 0; i < this.length; ++i) {
       res[i] = this[i] + other[i];
     }
     return res;
   };
 
-  addMut(other: Vector) {
+  addMut(other: Vector2D) {
     for (let i = 0; i < this.length; ++i) {
       this[i] = this[i] + other[i];
     }
     return this;
   };
 
-  addMutScalars(...scalars: number[]) {
-    for (let i = 0; i < this.length; ++i) {
-      this[i] = this[i] + scalars[i];
-    }
-    return this;
-  };
-
-  sub(other: Vector) {
-    let res = new Vector();
+  sub(other: Vector2D) {
+    let res = new Vector2D(0, 0);
     for (let i = 0; i < this.length; ++i) {
       res[i] = this[i] - other[i];
     }
     return res;
   };
 
-  subMut(other: Vector) {
+  subMut(other: Vector2D) {
     for (let i = 0; i < this.length; ++i) {
       this[i] = this[i] - other[i];
     }
@@ -80,17 +66,17 @@ export default class Vector extends Array {
     return this;
   };
 
-  rotateMut2d90() {
+  rotateMut90() {
     this[0] = this[1];
     this[1] = -this[0];
   };
 
-  rotate2d() {
-    return new Vector(this[1], -this[0])
+  rotate90() {
+    return new Vector2D(this[1], -this[0])
   };
 
   mul(scalar: number) {
-    let res = new Vector();
+    let res = new Vector2D(0, 0);
     for (let i = 0; i < this.length; ++i) {
       res[i] = this[i] * scalar;
     }
@@ -104,8 +90,8 @@ export default class Vector extends Array {
     return this;
   };
 
-  mulMembers(other: Vector) {
-    let res = new Vector();
+  mulMembers(other: Vector2D) {
+    let res = new Vector2D(0, 0);
     for (let i = 0; i < this.length; ++i) {
       res[i] = this[i] * other[i];
     }
@@ -120,7 +106,7 @@ export default class Vector extends Array {
     return this.mulMut(1 / this.magnitude())
   };
 
-  dot(other: Vector) {
+  dot(other: Vector2D) {
     let res = 0;
     for (let i = 0; i < this.length; ++i) {
       res += this[i] * other[i];
@@ -128,7 +114,7 @@ export default class Vector extends Array {
     return res;
   };
 
-  equals(other: Vector) {
+  equals(other: Vector2D) {
     if (this.length !== other.length) {
       return false;
     }
@@ -141,15 +127,7 @@ export default class Vector extends Array {
     return true;
   };
 
-  fromArray(array: number[]) {
-    return new Vector(...array);
-  };
-
-  v(a: number[]) {
-    return this.fromArray(a)
-  };
-
   toString() {
-    return 'Vector(' + this.join(', ') + ')';
+    return 'Vector2D(' + this.join(', ') + ')';
   }
 };

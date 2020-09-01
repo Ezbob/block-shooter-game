@@ -1,6 +1,6 @@
 'use strict';
 
-import Vector from './dataStructures/vector';
+import Vector2D from './dataStructures/vector2D';
 
 export default {
   randomBetween(low: number, max: number):
@@ -11,8 +11,8 @@ export default {
     return Math.random() * (max - low) + low;
   },
   intersectingRectangles(
-      rectA: {position: Vector, dimension: Vector},
-      rectB: {position: Vector, dimension: Vector}) {
+      rectA: {position: Vector2D, dimension: Vector2D},
+      rectB: {position: Vector2D, dimension: Vector2D}) {
     var ALeft = rectA.position.x;            // x1
     var ARight = ALeft + rectA.dimension.x;  // x1 + w1
     var ATop = rectA.position.y;             // y1

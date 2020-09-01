@@ -1,14 +1,13 @@
 import Entity from '../dataStructures/entity.js';
-import Vector from '../dataStructures/vector.js';
+import Vector2D from '../dataStructures/vector.js';
 import Constants from '../sharedConstants.js';
 import Variables from '../sharedVariables.js';
 
 export default class HealthBar extends Entity {
-
   constructor(player) {
     super(Constants.ENTITY_TYPES.get('uiProp'));
     this.player = player;
-    this.position = new Vector(
+    this.position = new Vector2D(
         20, Constants.CANVAS_HEIGHT - (Constants.CANVAS_HEIGHT >> 4));
     this.dimension = {width: 150, height: 20};
 
@@ -67,8 +66,8 @@ export default class HealthBar extends Entity {
 
     for (var i = 1; i <= this.beads.number; ++i) {
       ctx.fillRect(
-          startPosition, this.position.y + 2,
-          this.beads.dimension.width - 5, this.beads.dimension.height - 2);
+          startPosition, this.position.y + 2, this.beads.dimension.width - 5,
+          this.beads.dimension.height - 2);
       startPosition += this.beads.dimension.width;
     }
 

@@ -1,6 +1,6 @@
 import GameState from '../dataStructures/gameState.ts';
 import Enum from '../dataStructures/reversibleEnum.ts';
-import Vector from '../dataStructures/vector.ts';
+import Vector2D from '../dataStructures/vector.ts';
 import Constants from '../sharedConstants.ts';
 import Variables from '../sharedVariables.ts';
 
@@ -11,23 +11,23 @@ export default class PauseScreen extends GameState {
       font: 'Helvetica',
       pausedTitle: {
         text: 'Game Paused',
-        position: new Vector(
+        position: new Vector2D(
             Constants.CANVAS_WIDTH >> 1, Constants.CANVAS_HEIGHT / 2.4)
       },
       resumeText: {
         text: 'Resume',
-        position: new Vector(
+        position: new Vector2D(
             Constants.CANVAS_WIDTH >> 1, (Constants.CANVAS_HEIGHT / 2.5) + 62)
       },
       restartText: {
         text: 'Restart',
-        position: new Vector(
+        position: new Vector2D(
             Constants.CANVAS_WIDTH >> 1, (Constants.CANVAS_HEIGHT / 2.5) + 115)
       },
       cursor: {
-        position: new Vector(
+        position: new Vector2D(
             Constants.CANVAS_WIDTH / 2, Constants.CANVAS_HEIGHT / 2.5 + 62),
-        dimension: new Vector(16, 16),
+        dimension: new Vector2D(16, 16),
         color: 'black',
         choices: new Enum('resume', 'restart'),
         pointingAt: null
@@ -49,20 +49,17 @@ export default class PauseScreen extends GameState {
     ctx.fillStyle = 'black';
     ctx.textAlign = 'center';
     ctx.fillText(
-        this.resources.pausedTitle.text,
-        this.resources.pausedTitle.position.x,
+        this.resources.pausedTitle.text, this.resources.pausedTitle.position.x,
         this.resources.pausedTitle.position.y);
 
     ctx.font = '24px ' + this.resources.font;
     ctx.fillText(
-        this.resources.resumeText.text,
-        this.resources.resumeText.position.x,
+        this.resources.resumeText.text, this.resources.resumeText.position.x,
         this.resources.resumeText.position.y);
 
     ctx.font = '24px ' + this.resources.font;
     ctx.fillText(
-        this.resources.restartText.text,
-        this.resources.restartText.position.x,
+        this.resources.restartText.text, this.resources.restartText.position.x,
         this.resources.restartText.position.y);
 
     var textWidth;
@@ -76,10 +73,9 @@ export default class PauseScreen extends GameState {
     ctx.fillStyle = this.resources.cursor.color;
     ctx.fillRect(
         this.resources.cursor.position.x + (textWidth >> 1) + 15,
-        this.resources.cursor.position.y -
-            this.resources.cursor.dimension.y + 2,
-        this.resources.cursor.dimension.x,
-        this.resources.cursor.dimension.y);
+        this.resources.cursor.position.y - this.resources.cursor.dimension.y +
+            2,
+        this.resources.cursor.dimension.x, this.resources.cursor.dimension.y);
   };
 
   control() {

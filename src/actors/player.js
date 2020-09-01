@@ -1,5 +1,5 @@
 import Entity from '../dataStructures/entity.js';
-import Vector from '../dataStructures/vector.js';
+import Vector2D from '../dataStructures/vector.js';
 import Constants from '../sharedConstants.js';
 import Variables from '../sharedVariables.js';
 import utils from '../utils.js';
@@ -14,11 +14,11 @@ export default class Player extends Entity {
 
     this.health = {current: 400, max: 400};
     this.color = 'rgb(0,8,255)';
-    this.velocity = new Vector(this.BASE_VELOCITY.x, this.BASE_VELOCITY.y);
-    this.acceleration = new Vector(0.5, 0.5);
+    this.velocity = new Vector2D(this.BASE_VELOCITY.x, this.BASE_VELOCITY.y);
+    this.acceleration = new Vector2D(0.5, 0.5);
     this.velocityLimit = 0.55;
     this.dimension = {width: 32, height: 32};
-    this.position = new Vector(
+    this.position = new Vector2D(
         Constants.CANVAS_WIDTH / 2 - 32,
         Constants.CANVAS_HEIGHT - (Constants.CANVAS_HEIGHT / 6));
     this.gun =

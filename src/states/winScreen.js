@@ -1,5 +1,5 @@
 import GameState from '../dataStructures/gameState.js';
-import Vector from '../dataStructures/vector.js';
+import Vector2D from '../dataStructures/vector.js';
 import Constants from '../sharedConstants.js';
 import Variables from '../sharedVariables.js';
 import Utils from '../utils.js';
@@ -10,7 +10,7 @@ export default class WinScreen extends GameState {
     this.resources = {
       gameWinFont: {
         font: 'Helvetica',
-        position: new Vector(
+        position: new Vector2D(
             Constants.CANVAS_WIDTH >> 1, Constants.CANVAS_HEIGHT >> 1),
         color: 'darkgreen',
         text: 'YOU\'RE A WINNER!'

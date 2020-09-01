@@ -1,6 +1,6 @@
 import CircularBuffer from '../dataStructures/circularBuffer.js';
 import Entity from '../dataStructures/entity.js';
-import Vector from '../dataStructures/vector.js';
+import Vector2D from '../dataStructures/vector2D.js';
 import Constants from '../sharedConstants.js';
 import Variables from '../sharedVariables.js';
 
@@ -11,11 +11,11 @@ class Shot extends Entity {
     this.color = options.color || '#FF5800';
     this.isFired = false;
     this.dimension = options.dimension || {width: 6, height: 10};
-    this.position = new Vector(0, 0);
+    this.position = new Vector2D(0, 0);
     this.velocity = options.velocity || 0.5;
     this.direction = options.direction || -1;
     this.damage = 10;
-    this.translator = new Vector(0, 0);
+    this.translator = new Vector2D(0, 0);
   }
 
   fire(shooter) {
@@ -59,7 +59,7 @@ class Shot extends Entity {
   };
 
   reset() {
-    this.position = new Vector(0, 0);
+    this.position = new Vector2D(0, 0);
     this.isFired = false;
     this.shooter = null;
   };

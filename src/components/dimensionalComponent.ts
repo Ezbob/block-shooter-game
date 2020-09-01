@@ -1,5 +1,5 @@
-import Vector from '../dataStructures/vector'
+import Vector2D from '../dataStructures/vector2D'
 
 export default class DimensionalComponent {
-  constructor(public dimension: Vector = new Vector(10, 10)) {}
+  constructor(public dimension: Vector2D = new Vector2D(10, 10)) {}
 }

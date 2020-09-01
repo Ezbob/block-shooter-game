@@ -1,6 +1,6 @@
 import Entity from '../dataStructures/entity.js';
 import SinePath from '../dataStructures/sinePath.js';
-import Vector from '../dataStructures/vector.js';
+import Vector2D from '../dataStructures/vector2D.js';
 import Debug from '../debug.js';
 import Constants from '../sharedConstants.js';
 import Variables from '../sharedVariables.js';
@@ -17,14 +17,14 @@ export default class Weako extends Entity {
     this.shots = new ShotCollection(this.gun.limit, 1);
     this.dimension = {width: 32, height: 32};
     this.position =
-        new Vector(Constants.CANVAS_WIDTH - this.dimension.width, 40);
+        new Vector2D(Constants.CANVAS_WIDTH - this.dimension.width, 40);
     this.color = 'red';
     this.health = {current: 200, max: 200};
-    this.velocity = new Vector(0.2, 0.1);
+    this.velocity = new Vector2D(0.2, 0.1);
     this.reverse = false;
 
     this.path = new SinePath(
-        this.position.add(new Vector(1, 1)), new Vector(2, 40), 30, 20, 4);
+        this.position.add(new Vector2D(1, 1)), new Vector2D(2, 40), 30, 20, 4);
     this.next_waypoint = this.path.next();
   }
 
