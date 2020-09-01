@@ -1,15 +1,12 @@
-import Vector from "../dataStructures/vector";
-import CircularBuffer from "../dataStructures/circularBuffer";
+import CircularBuffer from '../dataStructures/circularBuffer';
+import Vector from '../dataStructures/vector';
 
 export default class PathComponent {
-    path: CircularBuffer<Vector>;
-    reverseWhenDone: boolean;
-    nextWayPoint: Vector | null;
-    followingVelocity: Vector;
-    constructor(path?: CircularBuffer<Vector>, reverseWhenDone?: boolean, followingVelocity?: Vector) {
-        this.path = path || new CircularBuffer<Vector>();
-        this.reverseWhenDone = reverseWhenDone || false;
-        this.nextWayPoint = null;
-        this.followingVelocity = followingVelocity || new Vector(5, 5);
-    }
+  public nextWayPoint: Vector|null;
+  constructor(
+      public path: CircularBuffer<Vector> = new CircularBuffer(),
+      public reverseWhenDone: boolean = false,
+      public followingVelocity: Vector = new Vector(5, 5)) {
+    this.nextWayPoint = null;
+  }
 };
