@@ -5,5 +5,19 @@ export default class Entity extends Array {
     super(...args);
     this.id = id;
   }
-};
 
+  addComponent(comp: any) {
+    this.push(comp);
+  }
+
+  removeComponent(compType: any) {
+    let index = 0;
+    for (let component of this) {
+      if (component instanceof compType) {
+        this.splice(index, 1);
+        break;
+      }
+      index += 1;
+    }
+  }
+};
