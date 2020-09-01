@@ -17,7 +17,7 @@ export default class ComponentStage extends GameState {
             new PositionalComponent(),
             new DimensionalComponent(new Vector(32, 32)),
             new DrawableComponent(),
-            new ControllableComponent()
+            new ControllableComponent(0, new Vector(5, 0))
         );
 
         entityManager.createNewEntity(
@@ -25,7 +25,7 @@ export default class ComponentStage extends GameState {
                 new Vector( sharedConstants.CANVAS_WIDTH - 32, sharedConstants.CANVAS_HEIGHT - 32)),
             new DimensionalComponent(new Vector(32, 32)),
             new DrawableComponent('red'),
-            new ControllableComponent(0, {inverseX: true, inverseY: true})
+            new ControllableComponent(0, new Vector(5, 0))
         );
 
         entityManager.createNewEntity(
@@ -33,7 +33,7 @@ export default class ComponentStage extends GameState {
                 new Vector( 0, sharedConstants.CANVAS_HEIGHT - 32)),
             new DimensionalComponent(new Vector(32, 32)),
             new DrawableComponent('green'),
-            new ControllableComponent(0, {inverseX: false, inverseY: true})
+            new ControllableComponent(0, new Vector(5, 0))
         );
 
         entityManager.createNewEntity(
@@ -41,7 +41,7 @@ export default class ComponentStage extends GameState {
                 new Vector( sharedConstants.CANVAS_WIDTH - 32, 0)),
             new DimensionalComponent(new Vector(32, 32)),
             new DrawableComponent('violet'),
-            new ControllableComponent(0, {inverseX: true, inverseY: false})
+            new ControllableComponent(0, new Vector(5, 0))
         );
 
         this.systems = [

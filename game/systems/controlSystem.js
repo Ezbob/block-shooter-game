@@ -7,22 +7,22 @@ export default class ControlSystem {
   update() {
     let entities = entityManager.getEntitiesByComponents(
         PositionComponent, ControllableComponent);
-    let velocityNudge = 5;
+
     for (let e of entities) {
         let [pv, cv] =  e;
         if (Variables.keyboardInput.isKeyPressed('down')) {
-            pv.velocity.y = velocityNudge * cv.inverse.y;
+            pv.velocity.y = cv.inputForce.y;
         }
         if (Variables.keyboardInput.isKeyPressed('up')) {
-            pv.velocity.y = -velocityNudge * cv.inverse.y;
+            pv.velocity.y = -cv.inputForce.y;
         }
 
         if (Variables.keyboardInput.isKeyPressed('left')) {
-            pv.velocity.x = -velocityNudge * cv.inverse.x;
+            pv.velocity.x = -cv.inputForce.x;
         }
 
         if (Variables.keyboardInput.isKeyPressed('right')) {
-            pv.velocity.x = velocityNudge * cv.inverse.x;
+            pv.velocity.x = cv.inputForce.x;
         }
     }
   }
