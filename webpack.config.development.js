@@ -7,7 +7,7 @@ const babelOptions = {
 module.exports = {
   mode: 'development',
 
-  entry: './game/main.ts',
+  entry: './src/main.ts',
 
   output: {path: path.resolve(__dirname, 'dist'), filename: 'bundle.js'},
 
