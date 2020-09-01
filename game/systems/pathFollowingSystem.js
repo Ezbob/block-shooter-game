@@ -25,31 +25,15 @@ export default class PathFollowingSystem {
 
       if (nextWayPoint) {
         let displ = nextWayPoint.sub(position);
-        let unitDispl = displ.norm();
         let distance = displ.magnitude();
-        let shouldReverse = false;
+        displ.normMut();
 
-        if (!this.hasReachedNextPoint(distance)) {
-          posComponent.velocity.x = unitDispl.x * 5
-          posComponent.velocity.y = unitDispl.y * 5
-        }
-
-        if (path.next_index === (path.length - 1) && pathComponent.reverseWhenDone) {
-          shouldReverse = true;
-        }
-
-        if (path.next_index === 0 && pathComponent.reverseWhenDone) {
-          shouldReverse = false;
-        }
-
-        if (this.hasReachedNextPoint(distance) && !shouldReverse) {
+        if (this.hasReachedNextPoint(distance)) {
           pathComponent.nextWayPoint = path.next();
+        } else {
+          posComponent.velocity =
+              displ.mulMembers(pathComponent.followingVelocity)
         }
-
-        if (this.hasReachedNextPoint(distance) && shouldReverse) {
-          pathComponent.nextWayPoint = path.prev();
-        }
-
       }
     }
   }

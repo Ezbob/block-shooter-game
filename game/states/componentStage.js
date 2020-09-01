@@ -33,8 +33,10 @@ export default class ComponentStage extends GameState {
         new DrawableComponent('red'),
         new PathComponent(new CircularBuffer(
           new Vector((sharedConstants.CANVAS_WIDTH - 32) - 64, (sharedConstants.CANVAS_HEIGHT / 10)),
-          new Vector(0, (sharedConstants.CANVAS_HEIGHT / 10))
-        )));
+          new Vector((sharedConstants.CANVAS_WIDTH / 2), 10),
+          new Vector(0, (sharedConstants.CANVAS_HEIGHT / 10)),
+          new Vector(10, (sharedConstants.CANVAS_HEIGHT / 100)),
+        ), true));
 
     this.systems = [
       new PathFollowingSystem(), new ControlSystem(), new PhysicsSystem(),
