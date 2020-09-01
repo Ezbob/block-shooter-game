@@ -1,6 +1,7 @@
 import Entity from './entity';
 
 let idGenerator = new class {
+  private _id: number;
   constructor() {
     this._id = 0;
   }
@@ -11,13 +12,13 @@ let idGenerator = new class {
 }
 
 class EntityManager extends Array {
-  createNewEntity(...components) {
+  createNewEntity(...components: any[]) {
     let entity = new Entity(idGenerator.next, ...components);
     this.push(entity);
     return entity;
   }
 
-  getEntitiesByComponents(...componentList) {
+  getEntitiesByComponents(...componentList: any) {
     let results = [];
     for (let entity of this) {
       if (componentList.length > entity.length) {

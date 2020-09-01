@@ -1,7 +1,6 @@
-'use strict';
-import Variables from './sharedVariables.js';
-import Constants from './sharedConstants.js';
-import ComponentStage from './states/componentStage.js';
+
+import Variables from './sharedVariables';
+import ComponentStage from './states/componentStage';
 
 
 (function main() {
@@ -20,9 +19,9 @@ import ComponentStage from './states/componentStage.js';
   Variables.canvasManager.setup();
 
   Variables.stateStack.push(new ComponentStage());
-  //Variables.stateStack.push(new WinScreen());
-  //Variables.stateStack.push(new FirstStage());
-  //Variables.stateStack.push(new SplashScreen());
+  // Variables.stateStack.push(new WinScreen());
+  // Variables.stateStack.push(new FirstStage());
+  // Variables.stateStack.push(new SplashScreen());
 
   Variables.runtime.run();
 })();

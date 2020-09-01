@@ -1,8 +1,8 @@
 import PositionComponent from '../components/positionalComponent';
 import entityManager from '../dataStructures/entityManager';
-import Variables from '../sharedVariables.js';
+import ISystem from './iSystem';
 
-export default class PhysicsSystem {
+export default class PhysicsSystem implements ISystem {
   update() {
     let entities = entityManager.getEntitiesByComponents(PositionComponent);
 

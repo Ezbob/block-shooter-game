@@ -1,8 +1,8 @@
-import GameState from '../dataStructures/gameState.js';
-import Enum from '../dataStructures/reversibleEnum.js';
-import Vector from '../dataStructures/vector.js';
-import Constants from '../sharedConstants.js';
-import Variables from '../sharedVariables.js';
+import GameState from '../dataStructures/gameState.ts';
+import Enum from '../dataStructures/reversibleEnum.ts';
+import Vector from '../dataStructures/vector.ts';
+import Constants from '../sharedConstants.ts';
+import Variables from '../sharedVariables.ts';
 
 export default class PauseScreen extends GameState {
   constructor() {

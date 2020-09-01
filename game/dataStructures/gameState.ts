@@ -1,14 +1,14 @@
-import Constants from '../sharedConstants.js'
 
-export default class GameState {
-  constructor(type) {
+export default abstract class GameState {
+  protected isPlaying: boolean;
+  protected isLoaded: boolean;
+
+  constructor() {
     // main boolean that determines the activation state of this game state
     this.isPlaying = true;
 
     // triggered when loading
     this.isLoaded = false;
-
-    this.type = type || Constants.STATE_TYPES.get('action');
   }
 
   // single time loading procedure
@@ -18,13 +18,13 @@ export default class GameState {
 
   // per loop update function; calculate positions for the elements of the frame
   // / collision detection
-  update() {};
+  abstract update(): void;
 
   // per loop drawing function; do the actual drawing of the frame
-  draw() {};
+  abstract draw(): void;
 
   // per loop control checker; define the control scheme for this state
-  control() {};
+  abstract control(): void;
 
   // convenience function for stopping the GameState. This will trigger a pop of
   // the gamestate so that the next game state will begin

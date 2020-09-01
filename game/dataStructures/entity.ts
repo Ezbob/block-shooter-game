@@ -1,6 +1,7 @@
 
 export default class Entity extends Array {
-  constructor(id, ...args) {
+  readonly id: number;
+  constructor(id: number, ...args: any[]) {
     super(...args);
     this.id = id;
   }

@@ -1,9 +1,10 @@
-import PositionComponent from '../components/positionalComponent.js';
-import ControllableComponent from '../components/controllableComponent.js';
-import entityManager from '../dataStructures/entityManager.js';
-import Variables from '../sharedVariables.js'
+import PositionComponent from '../components/positionalComponent';
+import ControllableComponent from '../components/controllableComponent';
+import entityManager from '../dataStructures/entityManager';
+import Variables from '../sharedVariables'
+import ISystem from './iSystem';
 
-export default class ControlSystem {
+export default class ControlSystem implements ISystem {
   update() {
     let entities = entityManager.getEntitiesByComponents(
         PositionComponent, ControllableComponent);

@@ -1,9 +1,10 @@
-import Constants from './sharedConstants.js';
-import Variables from './sharedVariables.js';
+import Constants from './sharedConstants';
+import Variables from './sharedVariables';
+import Vector from './dataStructures/vector';
 
 
 export default {
-  drawLine: (start, end, color) => {
+  drawLine: (start: Vector, end: Vector, color?: string) => {
     let ctx = Variables.canvasManager.getCanvasContext();
     if (Constants.DEBUG_ON) {
       ctx.beginPath();
@@ -15,10 +16,9 @@ export default {
     }
   },
 
-  drawPath: (points, color) => {
+  drawPath: (points: Vector[], color?: string) => {
     let ctx = Variables.canvasManager.getCanvasContext();
-    let length =
-        (typeof points.length === 'function' ? points.length() : points.length);
+    let length = points.length;
     if (Constants.DEBUG_ON && length >= 2) {
       ctx.beginPath();
       ctx.strokeStyle = color ? color : 'black';

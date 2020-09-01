@@ -1,6 +1,6 @@
 
 export default class Vector extends Array {
-  constructor(...args) {
+  constructor(...args: number[]) {
     super(...args)
   }
 
@@ -36,7 +36,7 @@ export default class Vector extends Array {
     return Math.sqrt(sum);
   };
 
-  add(other) {
+  add(other: Vector) {
     let res = new Vector();
     for (let i = 0; i < this.length; ++i) {
       res[i] = this[i] + other[i];
@@ -44,21 +44,21 @@ export default class Vector extends Array {
     return res;
   };
 
-  addMut(other) {
+  addMut(other: Vector) {
     for (let i = 0; i < this.length; ++i) {
       this[i] = this[i] + other[i];
     }
     return this;
   };
 
-  addMutScalars(...scalars) {
+  addMutScalars(...scalars: number[]) {
     for (let i = 0; i < this.length; ++i) {
       this[i] = this[i] + scalars[i];
     }
     return this;
   };
 
-  sub(other) {
+  sub(other: Vector) {
     let res = new Vector();
     for (let i = 0; i < this.length; ++i) {
       res[i] = this[i] - other[i];
@@ -66,14 +66,14 @@ export default class Vector extends Array {
     return res;
   };
 
-  subMut(other) {
+  subMut(other: Vector) {
     for (let i = 0; i < this.length; ++i) {
       this[i] = this[i] - other[i];
     }
     return this;
   };
 
-  subMutScalars(...scalars) {
+  subMutScalars(...scalars: number[]) {
     for (let i = 0; i < this.length; ++i) {
       this[i] = this[i] - scalars[i];
     }
@@ -89,7 +89,7 @@ export default class Vector extends Array {
     return new Vector(this[1], -this[0])
   };
 
-  mul(scalar) {
+  mul(scalar: number) {
     let res = new Vector();
     for (let i = 0; i < this.length; ++i) {
       res[i] = this[i] * scalar;
@@ -97,14 +97,14 @@ export default class Vector extends Array {
     return res;
   };
 
-  mulMut(scalar) {
+  mulMut(scalar: number) {
     for (let i = 0; i < this.length; ++i) {
       this[i] = this[i] * scalar;
     }
     return this;
   };
 
-  mulMembers(other) {
+  mulMembers(other: Vector) {
     let res = new Vector();
     for (let i = 0; i < this.length; ++i) {
       res[i] = this[i] * other[i];
@@ -120,7 +120,7 @@ export default class Vector extends Array {
     return this.mulMut(1 / this.magnitude())
   };
 
-  dot(other) {
+  dot(other: Vector) {
     let res = 0;
     for (let i = 0; i < this.length; ++i) {
       res += this[i] * other[i];
@@ -128,7 +128,7 @@ export default class Vector extends Array {
     return res;
   };
 
-  equals(other) {
+  equals(other: Vector) {
     if (this.length !== other.length) {
       return false;
     }
@@ -141,11 +141,11 @@ export default class Vector extends Array {
     return true;
   };
 
-  fromArray(array) {
+  fromArray(array: number[]) {
     return new Vector(...array);
   };
 
-  v(a) {
+  v(a: number[]) {
     return this.fromArray(a)
   };
 

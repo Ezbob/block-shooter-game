@@ -1,9 +1,10 @@
 import PathComponent from '../components/pathComponent';
 import PositionComponent from '../components/positionalComponent';
 import entityManager from '../dataStructures/entityManager';
+import ISystem from './iSystem';
 
-export default class PathFollowingSystem {
-  hasReachedNextPoint(distance) {
+export default class PathFollowingSystem implements ISystem {
+  hasReachedNextPoint(distance: number) {
     return distance <= 15;  // using some lower bound on closeness
   }
 

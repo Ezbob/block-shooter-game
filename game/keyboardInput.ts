@@ -1,36 +1,34 @@
 
 export default class KeyboardInput {
-  constructor() {
-    this.keys = {
-      left: 37,
-      up: 38,
-      right: 39,
-      down: 40,
-      z: 90,
-      x: 88,
-      space: 32,
-      enter: 13,
-      control: 17,
-      alt: 18,
-      escape: 27
-    };
+  private keys: {[key: string]: number} = {
+    left: 37,
+    up: 38,
+    right: 39,
+    down: 40,
+    z: 90,
+    x: 88,
+    space: 32,
+    enter: 13,
+    control: 17,
+    alt: 18,
+    escape: 27
+  };
 
-    this.keyMap = {};
-  }
+  private keyMap: {[key: number]: boolean} = {};
 
   setup() {
-    window.onkeydown = (event) => {
+    window.onkeydown = (event: KeyboardEvent) => {
       if (event.keyCode != 123) event.preventDefault();
       this.keyMap[event.keyCode] = (event.type == 'keydown');
     };
 
-    window.onkeyup = (event) => {
+    window.onkeyup = (event: KeyboardEvent) => {
       event.preventDefault();
       this.keyMap[event.keyCode] = (event.type == 'keydown');
     };
   };
 
-  isKeyPressed(keyName) {
+  isKeyPressed(keyName: string) {
     let keyCode = this.keys[keyName];
     if (!keyCode) {
       return false;

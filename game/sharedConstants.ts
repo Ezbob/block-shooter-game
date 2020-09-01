@@ -1,4 +1,4 @@
-import Enum from './dataStructures/reversibleEnum.js';
+import Enum from './dataStructures/reversibleEnum';
 
 export default {
   CANVAS_HTML_ID: 'playground',

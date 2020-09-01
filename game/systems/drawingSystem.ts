@@ -1,10 +1,11 @@
-import DimensionalComponent from '../components/dimensionalComponent.js';
-import DrawableComponent from '../components/drawableComponent.js';
-import PositionComponent from '../components/positionalComponent.js';
-import entityManager from '../dataStructures/entityManager.js';
-import Variables from '../sharedVariables.js'
+import DimensionalComponent from '../components/dimensionalComponent';
+import DrawableComponent from '../components/drawableComponent';
+import PositionComponent from '../components/positionalComponent';
+import entityManager from '../dataStructures/entityManager';
+import Variables from '../sharedVariables'
+import ISystem from './iSystem';
 
-export default class DrawingSystem {
+export default class DrawingSystem implements ISystem {
   update() {
     let entities = entityManager.getEntitiesByComponents(
         DimensionalComponent, DrawableComponent, PositionComponent);

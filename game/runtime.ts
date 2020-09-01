@@ -1,12 +1,11 @@
-import Constants from './sharedConstants.js';
-import Variables from './sharedVariables.js';
+import Constants from './sharedConstants';
+import Variables from './sharedVariables';
 
 
 export default class Runtime {
 
   gameLoop() {
     Variables.frameClock.update();
-    Variables.scheduler.update();
 
     Variables.canvasManager.getCanvasContext().clearRect(
         0, 0, Constants.CANVAS_WIDTH, Constants.CANVAS_HEIGHT);
