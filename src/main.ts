@@ -1,5 +1,6 @@
 
 import Variables from './sharedVariables';
+import Constants from './sharedConstants';
 import ComponentStage from './states/componentStage';
 
 
@@ -23,5 +24,28 @@ import ComponentStage from './states/componentStage';
   // Variables.stateStack.push(new FirstStage());
   // Variables.stateStack.push(new SplashScreen());
 
-  Variables.runtime.run();
+
+  const gameLoop = () => {
+    Variables.frameClock.update();
+
+    Variables.canvasManager.getCanvasContext().clearRect(
+        0, 0, Constants.CANVAS_WIDTH, Constants.CANVAS_HEIGHT);
+
+    let currentState = Variables.stateStack.getCurrentGameState();
+    if (!currentState) return;
+
+    if (!currentState.isLoaded()) {
+      currentState.load();
+    }
+
+    currentState.control();
+
+    currentState.update();
+
+    currentState.draw();
+
+    window.requestAnimationFrame(gameLoop);
+  };
+
+  window.requestAnimationFrame(gameLoop);
 })();
