@@ -1,4 +1,4 @@
-import Entity from './entity';
+import Entity from './Entity';
 
 let idGenerator = new class {
   private _id: number;

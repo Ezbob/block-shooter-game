@@ -1,6 +1,6 @@
 'use strict';
 
-import Vector2D from './dataStructures/vector2D';
+import Vector2D from './dataStructures/Vector2D';
 
 export default {
   randomBetween(low: number, max: number):

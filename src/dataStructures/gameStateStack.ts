@@ -1,17 +1,16 @@
-import GameState from './gameState';
+import GameState from './GameState';
 
-export default class GameStateStack extends Array {
-  private stoppedStages: GameState[];
+export default class GameStateStack {
+  private stoppedStages: GameState[] = [];
+  private activeStages: GameState[] = [];
+
 
   getCurrentGameState(): GameState | null {
-    // if stateStack is empty then we get a generic gamestate that has the
-    // isPlaying flag set to false so this gamestate automatically stops the
-    // stack machinery
-    return this.length > 0 ? this[this.length - 1] : null;
+    return this.activeStages.length > 0 ? this.activeStages[this.activeStages.length - 1] : null;
   };
 
   haltCurrentGameState() {
-    let current = this.pop();
+    let current = this.activeStages.pop();
     if (current) {
       this.stoppedStages.push(current)
     }
@@ -20,7 +19,15 @@ export default class GameStateStack extends Array {
   startFromLastHaltedGameState() {
     let halted = this.stoppedStages.pop()
     if (halted) {
-      this.push(halted)
+      this.activeStages.push(halted)
     }
+  }
+
+  pushState(gs: GameState) {
+    this.activeStages.push(gs)
+  }
+
+  popState() {
+    this.activeStages.pop()
   }
 }

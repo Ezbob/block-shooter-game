@@ -1,4 +1,4 @@
-import Vector2D from '../dataStructures/vector2D'
+import Vector2D from '../dataStructures/Vector2D'
 
 export default class PositionComponent {
   constructor(

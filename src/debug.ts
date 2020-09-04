@@ -1,5 +1,5 @@
-import Vector2D from './dataStructures/vector2D';
-import Constants from './sharedConstants';
+import Vector2D from './dataStructures/Vector2D';
+import Constants from './SharedConstants';
 import Variables from './sharedVariables';
 
 

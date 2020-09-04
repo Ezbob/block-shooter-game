@@ -1,4 +1,4 @@
-import Constants from './sharedConstants';
+import Constants from './SharedConstants';
 
 export default class CanvasManager {
   private _isAttached: boolean = false;

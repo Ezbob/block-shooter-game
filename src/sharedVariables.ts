@@ -1,12 +1,12 @@
-import GameStateStack from './dataStructures/gameStateStack';
-import FrameClock from './dataStructures/frameClock';
-import CanvasManager from './canvasManager';
-import KeyboardInput from './keyboardInput';
+import GameStateStack from './dataStructures/GameStateStack';
+import FrameClock from './dataStructures/FrameClock';
+import CanvasManager from './CanvasManager';
+//import KeyboardInput from './KeyboardInput';
 
 export default {
   canvasManager: new CanvasManager(),
   frameClock: new FrameClock(),
   stateStack: new GameStateStack(),
-  keyboardInput: new KeyboardInput(),
+  //keyboardInput: new KeyboardInput(),
   isPaused: false
 };

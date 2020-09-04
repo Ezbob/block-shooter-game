@@ -1,7 +1,7 @@
-import PathComponent from '../components/pathComponent';
+import PathComponent from '../components/PathComponent';
 import PositionComponent from '../components/positionalComponent';
 import entityManager from '../dataStructures/entityManager';
-import ISystem from './iSystem';
+import ISystem from './ISystem';
 
 export default class PathFollowingSystem implements ISystem {
   hasReachedNextPoint(distance: number) {
@@ -12,8 +12,7 @@ export default class PathFollowingSystem implements ISystem {
     let entities =
         entityManager.getEntitiesByComponents(PositionComponent, PathComponent);
 
-    for (let e of entities) {
-      let [posComponent, pathComponent] = e;
+    for (let [posComponent, pathComponent] of entities) {
 
       let path = pathComponent.path;
       let position = posComponent.position;
