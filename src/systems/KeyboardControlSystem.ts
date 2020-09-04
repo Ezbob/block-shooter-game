@@ -16,29 +16,29 @@ export default class KeyboardControlSystem implements ISystem {
         this.onEvent.bind(this)
   }
 
-  private pressed: {[key: string]: KeyPressType} = {};
+  private pressed: Map<string, KeyPressType> = new Map<string, KeyPressType>();
 
   onEvent(event: KeyboardEvent) {
     switch (event.type) {
       case 'keydown':
-        this.pressed[event.code] = KeyPressType.KEY_DOWN;
+        this.pressed.set(event.code, KeyPressType.KEY_DOWN);
         break;
       case 'keyup':
-        this.pressed[event.code] = KeyPressType.KEY_UP;
+        this.pressed.set(event.code, KeyPressType.KEY_UP);
         break;
       case 'keypress':
-        this.pressed[event.code] = KeyPressType.KEY_PRESS;
+        this.pressed.set(event.code,  KeyPressType.KEY_PRESS);
         break;
       default:
-        this.pressed[event.code] = KeyPressType.NO_KEY;
+        this.pressed.set(event.code, KeyPressType.NO_KEY);
         break;
     }
   }
 
   releaseKeys() {
-    for (let key in this.pressed) {
-      if (this.pressed[key] === KeyPressType.KEY_UP) {
-        this.pressed[key] = KeyPressType.NO_KEY;
+    for (let [key, value] of this.pressed) {
+      if (value == KeyPressType.KEY_UP) {
+        this.pressed.set(key, KeyPressType.NO_KEY);
       }
     }
   }
@@ -48,18 +48,18 @@ export default class KeyboardControlSystem implements ISystem {
         PositionComponent, KeyboardControllableComponent);
 
     for (let [pv, keyboardComponent] of entities) {
-      if (this.pressed['ArrowDown'] == KeyPressType.KEY_DOWN) {
+      if (this.pressed.get('ArrowDown') == KeyPressType.KEY_DOWN) {
         pv.velocity.y = keyboardComponent.inputForce.y;
       }
-      if (this.pressed['ArrowUp'] == KeyPressType.KEY_DOWN) {
+      if (this.pressed.get('ArrowUp') == KeyPressType.KEY_DOWN) {
         pv.velocity.y = -keyboardComponent.inputForce.y;
       }
 
-      if (this.pressed['ArrowLeft'] == KeyPressType.KEY_DOWN) {
+      if (this.pressed.get('ArrowLeft') == KeyPressType.KEY_DOWN) {
         pv.velocity.x = -keyboardComponent.inputForce.x;
       }
 
-      if (this.pressed['ArrowRight'] == KeyPressType.KEY_DOWN) {
+      if (this.pressed.get('ArrowRight') == KeyPressType.KEY_DOWN) {
         pv.velocity.x = keyboardComponent.inputForce.x;
       }
     }
