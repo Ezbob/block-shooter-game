@@ -13,7 +13,7 @@ import DrawingSystem from '../systems/DrawingSystem';
 import KeyboardControlSystem from '../systems/KeyboardControlSystem';
 import PathFollowingSystem from '../systems/PathFollowingSystem';
 import PhysicsSystem from '../systems/PhysicsSystem';
-import CollisionComponent from '../components/CollisionComponent';
+import CanvasCollisionComponent from '../components/CanvasCollisionComponent';
 
 export default class ComponentStage extends GameState {
   load() {
@@ -26,7 +26,7 @@ export default class ComponentStage extends GameState {
             (CANVAS_HEIGHT - (CANVAS_HEIGHT / 8) - 32))),
         new DimensionalComponent(new Vector2D(32, 32)),
         new DrawableComponent('blue'),
-        new CollisionComponent(true, new Vector2D(10, 10)),
+        new CanvasCollisionComponent(new Vector2D(5, 5), new Vector2D(180, 10)),
         new KeyboardControllableComponent(new Vector2D(10, 10)));
 
     entityManager.createNewEntity(

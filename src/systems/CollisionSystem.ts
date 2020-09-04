@@ -1,4 +1,4 @@
-import CollisionComponent from '../components/CollisionComponent';
+import CollisionComponent from '../components/CanvasCollisionComponent';
 import DimensionalComponent from '../components/DimensionalComponent';
 import PositionalComponent from '../components/PositionalComponent';
 import EntityManager from '../dataStructures/EntityManager';
@@ -16,30 +16,29 @@ export default class CollisionSystem implements ISystem {
       let dimensionalComp = e[1] as DimensionalComponent;
       let collisionComp = e[2] as CollisionComponent;
 
-      if (collisionComp.isConstraintByCanvas) {
-        if (collisionComp.canvasPadding.x > positionComp.position.x) {
-          positionComp.position.x = collisionComp.canvasPadding.x;
-          positionComp.velocity.x = 0;
-        }
-        if (positionComp.position.x + dimensionalComp.dimension.x >
-            SharedConstants.CANVAS_WIDTH - collisionComp.canvasPadding.x) {
-          positionComp.position.x =
-              (SharedConstants.CANVAS_WIDTH - dimensionalComp.dimension.x -
-               collisionComp.canvasPadding.x);
-          positionComp.velocity.x = 0;
-        }
-        if (collisionComp.canvasPadding.y > positionComp.position.y) {
-          positionComp.position.y = collisionComp.canvasPadding.y;
-          positionComp.velocity.y = 0;
-        }
 
-        if (positionComp.position.y + dimensionalComp.dimension.y >
-            SharedConstants.CANVAS_HEIGHT - collisionComp.canvasPadding.y) {
-          positionComp.position.y =
-              (SharedConstants.CANVAS_HEIGHT - dimensionalComp.dimension.y -
-               collisionComp.canvasPadding.y);
-          positionComp.velocity.y = 0;
-        }
+      if (collisionComp.canvasPaddingX.x > positionComp.position.x) {
+        positionComp.position.x = collisionComp.canvasPaddingX.x;
+        positionComp.velocity.x = 0;
+      }
+      if (positionComp.position.x + dimensionalComp.dimension.x >
+          SharedConstants.CANVAS_WIDTH - collisionComp.canvasPaddingX.y) {
+        positionComp.position.x =
+            (SharedConstants.CANVAS_WIDTH - dimensionalComp.dimension.x -
+             collisionComp.canvasPaddingX.y);
+        positionComp.velocity.x = 0;
+      }
+      if (collisionComp.canvasPaddingY.x > positionComp.position.y) {
+        positionComp.position.y = collisionComp.canvasPaddingY.x;
+        positionComp.velocity.y = 0;
+      }
+
+      if (positionComp.position.y + dimensionalComp.dimension.y >
+          SharedConstants.CANVAS_HEIGHT - collisionComp.canvasPaddingY.y) {
+        positionComp.position.y =
+            (SharedConstants.CANVAS_HEIGHT - dimensionalComp.dimension.y -
+             collisionComp.canvasPaddingY.y);
+        positionComp.velocity.y = 0;
       }
     }
   }
