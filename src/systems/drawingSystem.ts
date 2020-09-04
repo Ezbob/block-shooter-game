@@ -1,19 +1,19 @@
 import DimensionalComponent from '../components/DimensionalComponent';
 import DrawableComponent from '../components/DrawableComponent';
-import PositionComponent from '../components/positionalComponent';
-import entityManager from '../dataStructures/entityManager';
+import PositionComponent from '../components/PositionalComponent';
+import entityManager from '../dataStructures/EntityManager';
 import Variables from '../sharedVariables'
 import ISystem from './ISystem';
 
 export default class DrawingSystem implements ISystem {
-  update() {
+  update(): void {
     let entities = entityManager.getEntitiesByComponents(
         DimensionalComponent, DrawableComponent, PositionComponent);
     var ctx = Variables.canvasManager.getCanvasContext();
 
 
-    for (let [dimensionalComponent, drawComponent, positionComponent] of entities) {
-
+    for (let [dimensionalComponent, drawComponent, positionComponent] of
+             entities) {
       if (drawComponent.isFilled) {
         let old = ctx.fillStyle;
         ctx.fillStyle = drawComponent.color;

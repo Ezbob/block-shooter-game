@@ -1,6 +1,6 @@
 import PathComponent from '../components/PathComponent';
-import PositionComponent from '../components/positionalComponent';
-import entityManager from '../dataStructures/entityManager';
+import PositionComponent from '../components/PositionalComponent';
+import entityManager from '../dataStructures/EntityManager';
 import ISystem from './ISystem';
 
 export default class PathFollowingSystem implements ISystem {

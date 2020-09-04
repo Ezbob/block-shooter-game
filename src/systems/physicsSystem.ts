@@ -1,5 +1,5 @@
-import PositionComponent from '../components/positionalComponent';
-import entityManager from '../dataStructures/entityManager';
+import PositionComponent from '../components/PositionalComponent';
+import entityManager from '../dataStructures/EntityManager';
 import ISystem from './ISystem';
 import Debug from '../Debug';
 

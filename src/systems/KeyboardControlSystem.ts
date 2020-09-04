@@ -1,6 +1,6 @@
 import KeyboardControllableComponent from '../components/controllableComponent';
-import PositionComponent from '../components/positionalComponent';
-import entityManager from '../dataStructures/entityManager';
+import PositionComponent from '../components/PositionalComponent';
+import entityManager from '../dataStructures/EntityManager';
 import ISystem from './ISystem';
 
 enum KeyPressType {
@@ -27,7 +27,7 @@ export default class KeyboardControlSystem implements ISystem {
         this.pressed.set(event.code, KeyPressType.KEY_UP);
         break;
       case 'keypress':
-        this.pressed.set(event.code,  KeyPressType.KEY_PRESS);
+        this.pressed.set(event.code, KeyPressType.KEY_PRESS);
         break;
       default:
         this.pressed.set(event.code, KeyPressType.NO_KEY);

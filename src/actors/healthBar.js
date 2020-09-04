@@ -1,6 +1,6 @@
 import Entity from '../dataStructures/entity.js';
 import Vector2D from '../dataStructures/vector.js';
-import Constants from '../sharedConstants.js';
+import Constants from '../SharedConstants.js';
 import Variables from '../sharedVariables.js';
 
 export default class HealthBar extends Entity {
