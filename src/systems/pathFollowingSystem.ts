@@ -23,15 +23,15 @@ export default class PathFollowingSystem implements ISystem {
       let nextWayPoint = pathComponent.nextWayPoint;
 
       if (nextWayPoint) {
-        let displ = nextWayPoint.sub(position);
-        let distance = displ.magnitude();
-        displ.normMut();
+        let displacement = nextWayPoint.sub(position);
+        let distance = displacement.magnitude();
+        displacement.normMut();
 
         if (this.hasReachedNextPoint(distance)) {
           pathComponent.nextWayPoint = path.next();
         } else {
           posComponent.velocity =
-              displ.mulMembers(pathComponent.followingVelocity)
+              displacement.mulMembers(pathComponent.followingVelocity)
         }
       }
     }
