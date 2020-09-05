@@ -1,6 +1,9 @@
+import ShotArchetype from '../archetypes/ShotArchetype';
 import KeyboardControllableComponent from '../components/controllableComponent';
 import PositionComponent from '../components/PositionalComponent';
 import EntityManager from '../dataStructures/EntityManager';
+import Vector2D from '../dataStructures/Vector2D';
+
 import ISystem from './ISystem';
 
 enum KeyPressType {
@@ -47,10 +50,14 @@ export default class KeyboardControlSystem implements ISystem {
     let entities = EntityManager.getEntitiesByComponents(
         PositionComponent, KeyboardControllableComponent);
 
-    for (let [pv, keyboardComponent] of entities) {
+    for (let e of entities) {
+      let pv = e[0] as PositionComponent;
+      let keyboardComponent = e[1] as KeyboardControllableComponent;
+
       if (this.pressed.get('ArrowDown') == KeyPressType.KEY_DOWN) {
         pv.velocity.y = keyboardComponent.inputForce.y;
       }
+
       if (this.pressed.get('ArrowUp') == KeyPressType.KEY_DOWN) {
         pv.velocity.y = -keyboardComponent.inputForce.y;
       }
@@ -62,8 +69,13 @@ export default class KeyboardControlSystem implements ISystem {
       if (this.pressed.get('ArrowRight') == KeyPressType.KEY_DOWN) {
         pv.velocity.x = keyboardComponent.inputForce.x;
       }
+
+      if (this.pressed.get('Space') == KeyPressType.KEY_PRESS) {
+        ShotArchetype.createNew(
+            new Vector2D(pv.position.x, pv.position.y), new Vector2D(0, -5));
+      }
     }
 
-    this.releaseKeys()
+    this.releaseKeys();
   }
 };

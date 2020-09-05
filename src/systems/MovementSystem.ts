@@ -6,6 +6,7 @@ import Debug from '../Debug';
 import SharedConstants from '../SharedConstants';
 
 import ISystem from './ISystem';
+import FrictionComponent from '../components/FrictionComponent';
 
 export default class MovementSystem implements ISystem {
   update() {
@@ -47,10 +48,18 @@ export default class MovementSystem implements ISystem {
       }
     }
 
+    entities = EntityManager.getEntitiesByComponents(PositionalComponent, FrictionComponent);
+
+    for (let e of entities) {
+      let positionComp = e[0] as PositionalComponent;
+      let frictionComp = e[1] as FrictionComponent;
+      positionComp.velocity.mulMut(1 - frictionComp.frictionBreakingForce);
+    }
+
     entities = EntityManager.getEntitiesByComponents(PositionalComponent);
 
     for (let [positionComp] of entities) {
-      positionComp.velocity.mulMut(1 - positionComp.breakingForcePercentage)
+      //positionComp.velocity.mulMut(1 - positionComp.breakingForcePercentage)
 
       positionComp.position.x += positionComp.velocity.x;
       positionComp.position.y += positionComp.velocity.y;
@@ -59,5 +68,6 @@ export default class MovementSystem implements ISystem {
           positionComp.velocity.mul(6).add(positionComp.position),
           positionComp.position);
     }
+
   }
 };
