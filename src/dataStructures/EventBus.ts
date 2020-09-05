@@ -4,8 +4,10 @@ export default class EventBus {
 
     public fireEvent(event: string, ...args: any[]) {
         let handlers = this.eventHandlers.get(event);
-        for (let handler of handlers) {
-            handler(...args);
+        if (handlers) {
+            for (let handler of handlers) {
+                handler(...args);
+            }
         }
     }
 
