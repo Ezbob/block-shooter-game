@@ -17,7 +17,7 @@ export default class EventBus {
             handlers = [];
             this.eventHandlers.set(event, handlers);
         }
-        return handlers.push(handler);
+        return handlers.push(handler) - 1;
     }
 
     public unSubscribe(event: string, token: number) {
