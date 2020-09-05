@@ -1,14 +1,13 @@
+import CanvasCollisionComponent from '../components/CanvasCollisionComponent';
+import DimensionalComponent from '../components/DimensionalComponent';
 import PositionalComponent from '../components/PositionalComponent';
 import EntityManager from '../dataStructures/EntityManager';
 import Debug from '../Debug';
-import ISystem from './ISystem';
-import DimensionalComponent from '../components/DimensionalComponent';
-import CanvasCollisionComponent from '../components/CanvasCollisionComponent';
 import SharedConstants from '../SharedConstants';
-import SharedVariables from '../SharedVariables';
 
-export default class PhysicsSystem implements ISystem {
+import ISystem from './ISystem';
 
+export default class MovementSystem implements ISystem {
   update() {
     let entities = EntityManager.getEntitiesByComponents(
         PositionalComponent, DimensionalComponent, CanvasCollisionComponent);
@@ -18,7 +17,8 @@ export default class PhysicsSystem implements ISystem {
       let dimensionalComp = e[1] as DimensionalComponent;
       let collisionComp = e[2] as CanvasCollisionComponent;
 
-      let breaked = positionComp.velocity.mul(1 - positionComp.breakingForcePercentage)
+      let breaked =
+          positionComp.velocity.mul(1 - positionComp.breakingForcePercentage)
 
       let nextPos = positionComp.position.add(breaked);
 
@@ -31,7 +31,6 @@ export default class PhysicsSystem implements ISystem {
         positionComp.position.x =
             (SharedConstants.CANVAS_WIDTH - dimensionalComp.dimension.x -
              collisionComp.canvasPaddingX.y);
-        SharedVariables.eventBus.fireEvent("would_collide");
         positionComp.velocity.x = 0;
       }
 

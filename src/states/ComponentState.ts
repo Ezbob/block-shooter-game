@@ -11,8 +11,8 @@ import Vector2D from '../dataStructures/Vector2D';
 import SharedConstants from '../SharedConstants';
 import DrawingSystem from '../systems/DrawingSystem';
 import KeyboardControlSystem from '../systems/KeyboardControlSystem';
+import MovementSystem from '../systems/MovementSystem';
 import PathFollowingSystem from '../systems/PathFollowingSystem';
-import PhysicsSystem from '../systems/PhysicsSystem';
 
 export default class ComponentStage extends GameState {
   load() {
@@ -46,7 +46,7 @@ export default class ComponentStage extends GameState {
     this.systems = [
       new PathFollowingSystem(),
       new KeyboardControlSystem(),
-      new PhysicsSystem(),
+      new MovementSystem(),
       new DrawingSystem(),
     ]
     super.load();
