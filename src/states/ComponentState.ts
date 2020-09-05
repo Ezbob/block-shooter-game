@@ -25,7 +25,7 @@ export default class ComponentStage extends GameState {
             ((CANVAS_WIDTH / 2) - 32 / 2),
             (CANVAS_HEIGHT - (CANVAS_HEIGHT / 8) - 32))),
         new DimensionalComponent(new Vector2D(32, 32)),
-        new DrawableComponent('blue'),
+        new DrawableComponent(2, 'blue'),
         new CanvasCollisionComponent(new Vector2D(5, 5), new Vector2D(180, 10)),
         new KeyboardControllableComponent(new Vector2D(10, 10)));
 
@@ -34,7 +34,7 @@ export default class ComponentStage extends GameState {
             new Vector2D((CANVAS_WIDTH - 32), (CANVAS_HEIGHT / 10)),
             new Vector2D(5, 5)),
         new DimensionalComponent(new Vector2D(32, 32)),
-        new DrawableComponent('red'),
+        new DrawableComponent(1, 'red'),
         new PathComponent(
             new CircularBuffer<Vector2D>(
                 new Vector2D((CANVAS_WIDTH - 32) - 64, (CANVAS_HEIGHT / 10)),

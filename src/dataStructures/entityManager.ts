@@ -18,7 +18,7 @@ class EntityManager extends Array {
     return entity;
   }
 
-  getEntitiesByComponents(...componentList: any) : Entity[] {
+  getEntitiesByComponents(...componentList: any) : Entity<any>[] {
     let results = [];
     for (let entity of this) {
       if (componentList.length > entity.length) {

@@ -1,32 +1,39 @@
 import DimensionalComponent from '../components/DimensionalComponent';
 import DrawableComponent from '../components/DrawableComponent';
 import PositionComponent from '../components/PositionalComponent';
-import entityManager from '../dataStructures/EntityManager';
+import EntityManager from '../dataStructures/EntityManager';
 import Variables from '../sharedVariables'
+
 import ISystem from './ISystem';
 
 export default class DrawingSystem implements ISystem {
   update(): void {
-    let entities = entityManager.getEntitiesByComponents(
+    let entities = EntityManager.getEntitiesByComponents(
         DimensionalComponent, DrawableComponent, PositionComponent);
-    var ctx = Variables.canvasManager.getCanvasContext();
 
+    entities.sort((a, b) => {
+      return a[1].priority - b[1].priority;
+    });
 
-    for (let [dimensionalComponent, drawComponent, positionComponent] of
-             entities) {
-      if (drawComponent.isFilled) {
+    let ctx = Variables.canvasManager.getCanvasContext();
+    for (let d of entities) {
+      let drawComp = d[1] as DrawableComponent;
+      let dimenComp = d[0] as DimensionalComponent;
+      let posComp = d[2] as PositionComponent;
+  
+      if (drawComp.isFilled) {
         let old = ctx.fillStyle;
-        ctx.fillStyle = drawComponent.color;
+        ctx.fillStyle = drawComp.color;
         ctx.fillRect(
-            positionComponent.position.x, positionComponent.position.y,
-            dimensionalComponent.dimension.x, dimensionalComponent.dimension.y);
+          posComp.position.x, posComp.position.y,
+          dimenComp.dimension.x, dimenComp.dimension.y);
         ctx.fillStyle = old;
       } else {
         let old = ctx.strokeStyle;
-        ctx.strokeStyle = drawComponent.color;
+        ctx.strokeStyle = drawComp.color;
         ctx.strokeRect(
-            positionComponent.position.x, positionComponent.position.y,
-            dimensionalComponent.dimension.x, dimensionalComponent.dimension.y);
+            posComp.position.x, posComp.position.y,
+            dimenComp.dimension.x, dimenComp.dimension.y);
         ctx.strokeStyle = old;
       }
     }

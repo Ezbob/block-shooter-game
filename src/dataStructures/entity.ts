@@ -1,5 +1,5 @@
 
-export default class Entity extends Array {
+export default class Entity<T> extends Array<T> {
   readonly id: number;
   constructor(id: number, ...args: any[]) {
     super(...args);

@@ -1,4 +1,4 @@
-import CollisionComponent from '../components/CanvasCollisionComponent';
+import CanvasCollisionComponent from '../components/CanvasCollisionComponent';
 import DimensionalComponent from '../components/DimensionalComponent';
 import PositionalComponent from '../components/PositionalComponent';
 import EntityManager from '../dataStructures/EntityManager';
@@ -9,13 +9,12 @@ import ISystem from './ISystem';
 export default class CollisionSystem implements ISystem {
   update(): void {
     let entities = EntityManager.getEntitiesByComponents(
-        PositionalComponent, DimensionalComponent, CollisionComponent);
+        PositionalComponent, DimensionalComponent, CanvasCollisionComponent);
 
     for (let e of entities) {
       let positionComp = e[0] as PositionalComponent;
       let dimensionalComp = e[1] as DimensionalComponent;
-      let collisionComp = e[2] as CollisionComponent;
-
+      let collisionComp = e[2] as CanvasCollisionComponent;
 
       if (collisionComp.canvasPaddingX.x > positionComp.position.x) {
         positionComp.position.x = collisionComp.canvasPaddingX.x;
