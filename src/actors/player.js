@@ -1,7 +1,7 @@
 import Entity from '../dataStructures/entity.js';
 import Vector2D from '../dataStructures/vector.js';
 import Constants from '../SharedConstants.js';
-import Variables from '../sharedVariables.js';
+import Variables from '../SharedVariables.js';
 import utils from '../utils.js';
 import ShotCollection from './shotCollection.js';
 

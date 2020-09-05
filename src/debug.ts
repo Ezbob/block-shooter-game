@@ -1,6 +1,6 @@
 import Vector2D from './dataStructures/Vector2D';
 import Constants from './SharedConstants';
-import Variables from './sharedVariables';
+import Variables from './SharedVariables';
 
 
 export default {

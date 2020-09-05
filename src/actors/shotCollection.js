@@ -2,7 +2,7 @@ import CircularBuffer from '../dataStructures/circularBuffer.js';
 import Entity from '../dataStructures/entity.js';
 import Vector2D from '../dataStructures/vector2D.js';
 import Constants from '../SharedConstants.js';
-import Variables from '../sharedVariables.js';
+import Variables from '../SharedVariables.js';
 
 class Shot extends Entity {
   constructor(options) {

@@ -1,5 +1,5 @@
 
-import Variables from './sharedVariables';
+import Variables from './SharedVariables';
 import Constants from './SharedConstants';
 import ComponentStage from './states/ComponentState';
 

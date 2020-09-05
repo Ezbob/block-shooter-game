@@ -1,6 +1,6 @@
 import KeyboardControllableComponent from '../components/controllableComponent';
 import PositionComponent from '../components/PositionalComponent';
-import entityManager from '../dataStructures/EntityManager';
+import EntityManager from '../dataStructures/EntityManager';
 import ISystem from './ISystem';
 
 enum KeyPressType {
@@ -44,7 +44,7 @@ export default class KeyboardControlSystem implements ISystem {
   }
 
   update() {
-    let entities = entityManager.getEntitiesByComponents(
+    let entities = EntityManager.getEntitiesByComponents(
         PositionComponent, KeyboardControllableComponent);
 
     for (let [pv, keyboardComponent] of entities) {

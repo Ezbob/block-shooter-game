@@ -1,26 +1,25 @@
+import CanvasCollisionComponent from '../components/CanvasCollisionComponent';
 import KeyboardControllableComponent from '../components/controllableComponent';
 import DimensionalComponent from '../components/DimensionalComponent';
 import DrawableComponent from '../components/DrawableComponent';
 import PathComponent from '../components/PathComponent';
 import PositionalComponent from '../components/PositionalComponent';
 import CircularBuffer from '../dataStructures/CircularBuffer';
-import entityManager from '../dataStructures/EntityManager';
+import EntityManager from '../dataStructures/EntityManager';
 import GameState from '../dataStructures/GameState';
 import Vector2D from '../dataStructures/Vector2D';
 import SharedConstants from '../SharedConstants';
-import CollisionSystem from '../systems/CollisionSystem';
 import DrawingSystem from '../systems/DrawingSystem';
 import KeyboardControlSystem from '../systems/KeyboardControlSystem';
 import PathFollowingSystem from '../systems/PathFollowingSystem';
 import PhysicsSystem from '../systems/PhysicsSystem';
-import CanvasCollisionComponent from '../components/CanvasCollisionComponent';
 
 export default class ComponentStage extends GameState {
   load() {
     const CANVAS_WIDTH = SharedConstants.CANVAS_WIDTH;
     const CANVAS_HEIGHT = SharedConstants.CANVAS_HEIGHT;
 
-    entityManager.createNewEntity(
+    EntityManager.createNewEntity(
         new PositionalComponent(new Vector2D(
             ((CANVAS_WIDTH / 2) - 32 / 2),
             (CANVAS_HEIGHT - (CANVAS_HEIGHT / 8) - 32))),
@@ -29,7 +28,7 @@ export default class ComponentStage extends GameState {
         new CanvasCollisionComponent(new Vector2D(5, 5), new Vector2D(180, 10)),
         new KeyboardControllableComponent(new Vector2D(10, 10)));
 
-    entityManager.createNewEntity(
+    EntityManager.createNewEntity(
         new PositionalComponent(
             new Vector2D((CANVAS_WIDTH - 32), (CANVAS_HEIGHT / 10)),
             new Vector2D(5, 5)),
@@ -45,8 +44,10 @@ export default class ComponentStage extends GameState {
             true));
 
     this.systems = [
-      new PathFollowingSystem(), new KeyboardControlSystem(),
-      new PhysicsSystem(), new DrawingSystem(), new CollisionSystem()
+      new PathFollowingSystem(),
+      new KeyboardControlSystem(),
+      new PhysicsSystem(),
+      new DrawingSystem(),
     ]
     super.load();
   }
