@@ -1,6 +1,6 @@
 import Vector2D from '../dataStructures/Vector2D'
 
-export default class PositionComponent {
+export default class PositionalComponent {
   constructor(
       public position: Vector2D = new Vector2D(0, 0),
       public velocity: Vector2D = new Vector2D(0, 0),

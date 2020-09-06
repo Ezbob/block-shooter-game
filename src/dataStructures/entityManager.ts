@@ -18,7 +18,12 @@ class EntityManager extends Array {
     return entity;
   }
 
-  getEntitiesByComponents(...componentList: any) : Entity[] {
+  deleteEntity(entityId: number) {
+    let index = this.findIndex(entity => entity.id === entityId);
+    if (index != -1) this.splice(index, 1);
+  }
+
+  getEntitiesByComponents(...componentList: any): Entity[] {
     let results = [];
     for (let entity of this) {
       if (componentList.length > entity.length) {
