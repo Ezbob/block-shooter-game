@@ -10,9 +10,8 @@ import ISystem from './ISystem';
 
 export default class MovementSystem implements ISystem {
   update() {
-    let entities = EntityManager.filterEntitiesByComponentIds(
-        PositionalComponent.cid, DimensionalComponent.cid,
-        CanvasCollisionComponent.cid);
+    let entities = EntityManager.filterEntitiesByComponentTypes(
+        PositionalComponent, DimensionalComponent, CanvasCollisionComponent);
 
     for (let e of entities) {
       let positionComp = e.getComponentByType(PositionalComponent);
@@ -49,8 +48,8 @@ export default class MovementSystem implements ISystem {
       }
     }
 
-    entities = EntityManager.filterEntitiesByComponentIds(
-        PositionalComponent.cid, FrictionComponent.cid);
+    entities = EntityManager.filterEntitiesByComponentTypes(
+        PositionalComponent, FrictionComponent);
 
     for (let e of entities) {
       let positionComp = e.getComponentByType(PositionalComponent);
@@ -59,7 +58,7 @@ export default class MovementSystem implements ISystem {
     }
 
     entities =
-        EntityManager.filterEntitiesByComponentIds(PositionalComponent.cid);
+        EntityManager.filterEntitiesByComponentTypes(PositionalComponent);
 
     for (let e of entities) {
       let positionComp = e.getComponentByType(PositionalComponent);

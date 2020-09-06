@@ -7,8 +7,8 @@ import ISystem from './ISystem';
 
 export default class CleanUpSystem implements ISystem {
   update(): void {
-    let entities = EntityManager.filterEntitiesByComponentIds(
-        PositionalComponent.cid, CleanUpComponent.cid);
+    let entities = EntityManager.filterEntitiesByComponentTypes(
+        PositionalComponent, CleanUpComponent);
 
     for (let e of entities) {
       let posComp = e.getComponentByType(PositionalComponent);

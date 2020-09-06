@@ -8,8 +8,8 @@ import ISystem from './ISystem';
 
 export default class DrawingSystem implements ISystem {
   update(): void {
-    let entities = EntityManager.filterEntitiesByComponentIds(
-        DimensionalComponent.cid, DrawableComponent.cid, PositionComponent.cid);
+    let entities = EntityManager.filterEntitiesByComponentTypes(
+        DimensionalComponent, DrawableComponent, PositionComponent);
 
     entities.sort((a, b) => {
       let aDrawComp = a.getComponentByType(DrawableComponent);

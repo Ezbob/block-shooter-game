@@ -51,8 +51,8 @@ export default class KeyboardControlSystem implements ISystem {
   }
 
   update() {
-    let entities = EntityManager.filterEntitiesByComponentIds(
-        PositionComponent.cid, KeyboardControllableComponent.cid);
+    let entities = EntityManager.filterEntitiesByComponentTypes(
+        PositionComponent, KeyboardControllableComponent);
 
     for (let e of entities) {
       let pv = e.getComponentByType(PositionalComponent);
@@ -76,9 +76,9 @@ export default class KeyboardControlSystem implements ISystem {
       }
     }
 
-    entities = EntityManager.filterEntitiesByComponentIds(
-        PositionComponent.cid, DimensionalComponent.cid, GunComponent.cid,
-        KeyboardControllableComponent.cid);
+    entities = EntityManager.filterEntitiesByComponentTypes(
+        PositionComponent, DimensionalComponent, GunComponent,
+        KeyboardControllableComponent);
 
     for (let e of entities) {
       let pv = e.getComponentByType(PositionalComponent);
