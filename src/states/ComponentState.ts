@@ -15,6 +15,7 @@ import MovementSystem from '../systems/MovementSystem';
 import PathFollowingSystem from '../systems/PathFollowingSystem';
 import FrictionComponent from '../components/FrictionComponent';
 import CleanUpSystem from '../systems/CleanUpSystem';
+import GunComponent from '../components/GunComponent';
 
 export default class ComponentStage extends GameState {
   load() {
@@ -29,7 +30,8 @@ export default class ComponentStage extends GameState {
         new DrawableComponent(2, 'blue'),
         new FrictionComponent(),
         new CanvasCollisionComponent(new Vector2D(5, 5), new Vector2D(180, 10)),
-        new KeyboardControllableComponent(new Vector2D(10, 10)));
+        new KeyboardControllableComponent(new Vector2D(10, 10)),
+        new GunComponent());
 
     EntityManager.createNewEntity(
         new PositionalComponent(
