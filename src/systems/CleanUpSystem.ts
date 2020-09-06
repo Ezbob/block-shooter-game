@@ -17,7 +17,7 @@ export default class CleanUpSystem implements ISystem {
                 continue;
             }
 
-            if (posComp.position.y > cleanup.limitUpper) {
+            if (posComp.position.y > cleanup.limitLower) {
                 EntityManager.deleteEntity(e.id);
                 continue;
             }
