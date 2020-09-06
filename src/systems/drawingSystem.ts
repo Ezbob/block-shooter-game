@@ -8,20 +8,20 @@ import ISystem from './ISystem';
 
 export default class DrawingSystem implements ISystem {
   update(): void {
-    let entities = EntityManager.getEntitiesByComponentIds(
+    let entities = EntityManager.filterEntitiesByComponentIds(
         DimensionalComponent.cid, DrawableComponent.cid, PositionComponent.cid);
 
     entities.sort((a, b) => {
-      let aDrawComp = a.getComponentById(DrawableComponent.cid) as DrawableComponent;
-      let bDrawComp = b.getComponentById(DrawableComponent.cid) as DrawableComponent;
+      let aDrawComp = a.getComponentByType(DrawableComponent);
+      let bDrawComp = b.getComponentByType(DrawableComponent);
       return aDrawComp.priority - bDrawComp.priority;
     });
 
     let ctx = Variables.canvasManager.getCanvasContext();
-    for (let d of entities) {
-      let drawComp = d.getComponentById(DrawableComponent.cid) as DrawableComponent;
-      let dimenComp = d.getComponentById(DimensionalComponent.cid) as DimensionalComponent;
-      let posComp = d.getComponentById(PositionComponent.cid) as PositionComponent;
+    for (let entity of entities) {
+      let drawComp = entity.getComponentByType(DrawableComponent);
+      let dimenComp = entity.getComponentByType(DimensionalComponent);
+      let posComp = entity.getComponentByType(PositionComponent);
 
       if (drawComp.isFilled) {
         let old = ctx.fillStyle;

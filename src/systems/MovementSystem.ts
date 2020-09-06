@@ -1,22 +1,23 @@
 import CanvasCollisionComponent from '../components/CanvasCollisionComponent';
 import DimensionalComponent from '../components/DimensionalComponent';
+import FrictionComponent from '../components/FrictionComponent';
 import PositionalComponent from '../components/PositionalComponent';
 import EntityManager from '../dataStructures/EntityManager';
 import Debug from '../Debug';
 import SharedConstants from '../SharedConstants';
 
 import ISystem from './ISystem';
-import FrictionComponent from '../components/FrictionComponent';
 
 export default class MovementSystem implements ISystem {
   update() {
-    let entities = EntityManager.getEntitiesByComponentIds(
-        PositionalComponent.cid, DimensionalComponent.cid, CanvasCollisionComponent.cid);
+    let entities = EntityManager.filterEntitiesByComponentIds(
+        PositionalComponent.cid, DimensionalComponent.cid,
+        CanvasCollisionComponent.cid);
 
     for (let e of entities) {
-      let positionComp = e.getComponentById(PositionalComponent.cid) as PositionalComponent;
-      let dimensionalComp = e.getComponentById(DimensionalComponent.cid) as DimensionalComponent;
-      let collisionComp = e.getComponentById(CanvasCollisionComponent.cid) as CanvasCollisionComponent;
+      let positionComp = e.getComponentByType(PositionalComponent);
+      let dimensionalComp = e.getComponentByType(DimensionalComponent);
+      let collisionComp = e.getComponentByType(CanvasCollisionComponent);
 
       let breaked =
           positionComp.velocity.mul(1 - positionComp.breakingForcePercentage)
@@ -48,18 +49,20 @@ export default class MovementSystem implements ISystem {
       }
     }
 
-    entities = EntityManager.getEntitiesByComponentIds(PositionalComponent.cid, FrictionComponent.cid);
+    entities = EntityManager.filterEntitiesByComponentIds(
+        PositionalComponent.cid, FrictionComponent.cid);
 
     for (let e of entities) {
-      let positionComp = e.getComponentById(PositionalComponent.cid) as PositionalComponent;
-      let frictionComp = e.getComponentById(FrictionComponent.cid) as FrictionComponent;
+      let positionComp = e.getComponentByType(PositionalComponent);
+      let frictionComp = e.getComponentByType(FrictionComponent);
       positionComp.velocity.mulMut(1 - frictionComp.frictionBreakingForce);
     }
 
-    entities = EntityManager.getEntitiesByComponentIds(PositionalComponent.cid);
+    entities =
+        EntityManager.filterEntitiesByComponentIds(PositionalComponent.cid);
 
     for (let e of entities) {
-      let positionComp = e.getComponentById(PositionalComponent.cid) as PositionalComponent;
+      let positionComp = e.getComponentByType(PositionalComponent);
 
       positionComp.position.x += positionComp.velocity.x;
       positionComp.position.y += positionComp.velocity.y;
@@ -68,6 +71,5 @@ export default class MovementSystem implements ISystem {
           positionComp.velocity.mul(6).add(positionComp.position),
           positionComp.position);
     }
-
   }
 };
