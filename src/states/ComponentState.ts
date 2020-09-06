@@ -31,7 +31,7 @@ export default class ComponentStage extends GameState {
         new FrictionComponent(),
         new CanvasCollisionComponent(new Vector2D(5, 5), new Vector2D(180, 10)),
         new KeyboardControllableComponent(new Vector2D(10, 10)),
-        new GunComponent());
+        new GunComponent(110));
 
     EntityManager.createNewEntity(
         new PositionalComponent(
