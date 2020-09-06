@@ -1,19 +1,14 @@
 import Entity from './Entity';
 
-let idGenerator = new class {
-  private _id: number;
-  constructor() {
-    this._id = 0;
+class EntityManager extends Array<Entity> {
+  private nextId: number = 0;
+
+  private getNextId(): number {
+    return this.nextId++;
   }
 
-  get next() {
-    return this._id++;
-  }
-}
-
-class EntityManager extends Array {
   createNewEntity(...components: any[]) {
-    let entity = new Entity(idGenerator.next, ...components);
+    let entity = new Entity(this.getNextId(), ...components);
     this.push(entity);
     return entity;
   }
@@ -23,26 +18,14 @@ class EntityManager extends Array {
     if (index != -1) this.splice(index, 1);
   }
 
-  getEntitiesByComponents(...componentList: any): Entity[] {
+  getEntitiesByComponentIds(...componentIds: number[]): Entity[] {
     let results = [];
     for (let entity of this) {
-      if (componentList.length > entity.length) {
+      if (componentIds.length > entity.components.size) {
         continue;  // entity's component list is not a superset
       }
-      let componentSet = new Entity(entity.id);
-      let cindex = 0;
-      for (let componentType of componentList) {
-        for (let component of entity) {
-          if (component instanceof componentType) {
-            componentSet[cindex] = component;  // using cindex guaranties the
-                                               // ordering of the components
-          }
-        }
-        cindex += 1;
-      }
-      if (componentSet.length === componentList.length) {
-        results.push(componentSet);  // we are only interested in components
-                                     // that have all of the input components
+      if (componentIds.every((cid => entity.components.has(cid)))) {
+        results.push(entity)
       }
     }
     return results;

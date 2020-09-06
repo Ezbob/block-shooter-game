@@ -1,5 +1,5 @@
 import ShotArchetype from '../archetypes/ShotArchetype';
-import KeyboardControllableComponent from '../components/controllableComponent';
+import KeyboardControllableComponent from '../components/KeyboardControllableComponent';
 import DimensionalComponent from '../components/DimensionalComponent';
 import GunComponent from '../components/GunComponent';
 import PositionComponent from '../components/PositionalComponent';
@@ -51,12 +51,12 @@ export default class KeyboardControlSystem implements ISystem {
   }
 
   update() {
-    let entities = EntityManager.getEntitiesByComponents(
-        PositionComponent, KeyboardControllableComponent);
+    let entities = EntityManager.getEntitiesByComponentIds(
+        PositionComponent.cid, KeyboardControllableComponent.cid);
 
     for (let e of entities) {
-      let pv = e[0] as PositionComponent;
-      let keyboardComponent = e[1] as KeyboardControllableComponent;
+      let pv = e.getComponentById(PositionalComponent.cid) as PositionComponent;
+      let keyboardComponent = e.getComponentById(KeyboardControllableComponent.cid) as KeyboardControllableComponent;
 
       if (this.pressed.get('ArrowDown') == KeyPressType.KEY_DOWN) {
         pv.velocity.y = keyboardComponent.inputForce.y;
@@ -75,14 +75,14 @@ export default class KeyboardControlSystem implements ISystem {
       }
     }
 
-    entities = EntityManager.getEntitiesByComponents(
-        PositionComponent, DimensionalComponent, GunComponent,
-        KeyboardControllableComponent);
+    entities = EntityManager.getEntitiesByComponentIds(
+        PositionComponent.cid, DimensionalComponent.cid, GunComponent.cid,
+        KeyboardControllableComponent.cid);
 
     for (let e of entities) {
-      let pv = e[0] as PositionalComponent;
-      let dimenComp = e[1] as DimensionalComponent;
-      let gunComp = e[2] as GunComponent;
+      let pv = e.getComponentById(PositionalComponent.cid) as PositionComponent;
+      let dimenComp = e.getComponentById(DimensionalComponent.cid) as DimensionalComponent;
+      let gunComp = e.getComponentById(GunComponent.cid) as GunComponent;
       if (this.pressed.get('Space') == KeyPressType.KEY_PRESS) {
         let diff = SharedVariables.frameClock.now - gunComp.timeSinceLast;
         if (diff > gunComp.shotDelay) {

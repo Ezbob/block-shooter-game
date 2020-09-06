@@ -10,13 +10,13 @@ import FrictionComponent from '../components/FrictionComponent';
 
 export default class MovementSystem implements ISystem {
   update() {
-    let entities = EntityManager.getEntitiesByComponents(
-        PositionalComponent, DimensionalComponent, CanvasCollisionComponent);
+    let entities = EntityManager.getEntitiesByComponentIds(
+        PositionalComponent.cid, DimensionalComponent.cid, CanvasCollisionComponent.cid);
 
     for (let e of entities) {
-      let positionComp = e[0] as PositionalComponent;
-      let dimensionalComp = e[1] as DimensionalComponent;
-      let collisionComp = e[2] as CanvasCollisionComponent;
+      let positionComp = e.getComponentById(PositionalComponent.cid) as PositionalComponent;
+      let dimensionalComp = e.getComponentById(DimensionalComponent.cid) as DimensionalComponent;
+      let collisionComp = e.getComponentById(CanvasCollisionComponent.cid) as CanvasCollisionComponent;
 
       let breaked =
           positionComp.velocity.mul(1 - positionComp.breakingForcePercentage)
@@ -48,18 +48,18 @@ export default class MovementSystem implements ISystem {
       }
     }
 
-    entities = EntityManager.getEntitiesByComponents(PositionalComponent, FrictionComponent);
+    entities = EntityManager.getEntitiesByComponentIds(PositionalComponent.cid, FrictionComponent.cid);
 
     for (let e of entities) {
-      let positionComp = e[0] as PositionalComponent;
-      let frictionComp = e[1] as FrictionComponent;
+      let positionComp = e.getComponentById(PositionalComponent.cid) as PositionalComponent;
+      let frictionComp = e.getComponentById(FrictionComponent.cid) as FrictionComponent;
       positionComp.velocity.mulMut(1 - frictionComp.frictionBreakingForce);
     }
 
-    entities = EntityManager.getEntitiesByComponents(PositionalComponent);
+    entities = EntityManager.getEntitiesByComponentIds(PositionalComponent.cid);
 
-    for (let [positionComp] of entities) {
-      //positionComp.velocity.mulMut(1 - positionComp.breakingForcePercentage)
+    for (let e of entities) {
+      let positionComp = e.getComponentById(PositionalComponent.cid) as PositionalComponent;
 
       positionComp.position.x += positionComp.velocity.x;
       positionComp.position.y += positionComp.velocity.y;

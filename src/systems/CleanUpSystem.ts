@@ -7,11 +7,11 @@ import CleanUpComponent from "../components/CleanUpComponent";
 export default class CleanUpSystem implements ISystem {
 
     update(): void {
-        let entities = EntityManager.getEntitiesByComponents(PositionalComponent, CleanUpComponent);
+        let entities = EntityManager.getEntitiesByComponentIds(PositionalComponent.cid, CleanUpComponent.cid);
 
         for (let e of entities) {
-            let posComp = e[0] as PositionalComponent;
-            let cleanup = e[1] as CleanUpComponent;
+            let posComp = e.getComponentById(PositionalComponent.cid) as PositionalComponent;
+            let cleanup = e.getComponentById(CleanUpComponent.cid) as CleanUpComponent;
 
             if (posComp.position.y < cleanup.limitUpper) {
                 EntityManager.deleteEntity(e.id);

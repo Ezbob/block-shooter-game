@@ -1,5 +1,5 @@
 import CanvasCollisionComponent from '../components/CanvasCollisionComponent';
-import KeyboardControllableComponent from '../components/controllableComponent';
+import KeyboardControllableComponent from '../components/KeyboardControllableComponent';
 import DimensionalComponent from '../components/DimensionalComponent';
 import DrawableComponent from '../components/DrawableComponent';
 import PathComponent from '../components/PathComponent';

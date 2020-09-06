@@ -1,23 +1,30 @@
+import IComponent from "./IComponent";
 
-export default class Entity extends Array {
+
+export default class Entity {
   readonly id: number;
-  constructor(id: number, ...args: any[]) {
-    super(...args);
+  public components: Map<number, IComponent> = new Map();
+
+  constructor(id: number, ...args: IComponent[]) {
     this.id = id;
-  }
-
-  addComponent(comp: any) {
-    this.push(comp);
-  }
-
-  removeComponent(compType: any) {
-    let index = 0;
-    for (let component of this) {
-      if (component instanceof compType) {
-        this.splice(index, 1);
-        break;
-      }
-      index += 1;
+    for (let c of args) {
+      this.components.set(c.cid, c);
     }
+  }
+
+  getComponentById(componentId: number) {
+    return this.components.get(componentId);
+  }
+
+  hasComponentId(componentId: number) {
+    return this.components.has(componentId);
+  }
+
+  removeComponentById(componentId: number) {
+    this.components.delete(componentId);
+  }
+
+  addComponent(componentInstance: IComponent) {
+    this.components.set(componentInstance.cid, componentInstance)
   }
 };

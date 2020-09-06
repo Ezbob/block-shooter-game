@@ -1,5 +1,5 @@
 import PathComponent from '../components/PathComponent';
-import PositionComponent from '../components/PositionalComponent';
+import PositionalComponent from '../components/PositionalComponent';
 import EntityManager from '../dataStructures/EntityManager';
 import ISystem from './ISystem';
 
@@ -10,9 +10,12 @@ export default class PathFollowingSystem implements ISystem {
 
   update() {
     let entities =
-        EntityManager.getEntitiesByComponents(PositionComponent, PathComponent);
+        EntityManager.getEntitiesByComponentIds(PositionalComponent.cid, PathComponent.cid);
 
-    for (let [posComponent, pathComponent] of entities) {
+    for (let e of entities) {
+      let pathComponent = e.getComponentById(PathComponent.cid) as PathComponent;
+      let posComponent = e.getComponentById(PositionalComponent.cid) as PositionalComponent;
+
       let path = pathComponent.path;
       let position = posComponent.position;
 
