@@ -3,6 +3,7 @@ import EntityManager from "../dataStructures/EntityManager";
 import PositionalComponent from "../components/PositionalComponent";
 import CleanUpComponent from "../components/CleanUpComponent";
 
+
 export default class CleanUpSystem implements ISystem {
 
     update(): void {
