@@ -7,9 +7,11 @@ const babelOptions = {
 module.exports = {
   mode: 'development',
 
-  entry: './src/main.ts',
+  entry: {
+    main: './src/Main.ts'
+  },
 
-  output: {path: path.resolve(__dirname, 'dist'), filename: 'bundle.js'},
+  output: {path: path.resolve(__dirname, 'dist'), filename: '[name]_bundle.js'},
 
   devtool: 'inline-source-map',
   devServer: {contentBase: './dist'},
