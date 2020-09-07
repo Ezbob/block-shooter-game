@@ -4,9 +4,7 @@ import Constants from './SharedConstants';
 import ComponentStage from './states/ComponentState';
 
 
-
 (function main() {
-  //Variables.keyboardInput.setup();
   Variables.canvasManager.setup();
 
   Variables.stateStack.pushState(new ComponentStage());

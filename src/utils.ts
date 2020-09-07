@@ -25,5 +25,21 @@ export default {
 
     return !(
         ARight < BLeft || BRight < ALeft || ABottom < BTop || BBottom < ATop);
+  },
+  intersectingRectanglesFlat(
+      positionA: Vector2D, dimensionA: Vector2D, positionB: Vector2D,
+      dimensionB: Vector2D) {
+    var ALeft = positionA.x;            // x1
+    var ARight = ALeft + dimensionA.x;  // x1 + w1
+    var ATop = positionA.y;             // y1
+    var ABottom = ATop + dimensionA.y;  // y1 + h1
+
+    var BLeft = positionB.x;            // x2
+    var BRight = BLeft + dimensionB.x;  // x2 + w2
+    var BTop = positionB.y;             // y2
+    var BBottom = BTop + dimensionB.y;  // y2 + h2
+
+    return !(
+        ARight < BLeft || BRight < ALeft || ABottom < BTop || BBottom < ATop);
   }
 };

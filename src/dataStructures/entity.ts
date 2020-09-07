@@ -12,7 +12,7 @@ export default class Entity {
     }
   }
 
-  getComponentByType<T extends IComponent>(c: { cid: number, new (): T }): T {
+  getComponentByType<T extends IComponent>(c: { cid: number, new (...arg: any): T }): T | undefined {
     return this.components.get(c.cid) as T; 
   }
 

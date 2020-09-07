@@ -18,7 +18,7 @@ class EntityManager extends Array<Entity> {
     if (index != -1) this.splice(index, 1);
   }
 
-  filterEntitiesByComponentTypes(...componentTypes: { new(): any, cid: number }[]): Entity[] {
+  filterEntitiesByComponentTypes(...componentTypes: { new(...arg: any): any, cid: number }[]): Entity[] {
     let results = [];
     for (let entity of this) {
       if (componentTypes.length > entity.components.size) {

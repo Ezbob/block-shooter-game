@@ -16,6 +16,9 @@ import PathFollowingSystem from '../systems/PathFollowingSystem';
 import FrictionComponent from '../components/FrictionComponent';
 import CleanUpSystem from '../systems/CleanUpSystem';
 import GunComponent from '../components/GunComponent';
+import CollideSystem from '../systems/CollideSystem';
+import CollisionDetectionComponent from '../components/CollisionDetectionComponent';
+import HealthComponent from '../components/HealthComponent';
 
 export default class ComponentStage extends GameState {
   load() {
@@ -28,6 +31,7 @@ export default class ComponentStage extends GameState {
             (CANVAS_HEIGHT - (CANVAS_HEIGHT / 8) - 32))),
         new DimensionalComponent(new Vector2D(32, 32)),
         new DrawableComponent(2, 'blue'),
+        new HealthComponent(100),
         new FrictionComponent(),
         new CanvasCollisionComponent(new Vector2D(5, 5), new Vector2D(180, 10)),
         new KeyboardControllableComponent(new Vector2D(10, 10)),
@@ -40,6 +44,8 @@ export default class ComponentStage extends GameState {
         new DimensionalComponent(new Vector2D(32, 32)),
         new DrawableComponent(1, 'red'),
         new FrictionComponent(),
+        new HealthComponent(100),
+        new CollisionDetectionComponent(0o0011, new Vector2D(32, 32)),
         new PathComponent(
             new CircularBuffer<Vector2D>(
                 new Vector2D((CANVAS_WIDTH - 32) - 64, (CANVAS_HEIGHT / 10)),
@@ -54,7 +60,8 @@ export default class ComponentStage extends GameState {
       new KeyboardControlSystem(),
       new MovementSystem(),
       new DrawingSystem(),
-      new CleanUpSystem()
+      new CleanUpSystem(),
+      new CollideSystem()
     ]
     super.load();
   }
