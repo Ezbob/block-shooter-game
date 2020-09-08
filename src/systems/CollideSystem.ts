@@ -28,11 +28,12 @@ export default class CollideSystem implements ISystem {
           let damageComp = a.getComponentByType(DamageComponent);
 
           healthComp.health -= damageComp.damage;
+
           EntityManager.deleteEntity(a.id);
+
           if( healthComp.health <= 0 ) {
               compE.layers = 0; // disable collision
           }
-          console.log(`Collision! between ${e.id} and ${a.id}`)
         }
       }
     }

@@ -1,4 +1,4 @@
-import CanvasCollisionComponent from '../components/CanvasCollisionComponent';
+import CanvasBoundaryComponent from '../components/CanvasBoundaryComponent';
 import KeyboardControllableComponent from '../components/KeyboardControllableComponent';
 import DimensionalComponent from '../components/DimensionalComponent';
 import DrawableComponent from '../components/DrawableComponent';
@@ -33,7 +33,7 @@ export default class ComponentStage extends GameState {
         new DrawableComponent(2, 'blue'),
         new HealthComponent(100),
         new FrictionComponent(),
-        new CanvasCollisionComponent(new Vector2D(5, 5), new Vector2D(180, 10)),
+        new CanvasBoundaryComponent(new Vector2D(5, 5), new Vector2D(180, 10)),
         new KeyboardControllableComponent(new Vector2D(10, 10)),
         new GunComponent(110));
 

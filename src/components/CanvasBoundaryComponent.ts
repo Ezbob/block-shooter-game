@@ -2,7 +2,7 @@ import IComponent from '../dataStructures/IComponent';
 import Vector2D from '../dataStructures/Vector2D';
 import SharedVariables from '../SharedVariables';
 
-export default class CanvasCollisionComponent implements IComponent {
+export default class CanvasBoundaryComponent implements IComponent {
   static cid: number = SharedVariables.componentIdGenerator.generate();
 
   constructor(
@@ -10,6 +10,6 @@ export default class CanvasCollisionComponent implements IComponent {
       public canvasPaddingY: Vector2D = new Vector2D(0, 0)) {}
 
   get cid() {
-    return CanvasCollisionComponent.cid;
+    return CanvasBoundaryComponent.cid;
   }
 };

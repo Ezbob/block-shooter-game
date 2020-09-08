@@ -1,4 +1,4 @@
-import CanvasCollisionComponent from '../components/CanvasCollisionComponent';
+import CanvasBoundaryComponent from '../components/CanvasBoundaryComponent';
 import DimensionalComponent from '../components/DimensionalComponent';
 import FrictionComponent from '../components/FrictionComponent';
 import PositionalComponent from '../components/PositionalComponent';
@@ -11,12 +11,12 @@ import ISystem from './ISystem';
 export default class MovementSystem implements ISystem {
   update() {
     let entities = EntityManager.filterEntitiesByComponentTypes(
-        PositionalComponent, DimensionalComponent, CanvasCollisionComponent);
+        PositionalComponent, DimensionalComponent, CanvasBoundaryComponent);
 
     for (let e of entities) {
       let positionComp = e.getComponentByType(PositionalComponent);
       let dimensionalComp = e.getComponentByType(DimensionalComponent);
-      let collisionComp = e.getComponentByType(CanvasCollisionComponent);
+      let collisionComp = e.getComponentByType(CanvasBoundaryComponent);
 
       let breaked =
           positionComp.velocity.mul(1 - positionComp.breakingForcePercentage)
