@@ -75,6 +75,13 @@ export default class Vector2D extends Array<number> {
     return new Vector2D(this[1], -this[0])
   };
 
+  rotate(angle: number): Vector2D {
+    let res = new Vector2D(this.x, this.y);
+    res.x = Math.cos(angle) * this.x - Math.sin(angle) * this.y;
+    res.y = Math.sin(angle) * this.x + Math.cos(angle) * this.y;
+    return res;
+  }
+
   mul(scalar: number) {
     let res = new Vector2D(0, 0);
     for (let i = 0; i < this.length; ++i) {

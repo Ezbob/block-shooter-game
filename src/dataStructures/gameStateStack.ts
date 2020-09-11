@@ -4,7 +4,6 @@ export default class GameStateStack {
   private stoppedStages: GameState[] = [];
   private activeStages: GameState[] = [];
 
-
   getCurrentGameState(): GameState | null {
     return this.activeStages.length > 0 ? this.activeStages[this.activeStages.length - 1] : null;
   };

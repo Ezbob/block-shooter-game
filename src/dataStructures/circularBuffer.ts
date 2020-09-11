@@ -56,8 +56,4 @@ export default class CircularBuffer<T> {
   get length(): number {
     return this.buffer.length;
   }
-
-  toString() {
-    return 'CircularBuffer(' + this.buffer.join(', ') + ')';
-  };
 };

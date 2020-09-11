@@ -18,10 +18,8 @@ export default class MovementSystem implements ISystem {
       let dimensionalComp = e.getComponentByType(DimensionalComponent);
       let collisionComp = e.getComponentByType(CanvasBoundaryComponent);
 
-      let breaked =
-          positionComp.velocity.mul(1 - positionComp.breakingForcePercentage)
-
-      let nextPos = positionComp.position.add(breaked);
+      let nextPos = positionComp.position.add(
+          positionComp.velocity.mul(1 - positionComp.breakingForcePercentage));
 
       if (collisionComp.canvasPaddingX.x > nextPos.x) {
         positionComp.position.x = collisionComp.canvasPaddingX.x;
@@ -67,8 +65,9 @@ export default class MovementSystem implements ISystem {
       positionComp.position.y += positionComp.velocity.y;
 
       Debug.drawLine(
-          positionComp.velocity.mul(6).add(positionComp.position),
-          positionComp.position);
+          positionComp.position,
+          positionComp.velocity.mul(4).add(positionComp.position),
+      );
     }
   }
 };
