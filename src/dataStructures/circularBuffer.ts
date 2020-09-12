@@ -53,12 +53,6 @@ export default class CircularBuffer<T> {
     this.nextIndex = 0;
   }
 
-  *[Symbol.iterator]() {
-    for(let item of this.buffer) {
-      yield item
-    }
-  }
-
   get length(): number {
     return this.buffer.length;
   }
