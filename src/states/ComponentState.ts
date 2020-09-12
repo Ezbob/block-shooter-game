@@ -1,4 +1,4 @@
-import AutoShootComponent from '../components/AutoShootComponet';
+import WeakEnemyArchetype from '../archetypes/WeakEnemyArchetype';
 import CanvasBoundaryComponent from '../components/CanvasBoundaryComponent';
 import CollisionDetectionComponent from '../components/CollisionDetectionComponent';
 import DimensionalComponent from '../components/DimensionalComponent';
@@ -34,31 +34,23 @@ export default class ComponentStage extends GameState {
             ((CANVAS_WIDTH / 2) - 32 / 2),
             (CANVAS_HEIGHT - (CANVAS_HEIGHT / 8) - 32))),
         new DimensionalComponent(new Vector2D(32, 32)),
-        new DrawableComponent(2, 'blue'),
-        new FrictionComponent(),
-        new HealthComponent(100, 100),
-        new HealthDisplayComponent(),
+        new DrawableComponent(2, 'blue'), new FrictionComponent(),
+        new HealthComponent(100, 100), new HealthDisplayComponent(),
         new CollisionDetectionComponent(0o0011, new Vector2D(32, 32)),
         new CanvasBoundaryComponent(new Vector2D(5, 5), new Vector2D(180, 30)),
         new KeyboardControllableComponent(new Vector2D(10, 10)),
         new GunComponent(110));
 
-    EntityManager.createNewEntity(
-        new AutoShootComponent(),
-        new GunComponent(700, 5),
+    WeakEnemyArchetype.createNew(
         new PositionalComponent(
-            new Vector2D((CANVAS_WIDTH - 32), (CANVAS_HEIGHT / 10)),
+            new Vector2D(CANVAS_WIDTH - 32, CANVAS_HEIGHT / 10),
             new Vector2D(5, 5)),
-        new DimensionalComponent(new Vector2D(32, 32)),
-        new DrawableComponent(1, 'red'), new FrictionComponent(),
-        new HealthComponent(100, 100),
-        new CollisionDetectionComponent(0o0011, new Vector2D(32, 32)),
         new PathComponent(
             new CircularBuffer<Vector2D>(
-                new Vector2D((CANVAS_WIDTH - 32) - 64, (CANVAS_HEIGHT / 10)),
-                new Vector2D((CANVAS_WIDTH / 2), 10),
-                new Vector2D(0, (CANVAS_HEIGHT / 10)),
-                new Vector2D(10, (CANVAS_HEIGHT / 100)),
+                new Vector2D(CANVAS_WIDTH - 96, CANVAS_HEIGHT / 10),
+                new Vector2D(CANVAS_WIDTH / 2, 10),
+                new Vector2D(0, CANVAS_HEIGHT / 10),
+                new Vector2D(10, CANVAS_HEIGHT / 100),
                 ),
             true));
 
