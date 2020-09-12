@@ -15,10 +15,9 @@ export default class HealthDisplayComponent implements IComponent {
         warning: 'rgb(255, 203, 33)',
         fatal: 'rgb(219, 6, 6)'
       },
-      public position:
-          Vector2D = new Vector2D(40, SharedConstants.CANVAS_HEIGHT - 20),
-      public dimension: Vector2D = new Vector2D(20, 20),
-      public maxDisplayBead: number = 8) {}
+      public position = new Vector2D(10, SharedConstants.CANVAS_HEIGHT - 20),
+      public dimension = new Vector2D(20, 15),
+      public maxDisplayBead = 8) {}
 
   get cid(): number {
     return HealthDisplayComponent.cid

@@ -6,7 +6,8 @@ import ISystem from './ISystem';
 
 export default class HealthDisplaySystem implements ISystem {
   getBeadColor(
-      colors: IHealthBeadColors, numberOfBeads: number, maxBeads: number) {
+      colors: IHealthBeadColors, numberOfBeads: number,
+      maxBeads: number): string {
     var mid = Math.floor(maxBeads * 0.5);
     var lower = Math.floor(maxBeads * 0.25);
     if (numberOfBeads > mid) {
