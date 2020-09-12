@@ -1,0 +1,26 @@
+import IComponent from '../dataStructures/IComponent';
+import Vector2D from '../dataStructures/Vector2D';
+import SharedConstants from '../SharedConstants';
+import SharedVariables from '../SharedVariables';
+
+export interface IHealthBeadColors {
+  ok: string, warning: string, fatal: string
+}
+
+export default class HealthDisplayComponent implements IComponent {
+  static cid = SharedVariables.componentIdGenerator.generate();
+  constructor(
+      public colors: IHealthBeadColors = {
+        ok: 'rgb(103, 229, 25)',
+        warning: 'rgb(255, 203, 33)',
+        fatal: 'rgb(219, 6, 6)'
+      },
+      public position:
+          Vector2D = new Vector2D(40, SharedConstants.CANVAS_HEIGHT - 20),
+      public dimension: Vector2D = new Vector2D(20, 20),
+      public maxDisplayBead: number = 8) {}
+
+  get cid(): number {
+    return HealthDisplayComponent.cid
+  }
+};
