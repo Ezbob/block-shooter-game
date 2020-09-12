@@ -10,7 +10,7 @@ export default class CircularBuffer<T> {
     this.nextIndex = 0;
   }
 
-  fill(maxLength: number, FillPrototype: any, ...args: any[]) {
+  fill(maxLength: number, FillPrototype: {new(...as: any[]): T}, ...args: any[]) {
     this.maxLength = maxLength;
     if (!(typeof FillPrototype == 'undefined' || FillPrototype == null)) {
       for (var i = 0; i < this.maxLength; ++i) {
@@ -19,7 +19,7 @@ export default class CircularBuffer<T> {
     }
   }
 
-  push(element: any) {
+  push(element: T) {
     if (this.length < this.maxLength) {
       this.buffer.push(element);
       return true;
@@ -28,7 +28,7 @@ export default class CircularBuffer<T> {
     }
   }
 
-  next(): any {
+  next(): T {
     let res = this.buffer[this.nextIndex];
     this.nextIndex = (this.nextIndex + 1) % this.length;
     return res;
@@ -38,19 +38,25 @@ export default class CircularBuffer<T> {
     return this.nextIndex === 0;
   }
 
-  prev(): any {
+  prev(): T {
     let res = this.buffer[this.nextIndex];
     let nextI = (this.nextIndex - 1) % this.length;
     this.nextIndex = nextI < 0 ? this.length - 1 : nextI;
     return res;
-  };
+  }
 
   hasNext(): boolean {
     return this.length > 0;
-  };
+  }
 
   reset() {
     this.nextIndex = 0;
+  }
+
+  *[Symbol.iterator]() {
+    for(let item of this.buffer) {
+      yield item
+    }
   }
 
   get length(): number {
