@@ -1,15 +1,14 @@
 const path = require('path')
 
 const babelOptions = {
-  presets: ['@babel/preset-env']
+  presets: ['@babel/preset-env'],
+  plugins: [['@babel/plugin-transform-runtime', {'regenerator': true}]]
 };
 
 module.exports = {
   mode: 'development',
 
-  entry: {
-    main: './src/Main.ts'
-  },
+  entry: {main: './src/Main.ts'},
 
   output: {path: path.resolve(__dirname, 'dist'), filename: '[name]_bundle.js'},
 
@@ -17,7 +16,8 @@ module.exports = {
   devServer: {contentBase: './dist'},
 
   resolve: {
-    extensions: [ '.tsx', '.ts', '.js' ], // order of module resolution by extension
+    extensions:
+        ['.tsx', '.ts', '.js'],  // order of module resolution by extension
   },
 
   module: {
