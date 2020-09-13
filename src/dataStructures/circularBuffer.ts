@@ -10,15 +10,6 @@ export default class CircularBuffer<T> {
     this.nextIndex = 0;
   }
 
-  fill(maxLength: number, FillPrototype: {new(...as: any[]): T}, ...args: any[]) {
-    this.maxLength = maxLength;
-    if (!(typeof FillPrototype == 'undefined' || FillPrototype == null)) {
-      for (var i = 0; i < this.maxLength; ++i) {
-        this.buffer.push(new FillPrototype(...args));
-      }
-    }
-  }
-
   push(element: T) {
     if (this.length < this.maxLength) {
       this.buffer.push(element);

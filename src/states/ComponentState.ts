@@ -41,18 +41,18 @@ export default class ComponentStage extends GameState {
         new KeyboardControllableComponent(new Vector2D(10, 10)),
         new GunComponent(110));
 
+    let path = new PathComponent(new CircularBuffer<Vector2D>(
+        new Vector2D(CANVAS_WIDTH - 96, CANVAS_HEIGHT / 10),
+        new Vector2D(CANVAS_WIDTH / 2, 10),
+        new Vector2D(0, CANVAS_HEIGHT / 10),
+        new Vector2D(10, CANVAS_HEIGHT / 100),
+        ));
+
     WeakEnemyArchetype.createNew(
         new PositionalComponent(
-            new Vector2D(CANVAS_WIDTH - 32, CANVAS_HEIGHT / 10),
+            new Vector2D(CANVAS_WIDTH / 2, 10),
             new Vector2D(5, 5)),
-        new PathComponent(
-            new CircularBuffer<Vector2D>(
-                new Vector2D(CANVAS_WIDTH - 96, CANVAS_HEIGHT / 10),
-                new Vector2D(CANVAS_WIDTH / 2, 10),
-                new Vector2D(0, CANVAS_HEIGHT / 10),
-                new Vector2D(10, CANVAS_HEIGHT / 100),
-                ),
-            true));
+        path);
 
     this.systems = [
       new PathFollowingSystem(), new KeyboardControlSystem(),
