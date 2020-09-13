@@ -64,9 +64,9 @@ export default class MovementSystem implements ISystem {
       positionComp.position.x += positionComp.velocity.x;
       positionComp.position.y += positionComp.velocity.y;
 
-      Debug.drawLine(
+      Debug.drawLineBetween(
           positionComp.position,
-          positionComp.velocity.mul(4).add(positionComp.position),
+          positionComp.velocity.mul(4),
       );
     }
   }

@@ -25,23 +25,18 @@ export default class CircularBuffer<T> {
     return res;
   }
 
-  isNewCycleNext(): boolean {
-    return this.nextIndex === 0;
-  }
-
-  prev(): T {
-    let res = this.buffer[this.nextIndex];
-    let nextI = (this.nextIndex - 1) % this.length;
-    this.nextIndex = nextI < 0 ? this.length - 1 : nextI;
-    return res;
-  }
-
-  hasNext(): boolean {
-    return this.length > 0;
+  first(): T | undefined {
+    return this.buffer[0];
   }
 
   reset() {
     this.nextIndex = 0;
+  }
+
+  *[Symbol.iterator]() {
+    for (let e of this.buffer) {
+      yield e;
+    }
   }
 
   get length(): number {
