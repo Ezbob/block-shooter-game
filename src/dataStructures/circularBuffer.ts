@@ -19,7 +19,7 @@ export default class CircularBuffer<T> {
     }
   }
 
-  next(): T {
+  next(): T | undefined {
     let res = this.buffer[this.nextIndex];
     this.nextIndex = (this.nextIndex + 1) % this.length;
     return res;
