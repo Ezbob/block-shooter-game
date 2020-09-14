@@ -1,22 +1,11 @@
 
 export default class CircularBuffer<T> {
-  private maxLength: number;
   private nextIndex: number;
   private buffer: T[];
 
   constructor(...args: T[]) {
     this.buffer = args;
-    this.maxLength = args.length;
     this.nextIndex = 0;
-  }
-
-  push(element: T) {
-    if (this.length < this.maxLength) {
-      this.buffer.push(element);
-      return true;
-    } else {
-      return false;
-    }
   }
 
   next(): T | undefined {
