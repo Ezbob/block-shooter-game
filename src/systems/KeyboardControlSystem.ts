@@ -82,7 +82,7 @@ export default class KeyboardControlSystem implements ISystem {
 
     for (let e of entities) {
       let pv = e.getComponentByType(PositionalComponent);
-      let dimenComp = e.getComponentByType(DimensionalComponent);
+      let dimensionComp = e.getComponentByType(DimensionalComponent);
       let gunComp = e.getComponentByType(GunComponent);
 
       if (this.pressed.get('Space') == KeyPressType.KEY_PRESS) {
@@ -90,8 +90,8 @@ export default class KeyboardControlSystem implements ISystem {
         if (diff > gunComp.shotDelay) {
           ShotArchetype.createNew(
               new Vector2D(
-                  pv.position.x + dimenComp.dimension.x / 2,
-                  pv.position.y - dimenComp.dimension.y),
+                  pv.position.x + dimensionComp.dimension.x / 2,
+                  pv.position.y - dimensionComp.dimension.y),
               new Vector2D(0, gunComp.bulletVelocity));
           gunComp.timeSinceLast = SharedVariables.frameClock.now;
         }

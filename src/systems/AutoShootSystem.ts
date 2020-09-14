@@ -1,5 +1,5 @@
 import ShotArchetype from '../archetypes/ShotArchetype';
-import AutoShootComponent from '../components/AutoShootComponet';
+import AutoShootComponent from '../components/AutoShootComponent';
 import DimensionalComponent from '../components/DimensionalComponent';
 import GunComponent from '../components/GunComponent';
 import PositionalComponent from '../components/PositionalComponent';
@@ -21,13 +21,13 @@ export default class AutoShootSystem implements ISystem {
       if (autoShootComp.isShooting) {
         let gunComp = e.getComponentByType(GunComponent);
         let posComp = e.getComponentByType(PositionalComponent);
-        let dimenComp = e.getComponentByType(DimensionalComponent);
+        let dimensionComp = e.getComponentByType(DimensionalComponent);
         let diff = SharedVariables.frameClock.now - gunComp.timeSinceLast;
         if (diff > gunComp.shotDelay) {
           ShotArchetype.createNew(
               new Vector2D(
-                posComp.position.x + dimenComp.dimension.x / 2,
-                  posComp.position.y + dimenComp.dimension.y),
+                posComp.position.x + dimensionComp.dimension.x / 2,
+                  posComp.position.y + dimensionComp.dimension.y),
               new Vector2D(0, gunComp.bulletVelocity));
           gunComp.timeSinceLast = SharedVariables.frameClock.now;
         }

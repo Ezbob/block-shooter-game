@@ -1,4 +1,4 @@
-import AutoShootComponent from '../components/AutoShootComponet';
+import AutoShootComponent from '../components/AutoShootComponent';
 import CollisionDetectionComponent from '../components/CollisionDetectionComponent';
 import DimensionalComponent from '../components/DimensionalComponent';
 import DrawableComponent from '../components/DrawableComponent';
