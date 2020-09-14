@@ -5,7 +5,7 @@ import Variables from './SharedVariables';
 import ComponentStage from './states/ComponentState';
 
 
-new LevelLoader().loadFromJson('data/map1.json').then(() => {
+new LevelLoader().loadFromJson('levels/first.level.json').then(() => {
   Variables.canvasManager.setup();
 
   Variables.stateStack.pushState(new ComponentStage());
