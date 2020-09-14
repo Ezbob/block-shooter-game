@@ -1,12 +1,11 @@
 
-import Variables from './SharedVariables';
-import Constants from './SharedConstants';
-import ComponentStage from './states/ComponentState';
 import LevelLoader from './LevelLoader';
+import Constants from './SharedConstants';
+import Variables from './SharedVariables';
+import ComponentStage from './states/ComponentState';
 
-new LevelLoader().loadFromJson("");
 
-(function main() {
+new LevelLoader().loadFromJson('data/map1.json').then(() => {
   Variables.canvasManager.setup();
 
   Variables.stateStack.pushState(new ComponentStage());
@@ -30,4 +29,4 @@ new LevelLoader().loadFromJson("");
   };
 
   window.requestAnimationFrame(gameLoop);
-})();
+})
