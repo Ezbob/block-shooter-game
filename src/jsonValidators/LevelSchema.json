@@ -14,35 +14,7 @@
     "enemies": {
       "type": "array",
       "items": {
-        "type": "object",
-        "properties": {
-          "archetype": {
-            "type": "string",
-            "description": "Type of the enemy"
-          },
-          "path": {
-            "type": "object",
-            "properties": {
-              "type": {
-                "type": "string",
-                "description": "Type of path"
-              },
-              "waypoints": {
-                "type": "array",
-                "description": "An array of way points that the enemy should follow",
-                "items": { "$ref": "#/definitions/vector" }
-              }
-            },
-            "required": [
-              "type",
-              "waypoints"
-            ]
-          }
-        },
-        "required": [
-          "archetype",
-          "path"
-        ]
+        "$ref": "#/definitions/enemy"
       }
     }
   },
@@ -65,6 +37,58 @@
       "required": [
         "x",
         "y"
+      ]
+    },
+    "enemy": {
+      "type": "object",
+      "properties": {
+        "archetype": {
+          "type": "string",
+          "description": "Type of the enemy"
+        },
+        "movement": {
+          "type": "object",
+          "properties": {
+            "startAt": {
+              "$ref": "#/definitions/vector"
+            },
+            "velocity": {
+              "$ref": "#/definitions/vector"
+            }
+          },
+          "required": [
+            "startAt",
+            "velocity"
+          ]
+        },
+        "path": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "description": "Type of path",
+              "enum": [
+                "circular"
+              ]
+            },
+            "waypoints": {
+              "type": "array",
+              "description": "An array of way points that the enemy should follow",
+              "items": {
+                "$ref": "#/definitions/vector"
+              }
+            }
+          },
+          "required": [
+            "type",
+            "waypoints"
+          ]
+        }
+      },
+      "required": [
+        "archetype",
+        "path",
+        "movement"
       ]
     }
   }
