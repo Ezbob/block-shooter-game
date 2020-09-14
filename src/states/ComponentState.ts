@@ -1,4 +1,3 @@
-import WeakEnemyArchetype from '../archetypes/WeakEnemyArchetype';
 import CanvasBoundaryComponent from '../components/CanvasBoundaryComponent';
 import CollisionDetectionComponent from '../components/CollisionDetectionComponent';
 import DimensionalComponent from '../components/DimensionalComponent';
@@ -8,9 +7,7 @@ import GunComponent from '../components/GunComponent';
 import HealthComponent from '../components/HealthComponent';
 import HealthDisplayComponent from '../components/HealthDisplayComponent';
 import KeyboardControllableComponent from '../components/KeyboardControllableComponent';
-import PathComponent from '../components/PathComponent';
 import PositionalComponent from '../components/PositionalComponent';
-import CircularBuffer from '../dataStructures/CircularBuffer';
 import EntityManager from '../dataStructures/EntityManager';
 import GameState from '../dataStructures/GameState';
 import Vector2D from '../dataStructures/Vector2D';
@@ -40,19 +37,6 @@ export default class ComponentStage extends GameState {
         new CanvasBoundaryComponent(new Vector2D(5, 5), new Vector2D(180, 30)),
         new KeyboardControllableComponent(new Vector2D(10, 10)),
         new GunComponent(110));
-
-    let path = new PathComponent(new CircularBuffer<Vector2D>(
-        new Vector2D(CANVAS_WIDTH - 96, CANVAS_HEIGHT / 10),
-        new Vector2D(CANVAS_WIDTH / 2, 10),
-        new Vector2D(0, CANVAS_HEIGHT / 10),
-        new Vector2D(10, CANVAS_HEIGHT / 100),
-        ));
-
-    WeakEnemyArchetype.createNew(
-        new PositionalComponent(
-            new Vector2D(CANVAS_WIDTH / 2, 10),
-            new Vector2D(5, 5)),
-        path);
 
     this.systems = [
       new PathFollowingSystem(), new KeyboardControlSystem(),
