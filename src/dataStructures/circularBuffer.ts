@@ -29,6 +29,10 @@ export default class CircularBuffer<T> {
     return this.buffer[0];
   }
 
+  last(): T | undefined {
+    return this.buffer[this.length - 1];
+  }
+
   reset() {
     this.nextIndex = 0;
   }
