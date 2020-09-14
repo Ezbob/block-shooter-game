@@ -30,21 +30,7 @@
               "waypoints": {
                 "type": "array",
                 "description": "An array of way points that the enemy should follow",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "x": {
-                      "type": "number"
-                    },
-                    "y": {
-                      "type": "number"
-                    }
-                  },
-                  "required": [
-                    "x",
-                    "y"
-                  ]
-                }
+                "items": { "$ref": "#/definitions/vector" }
               }
             },
             "required": [
@@ -64,5 +50,22 @@
     "title",
     "level",
     "enemies"
-  ]
+  ],
+  "definitions": {
+    "vector": {
+      "type": "object",
+      "properties": {
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "x",
+        "y"
+      ]
+    }
+  }
 }
