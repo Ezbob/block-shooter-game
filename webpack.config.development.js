@@ -26,7 +26,8 @@ module.exports = {
         test: /\.ts(x?)$/,
         exclude: /(node_modules|bower_components)/,
         use: [
-          {loader: 'babel-loader', options: babelOptions}, {loader: 'ts-loader'}
+          {loader: 'babel-loader', options: babelOptions},
+          {loader: 'ts-loader'}
         ]
       },
       {

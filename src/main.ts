@@ -2,7 +2,9 @@
 import Variables from './SharedVariables';
 import Constants from './SharedConstants';
 import ComponentStage from './states/ComponentState';
+import LevelLoader from './LevelLoader';
 
+new LevelLoader().loadFromJson("");
 
 (function main() {
   Variables.canvasManager.setup();

@@ -16,6 +16,7 @@
         "removeComments": false,
         "preserveConstEnums": true,
         "sourceMap": true,
-        "skipLibCheck": true
+        "skipLibCheck": true,
+        "resolveJsonModule": true
     }
 }

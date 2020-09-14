@@ -1,0 +1,68 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "title": {
+      "description": "Name of the level",
+      "type": "string"
+    },
+    "level": {
+      "description": "Level number, used for sorting",
+      "type": "integer",
+      "minimum": -1
+    },
+    "enemies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "archetype": {
+            "type": "string",
+            "description": "Type of the enemy"
+          },
+          "path": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "Type of path"
+              },
+              "waypoints": {
+                "type": "array",
+                "description": "An array of way points that the enemy should follow",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "x": {
+                      "type": "number"
+                    },
+                    "y": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "x",
+                    "y"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "type",
+              "waypoints"
+            ]
+          }
+        },
+        "required": [
+          "archetype",
+          "path"
+        ]
+      }
+    }
+  },
+  "required": [
+    "title",
+    "level",
+    "enemies"
+  ]
+}
