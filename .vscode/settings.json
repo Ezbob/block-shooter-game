@@ -1,0 +1,14 @@
+{
+    "json.schemas": [
+        {
+            "fileMatch": [
+                "/dist/*.level.json"
+            ],
+            "url": "./src/jsonValidators/LevelSchema.json"
+        }
+    ],
+    "cSpell.words": [
+        "devtool",
+        "waypoints"
+    ]
+}
