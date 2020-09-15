@@ -10,17 +10,16 @@ import DamageComponent from '../components/DamageComponent';
 
 class ShotArchetype {
   private dimensions = new DimensionalComponent(new Vector2D(6, 20));
-  private collision = new CollisionDetectionComponent(0o0011, new Vector2D(6, 20));
   private cleanup = new CleanUpComponent();
   private drawable = new DrawableComponent(-1, 'orange');
   private damage = new DamageComponent(10);
 
-  createNew(initialPosition: Vector2D, velocity: Vector2D): Entity {
+  createNew(initialPosition: Vector2D, velocity: Vector2D, collisionMask: number): Entity {
     return EntityManager.createNewEntity(
         new PositionComponent(initialPosition, velocity),
         this.dimensions,
         this.drawable,
-        this.collision,
+        new CollisionDetectionComponent(collisionMask, this.dimensions.dimension),
         this.cleanup,
         this.damage);
   }

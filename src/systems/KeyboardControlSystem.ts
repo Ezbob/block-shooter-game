@@ -92,7 +92,7 @@ export default class KeyboardControlSystem implements ISystem {
               new Vector2D(
                   pv.position.x + dimensionComp.dimension.x / 2,
                   pv.position.y - dimensionComp.dimension.y),
-              new Vector2D(0, gunComp.bulletVelocity));
+              new Vector2D(0, gunComp.bulletVelocity), 0o0010);
           gunComp.timeSinceLast = SharedVariables.frameClock.now;
         }
       }

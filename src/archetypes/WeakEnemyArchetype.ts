@@ -13,24 +13,21 @@ import Vector2D from '../dataStructures/Vector2D';
 
 
 class WeakEnemyArchetype {
-  private autoShoot = new AutoShootComponent();
   private dimension = new DimensionalComponent(new Vector2D(32, 32));
-  private collision = new CollisionDetectionComponent(0o0011, new Vector2D(32, 32));
   private friction = new FrictionComponent();
   private drawable = new DrawableComponent(1, 'red');
-  private gun = new GunComponent(700, 5);
 
   createNew(pos: Vector2D, velocity: Vector2D, path: CircularBuffer<Vector2D>) {
     return EntityManager.createNewEntity(
         new PositionalComponent(pos, velocity),
         new PathComponent(path),
         new HealthComponent(100, 100),
-        this.autoShoot,
-        this.gun,
+        new AutoShootComponent(),
+        new GunComponent(700, 5),
         this.dimension,
         this.drawable,
         this.friction,
-        this.collision,
+        new CollisionDetectionComponent(0o0010, new Vector2D(32, 32)),
     );
   }
 }

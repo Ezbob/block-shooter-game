@@ -15,6 +15,7 @@ export default class AutoShootSystem implements ISystem {
     let entities = EntityManager.filterEntitiesByComponentTypes(
         PositionalComponent, DimensionalComponent, AutoShootComponent,
         GunComponent);
+
     for (let e of entities) {
       let autoShootComp = e.getComponentByType(AutoShootComponent);
 
@@ -28,7 +29,7 @@ export default class AutoShootSystem implements ISystem {
               new Vector2D(
                 posComp.position.x + dimensionComp.dimension.x / 2,
                   posComp.position.y + dimensionComp.dimension.y),
-              new Vector2D(0, gunComp.bulletVelocity));
+              new Vector2D(0, gunComp.bulletVelocity), 0x0001);
           gunComp.timeSinceLast = SharedVariables.frameClock.now;
         }
       }
