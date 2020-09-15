@@ -16,12 +16,34 @@
       "items": {
         "$ref": "#/definitions/enemy"
       }
+    },
+    "players": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "movement": {
+            "$ref": "#/definitions/movement"
+          },
+          "archetype": {
+            "type": "string",
+            "enum": [
+              "player"
+            ]
+          }
+        },
+        "required": [
+          "movement",
+          "archetype"
+        ]
+      }
     }
   },
   "required": [
     "title",
     "level",
-    "enemies"
+    "enemies",
+    "players"
   ],
   "definitions": {
     "vector": {
@@ -39,6 +61,21 @@
         "y"
       ]
     },
+    "movement": {
+      "type": "object",
+      "properties": {
+        "startAt": {
+          "$ref": "#/definitions/vector"
+        },
+        "velocity": {
+          "$ref": "#/definitions/vector"
+        }
+      },
+      "required": [
+        "startAt",
+        "velocity"
+      ]
+    },
     "enemy": {
       "type": "object",
       "properties": {
@@ -47,19 +84,7 @@
           "description": "Type of the enemy"
         },
         "movement": {
-          "type": "object",
-          "properties": {
-            "startAt": {
-              "$ref": "#/definitions/vector"
-            },
-            "velocity": {
-              "$ref": "#/definitions/vector"
-            }
-          },
-          "required": [
-            "startAt",
-            "velocity"
-          ]
+          "$ref": "#/definitions/movement"
         },
         "path": {
           "type": "object",

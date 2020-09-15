@@ -1,6 +1,5 @@
+import PlayerArchetype from './archetypes/PlayerArchetype';
 import WeakEnemyArchetype from './archetypes/WeakEnemyArchetype';
-import PathComponent from './components/PathComponent';
-import PositionalComponent from './components/PositionalComponent';
 import CircularBuffer from './dataStructures/CircularBuffer';
 import Vector2D from './dataStructures/Vector2D';
 import AjvValidator from './jsonValidators/AjvValidator';
@@ -25,6 +24,11 @@ export default class LevelLoader {
           path);
     }
 
+    for (let player of data.players) {
+      this.instantiatePlayer(
+          player.archetype, player.movement.startAt, player.movement.velocity)
+    }
+
     return data;
   }
 
@@ -35,10 +39,20 @@ export default class LevelLoader {
     switch (archetype) {
       case 'weak':
         return WeakEnemyArchetype.createNew(
-            new PositionalComponent(
+            new Vector2D(startingPoint.x, startingPoint.y),
+            new Vector2D(velocity.x, velocity.y), path)
+    }
+  }
+
+  private instantiatePlayer(
+      archetype: string, startingPoint: {x: number, y: number},
+      velocity: {x: number, y: number}) {
+    switch (archetype) {
+      case 'player':
+        return PlayerArchetype.createNew(
                 new Vector2D(startingPoint.x, startingPoint.y),
-                new Vector2D(velocity.x, velocity.y)),
-            new PathComponent(path))
+                new Vector2D(velocity.x, velocity.y),
+        )
     }
   }
 

@@ -7,6 +7,7 @@ import GunComponent from '../components/GunComponent';
 import HealthComponent from '../components/HealthComponent';
 import PathComponent from '../components/PathComponent';
 import PositionalComponent from '../components/PositionalComponent';
+import CircularBuffer from '../dataStructures/CircularBuffer';
 import EntityManager from '../dataStructures/EntityManager';
 import Vector2D from '../dataStructures/Vector2D';
 
@@ -19,10 +20,10 @@ class WeakEnemyArchetype {
   private drawable = new DrawableComponent(1, 'red');
   private gun = new GunComponent(700, 5);
 
-  createNew(pos: PositionalComponent, path: PathComponent) {
+  createNew(pos: Vector2D, velocity: Vector2D, path: CircularBuffer<Vector2D>) {
     return EntityManager.createNewEntity(
-        pos,
-        path,
+        new PositionalComponent(pos, velocity),
+        new PathComponent(path),
         new HealthComponent(100, 100),
         this.autoShoot,
         this.gun,

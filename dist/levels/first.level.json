@@ -1,6 +1,21 @@
 {
     "title": "map1",
     "level": 1,
+    "players": [
+        {
+            "archetype": "player",
+            "movement": {
+                "startAt": {
+                    "x": 524,
+                    "y": 800
+                },
+                "velocity": {
+                    "x": 10,
+                    "y": 10
+                }
+            }
+        }
+    ],
     "enemies": [
         {
             "archetype": "weak",
