@@ -1,9 +1,8 @@
 import IComponent from '../dataStructures/IComponent';
 import SharedConstants from '../SharedConstants';
-import SharedVariables from '../SharedVariables';
 
 export default class CleanUpComponent implements IComponent {
-  static cid: number = SharedVariables.componentIdGenerator.generate();
+  static cid: number = 2;
   constructor(
       public limitUpper = -20,
       public limitLower = SharedConstants.CANVAS_HEIGHT + 20,

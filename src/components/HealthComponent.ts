@@ -1,7 +1,6 @@
-import SharedVariables from '../SharedVariables';
 
 export default class HealthComponent {
-  static cid: number = SharedVariables.componentIdGenerator.generate();
+  static cid: number = 9;
 
   constructor(public health: number, public maxHealth: number) {}
 

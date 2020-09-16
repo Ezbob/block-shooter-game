@@ -1,8 +1,7 @@
 import IComponent from '../dataStructures/IComponent';
-import SharedVariables from '../SharedVariables';
 
 export default class FrictionComponent implements IComponent {
-  static cid: number = SharedVariables.componentIdGenerator.generate();
+  static cid: number = 7;
 
   constructor(public frictionBreakingForce = 0.5) {}
 

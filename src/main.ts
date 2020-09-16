@@ -1,43 +1,46 @@
+import SharedConstants from './SharedConstants';
+import SharedVariables from './SharedVariables';
+import AutoShootSystem from './systems/AutoShootSystem';
+import CleanUpSystem from './systems/CleanUpSystem';
+import CollideSystem from './systems/CollideSystem';
+import DrawingSystem from './systems/DrawingSystem';
+import HealthDisplaySystem from './systems/HealthDisplaySystem';
+import KeyboardControlSystem from './systems/KeyboardControlSystem';
+import MovementSystem from './systems/MovementSystem';
+import PathFollowingSystem from './systems/PathFollowingSystem';
 
-import LevelLoader from './LevelLoader';
-import Constants from './SharedConstants';
-import Variables from './SharedVariables';
-import ComponentStage from './states/ComponentState';
+SharedVariables.canvasManager.setup();
 
-Variables.canvasManager.setup();
+SharedVariables.systems = [
+  new PathFollowingSystem(), new KeyboardControlSystem(),
+  new MovementSystem(), new DrawingSystem(), new CleanUpSystem(),
+  new CollideSystem(), new AutoShootSystem(), new HealthDisplaySystem()
+];
 
-new LevelLoader().loadFromJson('levels/first.level.json').then(() => {
-
-  Variables.stateStack.pushState(new ComponentStage());
+SharedVariables.levelLoader.loadFromJson('levels/first.level.json').then(() => {
 
   window.onblur = () => {
-    Variables.isPaused = true;
-  }
+    SharedVariables.isPaused = true;
+  };
 
   window.onfocus = () => {
-    Variables.isPaused = false;
-  }
+    SharedVariables.isPaused = false;
+  };
 
   const gameLoop = () => {
-
-    if (Variables.isPaused) {
+    if (SharedVariables.isPaused) {
       window.requestAnimationFrame(gameLoop);
       return;
     }
 
-    Variables.frameClock.update();
+    SharedVariables.frameClock.update();
 
-    Variables.canvasManager.getCanvasContext().clearRect(
-        0, 0, Constants.CANVAS_WIDTH, Constants.CANVAS_HEIGHT);
+    SharedVariables.canvasManager.getCanvasContext().clearRect(
+        0, 0, SharedConstants.CANVAS_WIDTH, SharedConstants.CANVAS_HEIGHT);
 
-    let currentState = Variables.stateStack.getCurrentGameState();
-    if (!currentState) return;
-
-    if (!currentState.isLoaded()) {
-      currentState.load();
+    for (let system of SharedVariables.systems) {
+      system.update();
     }
-
-    currentState.update();
 
     window.requestAnimationFrame(gameLoop);
   };

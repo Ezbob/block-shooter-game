@@ -1,9 +1,8 @@
 import IComponent from '../dataStructures/IComponent';
 import Vector2D from '../dataStructures/Vector2D';
-import SharedVariables from '../SharedVariables';
 
 export default class CanvasBoundaryComponent implements IComponent {
-  static cid: number = SharedVariables.componentIdGenerator.generate();
+  static cid: number = 1;
 
   constructor(
       public canvasPaddingX: Vector2D = new Vector2D(0, 0),

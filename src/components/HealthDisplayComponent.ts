@@ -1,14 +1,13 @@
 import IComponent from '../dataStructures/IComponent';
 import Vector2D from '../dataStructures/Vector2D';
 import SharedConstants from '../SharedConstants';
-import SharedVariables from '../SharedVariables';
 
 export interface IHealthBeadColors {
   ok: string, warning: string, fatal: string
 }
 
 export default class HealthDisplayComponent implements IComponent {
-  static cid = SharedVariables.componentIdGenerator.generate();
+  static cid = 10;
   constructor(
       public colors: IHealthBeadColors = {
         ok: 'rgb(103, 229, 25)',

@@ -1,9 +1,7 @@
-import SharedVariables from "../SharedVariables";
 import IComponent from "../dataStructures/IComponent";
 
-
 export default class DrawableComponent implements IComponent {
-  static cid: number = SharedVariables.componentIdGenerator.generate();
+  static cid: number = 6;
   constructor(
       public priority: number = -1, public color: string = 'rgb(0,8,255)',
       public isFilled: boolean = true) {}

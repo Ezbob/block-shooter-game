@@ -1,8 +1,7 @@
 import IComponent from '../dataStructures/IComponent';
-import SharedVariables from '../SharedVariables';
 
 export default class AutoShootComponent implements IComponent {
-  static cid: number = SharedVariables.componentIdGenerator.generate();
+  static cid: number = 0;
   constructor(public isShooting = true) {}
 
   get cid() {

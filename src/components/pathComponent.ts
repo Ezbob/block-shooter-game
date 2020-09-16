@@ -1,10 +1,9 @@
 import CircularBuffer from '../dataStructures/CircularBuffer';
 import IComponent from '../dataStructures/IComponent';
 import Vector2D from '../dataStructures/Vector2D';
-import SharedVariables from '../SharedVariables';
 
 export default class PathComponent implements IComponent {
-  static cid: number = SharedVariables.componentIdGenerator.generate();
+  static cid: number = 12;
 
   public nextWayPoint?: Vector2D;
   constructor(
