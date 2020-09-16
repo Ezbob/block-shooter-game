@@ -15,18 +15,25 @@ export default class LevelLoader {
         console.error(err);
       }
       return;
+    } else {
+      console.log(`Level file '${filename}' OK`)
     }
 
-    for (let enemy of data.enemies) {
-      let path = this.instantiatePath(enemy.path.waypoints);
-      this.instantiateEnemy(
-          enemy.archetype, enemy.movement.startAt, enemy.movement.velocity,
-          path);
-    }
-
-    for (let player of data.players) {
-      this.instantiatePlayer(
-          player.archetype, player.movement.startAt, player.movement.velocity)
+    for (let entity of data.entities) {
+      switch (entity.archetype) {
+        case 'weak': {
+          let path = this.instantiatePath(entity.path.waypoints);
+          this.instantiateEnemy(
+              entity.archetype, entity.movement.startAt,
+              entity.movement.velocity, path);
+          break;
+        }
+        case 'player': {
+          this.instantiatePlayer(
+              entity.movement.startAt, entity.movement.velocity)
+          break;
+        }
+      }
     }
 
     return data;
@@ -45,16 +52,13 @@ export default class LevelLoader {
   }
 
   private instantiatePlayer(
-      archetype: string, startingPoint: {x: number, y: number},
-      velocity: {x: number, y: number}) {
-    switch (archetype) {
-      case 'player':
-        return PlayerArchetype.createNew(
-                new Vector2D(startingPoint.x, startingPoint.y),
-                new Vector2D(velocity.x, velocity.y),
-        )
-    }
+      startingPoint: {x: number, y: number}, velocity: {x: number, y: number}) {
+    return PlayerArchetype.createNew(
+        new Vector2D(startingPoint.x, startingPoint.y),
+        new Vector2D(velocity.x, velocity.y),
+    )
   }
+
 
   private instantiatePath(waypoints: [{x: number, y: number}]):
       CircularBuffer<Vector2D> {

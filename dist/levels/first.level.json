@@ -1,7 +1,7 @@
 {
     "title": "map1",
     "level": 1,
-    "players": [
+    "entities": [
         {
             "archetype": "player",
             "movement": {
@@ -14,9 +14,7 @@
                     "y": 10
                 }
             }
-        }
-    ],
-    "enemies": [
+        },
         {
             "archetype": "weak",
             "movement": {

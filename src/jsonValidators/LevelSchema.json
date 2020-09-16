@@ -11,30 +11,16 @@
       "type": "integer",
       "minimum": -1
     },
-    "enemies": {
+    "entities": {
       "type": "array",
       "items": {
-        "$ref": "#/definitions/enemy"
-      }
-    },
-    "players": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "movement": {
-            "$ref": "#/definitions/movement"
+        "anyOf": [
+          {
+            "$ref": "#/definitions/enemy"
           },
-          "archetype": {
-            "type": "string",
-            "enum": [
-              "player"
-            ]
+          {
+            "$ref": "#/definitions/player"
           }
-        },
-        "required": [
-          "movement",
-          "archetype"
         ]
       }
     }
@@ -42,8 +28,7 @@
   "required": [
     "title",
     "level",
-    "enemies",
-    "players"
+    "entities"
   ],
   "definitions": {
     "vector": {
@@ -114,6 +99,24 @@
         "archetype",
         "path",
         "movement"
+      ]
+    },
+    "player": {
+      "type": "object",
+      "properties": {
+        "movement": {
+          "$ref": "#/definitions/movement"
+        },
+        "archetype": {
+          "type": "string",
+          "enum": [
+            "player"
+          ]
+        }
+      },
+      "required": [
+        "movement",
+        "archetype"
       ]
     }
   }
