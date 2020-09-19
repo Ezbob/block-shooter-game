@@ -11,39 +11,39 @@ import PathFollowingSystem from './systems/PathFollowingSystem';
 
 SharedVariables.canvasManager.setup();
 
+window.onblur = () => {
+  SharedVariables.isPaused = true;
+};
+
+window.onfocus = () => {
+  SharedVariables.isPaused = false;
+};
+
 SharedVariables.systems = [
-  new PathFollowingSystem(), new KeyboardControlSystem(),
-  new MovementSystem(), new DrawingSystem(), new CleanUpSystem(),
-  new CollideSystem(), new AutoShootSystem(), new HealthDisplaySystem()
+  new PathFollowingSystem(), new KeyboardControlSystem(), new MovementSystem(),
+  new DrawingSystem(), new CleanUpSystem(), new CollideSystem(),
+  new AutoShootSystem(), new HealthDisplaySystem()
 ];
 
-SharedVariables.levelLoader.loadFromJson('levels/first.level.json').then(() => {
-
-  window.onblur = () => {
-    SharedVariables.isPaused = true;
-  };
-
-  window.onfocus = () => {
-    SharedVariables.isPaused = false;
-  };
-
-  const gameLoop = () => {
-    if (SharedVariables.isPaused) {
-      window.requestAnimationFrame(gameLoop);
-      return;
-    }
-
-    SharedVariables.frameClock.update();
-
-    SharedVariables.canvasManager.getCanvasContext().clearRect(
-        0, 0, SharedConstants.CANVAS_WIDTH, SharedConstants.CANVAS_HEIGHT);
-
-    for (let system of SharedVariables.systems) {
-      system.update();
-    }
-
+const gameLoop = () => {
+  if (SharedVariables.isPaused) {
     window.requestAnimationFrame(gameLoop);
-  };
+    return;
+  }
+  let ctx = SharedVariables.canvasManager.getCanvasContext();
+
+  SharedVariables.frameClock.update();
+
+  ctx.clearRect(
+      0, 0, SharedConstants.CANVAS_WIDTH, SharedConstants.CANVAS_HEIGHT);
+
+  for (let system of SharedVariables.systems) {
+    system.update();
+  }
 
   window.requestAnimationFrame(gameLoop);
-})
+};
+
+SharedVariables.levelLoader.loadFromJson('levels/first.level.json');
+
+window.requestAnimationFrame(gameLoop);

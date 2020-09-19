@@ -60,9 +60,4 @@ let drawPath = (points: Vector2D[], color: string = 'black') => {
   }
 };
 
-export default {
-  drawLine,
-  drawLineBetween,
-  drawPoint,
-  drawPath
-};
+export default {drawLine, drawLineBetween, drawPoint, drawPath};
