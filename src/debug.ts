@@ -6,11 +6,10 @@ let drawLineBetween =
     (start: Vector2D, end: Vector2D, color: string = 'black') => {
       let ctx = Variables.canvasManager.getCanvasContext();
       if (Constants.DEBUG_ON) {
-        let main = end.add(start);
         ctx.beginPath();
         ctx.strokeStyle = color;
         ctx.moveTo(start.x, start.y);
-        ctx.lineTo(main.x, main.y)
+        ctx.lineTo(end.x, end.y);
         ctx.stroke();
         ctx.closePath();
       }

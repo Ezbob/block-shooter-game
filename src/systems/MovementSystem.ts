@@ -66,7 +66,7 @@ export default class MovementSystem implements ISystem {
 
       Debug.drawLineBetween(
           positionComp.position,
-          positionComp.velocity.mul(4),
+          (positionComp.position.add(positionComp.velocity.mul(3))),
       );
     }
   }

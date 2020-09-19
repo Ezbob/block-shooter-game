@@ -1,3 +1,4 @@
+
 import SharedConstants from './SharedConstants';
 import SharedVariables from './SharedVariables';
 import AutoShootSystem from './systems/AutoShootSystem';
@@ -8,8 +9,6 @@ import HealthDisplaySystem from './systems/HealthDisplaySystem';
 import KeyboardControlSystem from './systems/KeyboardControlSystem';
 import MovementSystem from './systems/MovementSystem';
 import PathFollowingSystem from './systems/PathFollowingSystem';
-
-SharedVariables.canvasManager.setup();
 
 window.onblur = () => {
   SharedVariables.isPaused = true;

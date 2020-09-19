@@ -72,6 +72,10 @@ export default class Vector2D extends Array<number> {
   };
 
   rotate90() {
+    return new Vector2D(-this[1], this[0])
+  };
+
+  rotate270() {
     return new Vector2D(this[1], -this[0])
   };
 

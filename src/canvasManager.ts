@@ -5,15 +5,13 @@ export default class CanvasManager {
   private htmlElement: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;
 
-  constructor(private elementId: string = Constants.CANVAS_HTML_ID) {}
-
-  setup() {
+  constructor(private elementId: string = Constants.CANVAS_HTML_ID) {
     try {
       this.htmlElement =
           document.getElementById(this.elementId) as HTMLCanvasElement;
       this.context = this.htmlElement.getContext('2d');
-      this.htmlElement.setAttribute('width', Constants.CANVAS_WIDTH + '');
-      this.htmlElement.setAttribute('height', Constants.CANVAS_HEIGHT + '');
+      this.htmlElement.setAttribute('width', Constants.CANVAS_WIDTH.toString());
+      this.htmlElement.setAttribute('height', Constants.CANVAS_HEIGHT.toString());
     } catch (exception) {
       this._isAttached = false;
       throw exception;
@@ -23,7 +21,7 @@ export default class CanvasManager {
     } else {
       this._isAttached = false;
     }
-  };
+  }
 
   getCanvasDOMId() {
     return this.elementId;
