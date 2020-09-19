@@ -1,13 +1,21 @@
 import DimensionalComponent from '../components/DimensionalComponent';
 import DrawableComponent from '../components/DrawableComponent';
+import PathComponent from '../components/PathComponent';
 import PositionComponent from '../components/PositionalComponent';
 import EntityManager from '../dataStructures/EntityManager';
+import Debug from '../Debug';
+import SharedConstants from '../SharedConstants';
 import Variables from '../SharedVariables'
 
 import ISystem from './ISystem';
 
 export default class DrawingSystem implements ISystem {
   update(): void {
+    let ctx = Variables.canvasManager.getCanvasContext();
+
+    ctx.clearRect(
+      0, 0, SharedConstants.CANVAS_WIDTH, SharedConstants.CANVAS_HEIGHT);
+
     let entities = EntityManager.filterEntitiesByComponentTypes(
         DimensionalComponent, DrawableComponent, PositionComponent);
 
@@ -17,7 +25,6 @@ export default class DrawingSystem implements ISystem {
       return aDrawComp.priority - bDrawComp.priority;
     });
 
-    let ctx = Variables.canvasManager.getCanvasContext();
     for (let entity of entities) {
       let drawComp = entity.getComponentByType(DrawableComponent);
       let dimenComp = entity.getComponentByType(DimensionalComponent);
@@ -37,6 +44,22 @@ export default class DrawingSystem implements ISystem {
             posComp.position.x, posComp.position.y, dimenComp.dimension.x,
             dimenComp.dimension.y);
         ctx.strokeStyle = old;
+      }
+    }
+
+    entities = EntityManager.filterEntitiesByComponentTypes(PositionComponent)
+
+    for (let entity of entities) {
+      let posComp = entity.getComponentByType(PositionComponent);
+      Debug.drawLineBetween(posComp.position, posComp.position.add(posComp.velocity.mul(4)));
+    }
+
+    entities = EntityManager.filterEntitiesByComponentTypes(PathComponent);
+
+    for (let entity of entities) {
+      let pathComp = entity.getComponentByType(PathComponent);
+      for (let p of pathComp.path) {
+        Debug.drawPoint(p);
       }
     }
   }

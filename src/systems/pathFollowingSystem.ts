@@ -1,7 +1,6 @@
 import PathComponent from '../components/PathComponent';
 import PositionalComponent from '../components/PositionalComponent';
 import EntityManager from '../dataStructures/EntityManager';
-import Debug from '../Debug';
 import ISystem from './ISystem';
 
 export default class PathFollowingSystem implements ISystem {
@@ -33,10 +32,6 @@ export default class PathFollowingSystem implements ISystem {
           posComponent.velocity =
               displacement.mulMembers(pathComponent.followingVelocity)
         }
-      }
-
-      for (let c of pathComponent.path) {
-        Debug.drawPoint(c);
       }
     }
   }

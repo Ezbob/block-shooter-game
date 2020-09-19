@@ -3,7 +3,6 @@ import DimensionalComponent from '../components/DimensionalComponent';
 import FrictionComponent from '../components/FrictionComponent';
 import PositionalComponent from '../components/PositionalComponent';
 import EntityManager from '../dataStructures/EntityManager';
-import Debug from '../Debug';
 import SharedConstants from '../SharedConstants';
 
 import ISystem from './ISystem';
@@ -64,10 +63,6 @@ export default class MovementSystem implements ISystem {
       positionComp.position.x += positionComp.velocity.x;
       positionComp.position.y += positionComp.velocity.y;
 
-      Debug.drawLineBetween(
-          positionComp.position,
-          (positionComp.position.add(positionComp.velocity.mul(3))),
-      );
     }
   }
 };

@@ -1,5 +1,3 @@
-
-import SharedConstants from './SharedConstants';
 import SharedVariables from './SharedVariables';
 import AutoShootSystem from './systems/AutoShootSystem';
 import CleanUpSystem from './systems/CleanUpSystem';
@@ -29,12 +27,8 @@ const gameLoop = () => {
     window.requestAnimationFrame(gameLoop);
     return;
   }
-  let ctx = SharedVariables.canvasManager.getCanvasContext();
 
   SharedVariables.frameClock.update();
-
-  ctx.clearRect(
-      0, 0, SharedConstants.CANVAS_WIDTH, SharedConstants.CANVAS_HEIGHT);
 
   for (let system of SharedVariables.systems) {
     system.update();
