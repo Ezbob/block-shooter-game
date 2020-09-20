@@ -20,13 +20,13 @@ export default class HealthDisplaySystem implements ISystem {
   }
 
   update(): void {
-    let entities = EntityManager.filterEntitiesByComponentTypes(
-        HealthComponent, HealthDisplayComponent);
     let ctx = SharedVariables.canvasManager.getCanvasContext();
 
-    for (let e of entities) {
+    for (let e of EntityManager) {
       let healthComp = e.getComponentByType(HealthComponent)
       let healthDispComp = e.getComponentByType(HealthDisplayComponent)
+
+      if (!(healthComp && healthDispComp)) continue;
 
       let beads = Math.floor(
           healthComp.health /

@@ -9,12 +9,10 @@ export default class PathFollowingSystem implements ISystem {
   }
 
   update() {
-    let entities = EntityManager.filterEntitiesByComponentTypes(
-        PositionalComponent, PathComponent);
-
-    for (let e of entities) {
+    for (let e of EntityManager) {
       let pathComponent = e.getComponentByType(PathComponent);
       let posComponent = e.getComponentByType(PositionalComponent);
+      if (!(pathComponent && posComponent)) continue;
 
       let path = pathComponent.path;
       let position = posComponent.position;

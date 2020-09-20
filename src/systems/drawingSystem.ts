@@ -14,7 +14,7 @@ export default class DrawingSystem implements ISystem {
     let ctx = Variables.canvasManager.getCanvasContext();
 
     ctx.clearRect(
-      0, 0, SharedConstants.CANVAS_WIDTH, SharedConstants.CANVAS_HEIGHT);
+        0, 0, SharedConstants.CANVAS_WIDTH, SharedConstants.CANVAS_HEIGHT);
 
     let entities = EntityManager.filterEntitiesByComponentTypes(
         DimensionalComponent, DrawableComponent, PositionComponent);
@@ -47,19 +47,17 @@ export default class DrawingSystem implements ISystem {
       }
     }
 
-    entities = EntityManager.filterEntitiesByComponentTypes(PositionComponent)
-
-    for (let entity of entities) {
+    for (let entity of EntityManager) {
       let posComp = entity.getComponentByType(PositionComponent);
-      Debug.drawLineBetween(posComp.position, posComp.position.add(posComp.velocity.mul(4)));
-    }
-
-    entities = EntityManager.filterEntitiesByComponentTypes(PathComponent);
-
-    for (let entity of entities) {
+      if (posComp) {
+        Debug.drawLineBetween(
+            posComp.position, posComp.position.add(posComp.velocity.mul(4)));
+      }
       let pathComp = entity.getComponentByType(PathComponent);
-      for (let p of pathComp.path) {
-        Debug.drawPoint(p);
+      if (pathComp) {
+        for (let p of pathComp.path) {
+          Debug.drawPoint(p);
+        }
       }
     }
   }

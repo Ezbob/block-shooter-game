@@ -20,19 +20,17 @@ export default class CollideSystem implements ISystem {
           let healthComp = e.getComponentByType(HealthComponent);
           let damageComp = a.getComponentByType(DamageComponent);
 
-          if (!(compA && posA && healthComp && damageComp)) {
-            continue;
-          }
+          if (compA && posA && healthComp && damageComp) {
+            if (e.id != a.id && (compA.layers & compE.layers) != 0 &&
+                Utils.intersectingRectanglesFlat(
+                    posE.position, compE.shape, posA.position, compA.shape)) {
+              healthComp.health -= damageComp.damage;
 
-          if (e.id != a.id && (compA.layers & compE.layers) != 0 &&
-              Utils.intersectingRectanglesFlat(
-                  posE.position, compE.shape, posA.position, compA.shape)) {
-            healthComp.health -= damageComp.damage;
+              EntityManager.deleteEntity(a.id);
 
-            EntityManager.deleteEntity(a.id);
-
-            if (healthComp.health <= 0) {
-              compE.layers = 0;  // disable collision
+              if (healthComp.health <= 0) {
+                compE.layers = 0;  // disable collision
+              }
             }
           }
         }

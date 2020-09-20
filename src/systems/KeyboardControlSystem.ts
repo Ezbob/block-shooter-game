@@ -2,7 +2,7 @@ import ShotArchetype from '../archetypes/ShotArchetype';
 import DimensionalComponent from '../components/DimensionalComponent';
 import GunComponent from '../components/GunComponent';
 import KeyboardControllableComponent from '../components/KeyboardControllableComponent';
-import PositionComponent from '../components/PositionalComponent';
+
 import PositionalComponent from '../components/PositionalComponent';
 import EntityManager from '../dataStructures/EntityManager';
 import Vector2D from '../dataStructures/Vector2D';
@@ -51,49 +51,44 @@ export default class KeyboardControlSystem implements ISystem {
   }
 
   update() {
-    let entities = EntityManager.filterEntitiesByComponentTypes(
-        PositionComponent, KeyboardControllableComponent);
 
-    for (let e of entities) {
+    for (let e of EntityManager) {
       let pv = e.getComponentByType(PositionalComponent);
       let keyboardComponent =
           e.getComponentByType(KeyboardControllableComponent);
 
-      if (this.pressed.get('ArrowDown') == KeyPressType.KEY_DOWN) {
-        pv.velocity.y = keyboardComponent.inputForce.y;
-      }
+      if (pv && keyboardComponent) {
+        if (this.pressed.get('ArrowDown') == KeyPressType.KEY_DOWN) {
+          pv.velocity.y = keyboardComponent.inputForce.y;
+        }
 
-      if (this.pressed.get('ArrowUp') == KeyPressType.KEY_DOWN) {
-        pv.velocity.y = -keyboardComponent.inputForce.y;
-      }
+        if (this.pressed.get('ArrowUp') == KeyPressType.KEY_DOWN) {
+          pv.velocity.y = -keyboardComponent.inputForce.y;
+        }
 
-      if (this.pressed.get('ArrowLeft') == KeyPressType.KEY_DOWN) {
-        pv.velocity.x = -keyboardComponent.inputForce.x;
-      }
+        if (this.pressed.get('ArrowLeft') == KeyPressType.KEY_DOWN) {
+          pv.velocity.x = -keyboardComponent.inputForce.x;
+        }
 
-      if (this.pressed.get('ArrowRight') == KeyPressType.KEY_DOWN) {
-        pv.velocity.x = keyboardComponent.inputForce.x;
-      }
-    }
+        if (this.pressed.get('ArrowRight') == KeyPressType.KEY_DOWN) {
+          pv.velocity.x = keyboardComponent.inputForce.x;
+        }
 
-    entities = EntityManager.filterEntitiesByComponentTypes(
-        PositionComponent, DimensionalComponent, GunComponent,
-        KeyboardControllableComponent);
-
-    for (let e of entities) {
-      let pv = e.getComponentByType(PositionalComponent);
-      let dimensionComp = e.getComponentByType(DimensionalComponent);
-      let gunComp = e.getComponentByType(GunComponent);
-
-      if (this.pressed.get('Space') == KeyPressType.KEY_PRESS) {
-        let diff = SharedVariables.frameClock.now - gunComp.timeSinceLast;
-        if (diff > gunComp.shotDelay) {
-          ShotArchetype.createNew(
-              new Vector2D(
-                  pv.position.x + dimensionComp.dimension.x / 2,
-                  pv.position.y - dimensionComp.dimension.y),
-              new Vector2D(0, gunComp.bulletVelocity), 0o0010);
-          gunComp.timeSinceLast = SharedVariables.frameClock.now;
+        let dimensionComp = e.getComponentByType(DimensionalComponent);
+        let gunComp = e.getComponentByType(GunComponent);
+  
+        if (dimensionComp && gunComp) {
+          if (this.pressed.get('Space') == KeyPressType.KEY_PRESS) {
+            let diff = SharedVariables.frameClock.now - gunComp.timeSinceLast;
+            if (diff > gunComp.shotDelay) {
+              ShotArchetype.createNew(
+                  new Vector2D(
+                      pv.position.x + dimensionComp.dimension.x / 2,
+                      pv.position.y - dimensionComp.dimension.y),
+                  new Vector2D(0, gunComp.bulletVelocity), 0o0010);
+              gunComp.timeSinceLast = SharedVariables.frameClock.now;
+            }
+          }
         }
       }
     }

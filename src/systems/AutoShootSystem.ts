@@ -20,18 +20,16 @@ export default class AutoShootSystem implements ISystem {
         let posComp = e.getComponentByType(PositionalComponent);
         let dimensionComp = e.getComponentByType(DimensionalComponent);
 
-        if (!(gunComp && posComp && dimensionComp)) {
-          continue;
-        }
-
-        let diff = SharedVariables.frameClock.now - gunComp.timeSinceLast;
-        if (diff > gunComp.shotDelay) {
-          ShotArchetype.createNew(
-              new Vector2D(
-                posComp.position.x + dimensionComp.dimension.x / 2,
-                  posComp.position.y + dimensionComp.dimension.y),
-              new Vector2D(0, gunComp.bulletVelocity), 0x0001);
-          gunComp.timeSinceLast = SharedVariables.frameClock.now;
+        if (gunComp && posComp && dimensionComp) {
+          let diff = SharedVariables.frameClock.now - gunComp.timeSinceLast;
+          if (diff > gunComp.shotDelay) {
+            ShotArchetype.createNew(
+                new Vector2D(
+                    posComp.position.x + dimensionComp.dimension.x / 2,
+                    posComp.position.y + dimensionComp.dimension.y),
+                new Vector2D(0, gunComp.bulletVelocity), 0x0001);
+            gunComp.timeSinceLast = SharedVariables.frameClock.now;
+          }
         }
       }
     }
