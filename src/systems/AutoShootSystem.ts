@@ -12,17 +12,18 @@ import ISystem from './ISystem';
 
 export default class AutoShootSystem implements ISystem {
   update() {
-    let entities = EntityManager.filterEntitiesByComponentTypes(
-        PositionalComponent, DimensionalComponent, AutoShootComponent,
-        GunComponent);
-
-    for (let e of entities) {
+    for (let e of EntityManager) {
       let autoShootComp = e.getComponentByType(AutoShootComponent);
 
-      if (autoShootComp.isShooting) {
+      if (autoShootComp && autoShootComp.isShooting) {
         let gunComp = e.getComponentByType(GunComponent);
         let posComp = e.getComponentByType(PositionalComponent);
         let dimensionComp = e.getComponentByType(DimensionalComponent);
+
+        if (!(gunComp && posComp && dimensionComp)) {
+          continue;
+        }
+
         let diff = SharedVariables.frameClock.now - gunComp.timeSinceLast;
         if (diff > gunComp.shotDelay) {
           ShotArchetype.createNew(

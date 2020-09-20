@@ -9,30 +9,31 @@ import ISystem from './ISystem';
 
 export default class CollideSystem implements ISystem {
   update() {
-    let entities = EntityManager.filterEntitiesByComponentTypes(
-        CollisionDetectionComponent, PositionalComponent, HealthComponent);
-
-    let others = EntityManager.filterEntitiesByComponentTypes(
-        CollisionDetectionComponent, PositionalComponent, DamageComponent);
-
-    for (let e of entities) {
+    for (let e of EntityManager) {
       let compE = e.getComponentByType(CollisionDetectionComponent);
       let posE = e.getComponentByType(PositionalComponent);
-      for (let a of others) {
-        let compA = a.getComponentByType(CollisionDetectionComponent);
-        let posA = a.getComponentByType(PositionalComponent);
-        if (e.id != a.id && (compA.layers & compE.layers) != 0 &&
-            Utils.intersectingRectanglesFlat(
-                posE.position, compE.shape, posA.position, compA.shape)) {
+
+      if (compE && posE) {
+        for (let a of EntityManager) {
+          let compA = a.getComponentByType(CollisionDetectionComponent);
+          let posA = a.getComponentByType(PositionalComponent);
           let healthComp = e.getComponentByType(HealthComponent);
           let damageComp = a.getComponentByType(DamageComponent);
 
-          healthComp.health -= damageComp.damage;
+          if (!(compA && posA && healthComp && damageComp)) {
+            continue;
+          }
 
-          EntityManager.deleteEntity(a.id);
+          if (e.id != a.id && (compA.layers & compE.layers) != 0 &&
+              Utils.intersectingRectanglesFlat(
+                  posE.position, compE.shape, posA.position, compA.shape)) {
+            healthComp.health -= damageComp.damage;
 
-          if( healthComp.health <= 0 ) {
-              compE.layers = 0; // disable collision
+            EntityManager.deleteEntity(a.id);
+
+            if (healthComp.health <= 0) {
+              compE.layers = 0;  // disable collision
+            }
           }
         }
       }

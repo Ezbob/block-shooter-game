@@ -16,7 +16,7 @@ export default class Entity {
     return this.components.get(c.cid) as T; 
   }
 
-  getComponentById(componentId: number) {
+  getComponentById(componentId: number) : IComponent | undefined {
     return this.components.get(componentId);
   }
 
