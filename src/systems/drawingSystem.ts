@@ -49,11 +49,13 @@ export default class DrawingSystem implements ISystem {
 
     for (let entity of EntityManager) {
       let posComp = entity.getComponentByType(PositionComponent);
+      let pathComp = entity.getComponentByType(PathComponent);
+
       if (posComp) {
         Debug.drawLineBetween(
             posComp.position, posComp.position.add(posComp.velocity.mul(4)));
       }
-      let pathComp = entity.getComponentByType(PathComponent);
+
       if (pathComp) {
         for (let p of pathComp.path) {
           Debug.drawPoint(p);
