@@ -26,21 +26,23 @@ export default class HealthDisplaySystem implements ISystem {
       let healthComp = e.getComponentByType(HealthComponent)
       let healthDispComp = e.getComponentByType(HealthDisplayComponent)
 
-      if (!(healthComp && healthDispComp)) continue;
+      if (healthComp && healthDispComp) {
+        let beads = Math.floor(
+            healthComp.health /
+                Math.ceil(
+                    healthComp.maxHealth / healthDispComp.maxDisplayBead) +
+            1);
+        let beadColor = this.getBeadColor(
+            healthDispComp.colors, beads, healthDispComp.maxDisplayBead)
+        ctx.fillStyle = beadColor;
 
-      let beads = Math.floor(
-          healthComp.health /
-              Math.ceil(healthComp.maxHealth / healthDispComp.maxDisplayBead) +
-          1);
-      let beadColor = this.getBeadColor(
-          healthDispComp.colors, beads, healthDispComp.maxDisplayBead)
-      ctx.fillStyle = beadColor;
-
-      for (let i = 0; i < beads; i++) {
-        ctx.fillRect(
-            (healthDispComp.position.x + 3) + (healthDispComp.dimension.x * i),
-            healthDispComp.position.y + 2, healthDispComp.dimension.x - 5,
-            healthDispComp.dimension.y - 2);
+        for (let i = 0; i < beads; i++) {
+          ctx.fillRect(
+              (healthDispComp.position.x + 3) +
+                  (healthDispComp.dimension.x * i),
+              healthDispComp.position.y + 2, healthDispComp.dimension.x - 5,
+              healthDispComp.dimension.y - 2);
+        }
       }
     }
   }

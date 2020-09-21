@@ -18,18 +18,6 @@ class EntityManager extends Array<Entity> {
     if (index != -1) this.splice(index, 1);
   }
 
-  filterEntitiesByComponentTypes(...componentTypes: { new(...arg: any): any, cid: number }[]): Entity[] {
-    let results = [];
-    for (let entity of this) {
-      if (componentTypes.length > entity.components.size) {
-        continue;  // entity's component list is not a superset
-      }
-      if (componentTypes.every((c => entity.components.has(c.cid)))) {
-        results.push(entity)
-      }
-    }
-    return results;
-  }
 };
 
 export default new EntityManager();

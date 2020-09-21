@@ -12,23 +12,24 @@ export default class PathFollowingSystem implements ISystem {
     for (let e of EntityManager) {
       let pathComponent = e.getComponentByType(PathComponent);
       let posComponent = e.getComponentByType(PositionalComponent);
-      if (!(pathComponent && posComponent)) continue;
 
-      let path = pathComponent.path;
-      let position = posComponent.position;
+      if (pathComponent && posComponent) {
+        let path = pathComponent.path;
+        let position = posComponent.position;
 
-      let nextWayPoint = pathComponent.nextWayPoint;
+        let nextWayPoint = pathComponent.nextWayPoint;
 
-      if (nextWayPoint) {
-        let displacement = nextWayPoint.sub(position);
-        let distance = displacement.magnitude();
-        displacement.normMut();
+        if (nextWayPoint) {
+          let displacement = nextWayPoint.sub(position);
+          let distance = displacement.magnitude();
+          displacement.normMut();
 
-        if (this.hasReachedNextPoint(distance)) {
-          pathComponent.nextWayPoint = path.next();
-        } else {
-          posComponent.velocity =
-              displacement.mulMembers(pathComponent.followingVelocity)
+          if (this.hasReachedNextPoint(distance)) {
+            pathComponent.nextWayPoint = path.next();
+          } else {
+            posComponent.velocity =
+                displacement.mulMembers(pathComponent.followingVelocity)
+          }
         }
       }
     }

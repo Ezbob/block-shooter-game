@@ -16,40 +16,46 @@ export default class DrawingSystem implements ISystem {
     ctx.clearRect(
         0, 0, SharedConstants.CANVAS_WIDTH, SharedConstants.CANVAS_HEIGHT);
 
-    let entities = EntityManager.filterEntitiesByComponentTypes(
-        DimensionalComponent, DrawableComponent, PositionComponent);
-
-    entities.sort((a, b) => {
+    EntityManager.sort((a, b) => {
       let aDrawComp = a.getComponentByType(DrawableComponent);
       let bDrawComp = b.getComponentByType(DrawableComponent);
+
+      if (!(aDrawComp && bDrawComp)) {
+        return 0;
+      } else if (!aDrawComp || !bDrawComp) {
+        if (aDrawComp) {
+          return -1;
+        } else {
+          return 1;
+        }
+      }
+
       return aDrawComp.priority - bDrawComp.priority;
     });
 
-    for (let entity of entities) {
+    for (let entity of EntityManager) {
       let drawComp = entity.getComponentByType(DrawableComponent);
       let dimenComp = entity.getComponentByType(DimensionalComponent);
       let posComp = entity.getComponentByType(PositionComponent);
-
-      if (drawComp.isFilled) {
-        let old = ctx.fillStyle;
-        ctx.fillStyle = drawComp.color;
-        ctx.fillRect(
-            posComp.position.x, posComp.position.y, dimenComp.dimension.x,
-            dimenComp.dimension.y);
-        ctx.fillStyle = old;
-      } else {
-        let old = ctx.strokeStyle;
-        ctx.strokeStyle = drawComp.color;
-        ctx.strokeRect(
-            posComp.position.x, posComp.position.y, dimenComp.dimension.x,
-            dimenComp.dimension.y);
-        ctx.strokeStyle = old;
-      }
-    }
-
-    for (let entity of EntityManager) {
-      let posComp = entity.getComponentByType(PositionComponent);
       let pathComp = entity.getComponentByType(PathComponent);
+
+      if (posComp && drawComp && dimenComp) {
+        if (drawComp.isFilled) {
+          let old = ctx.fillStyle;
+          ctx.fillStyle = drawComp.color;
+          ctx.fillRect(
+              posComp.position.x, posComp.position.y, dimenComp.dimension.x,
+              dimenComp.dimension.y);
+          ctx.fillStyle = old;
+        } else {
+          let old = ctx.strokeStyle;
+          ctx.strokeStyle = drawComp.color;
+          ctx.strokeRect(
+              posComp.position.x, posComp.position.y, dimenComp.dimension.x,
+              dimenComp.dimension.y);
+          ctx.strokeStyle = old;
+        }
+      }
 
       if (posComp) {
         Debug.drawLineBetween(
