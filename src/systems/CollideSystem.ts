@@ -2,6 +2,8 @@ import CollisionDetectionComponent from '../components/CollisionDetectionCompone
 import DamageComponent from '../components/DamageComponent';
 import HealthComponent from '../components/HealthComponent';
 import PositionalComponent from '../components/PositionalComponent';
+import ScoreComponent from '../components/ScoreComponent';
+//import ScoreComponent from '../components/ScoreComponent';
 import EntityManager from '../dataStructures/EntityManager';
 import Utils from '../Utils';
 
@@ -25,6 +27,12 @@ export default class CollideSystem implements ISystem {
                 Utils.intersectingRectanglesFlat(
                     posE.position, compE.shape, posA.position, compA.shape)) {
               healthComp.health -= damageComp.damage;
+
+              let s = damageComp.dealer.getComponentByType(ScoreComponent);
+
+              if (s && healthComp.health <= 0) {
+                s.score += 20;
+              }
 
               EntityManager.deleteEntity(a.id);
 

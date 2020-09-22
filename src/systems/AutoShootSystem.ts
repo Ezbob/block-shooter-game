@@ -24,6 +24,7 @@ export default class AutoShootSystem implements ISystem {
           let diff = SharedVariables.frameClock.now - gunComp.timeSinceLast;
           if (diff > gunComp.shotDelay) {
             ShotArchetype.createNew(
+                e,
                 new Vector2D(
                     posComp.position.x + dimensionComp.dimension.x / 2,
                     posComp.position.y + dimensionComp.dimension.y),

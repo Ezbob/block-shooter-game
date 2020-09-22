@@ -51,7 +51,6 @@ export default class KeyboardControlSystem implements ISystem {
   }
 
   update() {
-
     for (let e of EntityManager) {
       let pv = e.getComponentByType(PositionalComponent);
       let keyboardComponent =
@@ -76,12 +75,13 @@ export default class KeyboardControlSystem implements ISystem {
 
         let dimensionComp = e.getComponentByType(DimensionalComponent);
         let gunComp = e.getComponentByType(GunComponent);
-  
+
         if (dimensionComp && gunComp) {
           if (this.pressed.get('Space') == KeyPressType.KEY_PRESS) {
             let diff = SharedVariables.frameClock.now - gunComp.timeSinceLast;
             if (diff > gunComp.shotDelay) {
               ShotArchetype.createNew(
+                  e,
                   new Vector2D(
                       pv.position.x + dimensionComp.dimension.x / 2,
                       pv.position.y - dimensionComp.dimension.y),

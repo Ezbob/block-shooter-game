@@ -8,6 +8,8 @@ import HealthComponent from '../components/HealthComponent';
 import HealthDisplayComponent from '../components/HealthDisplayComponent';
 import KeyboardControllableComponent from '../components/KeyboardControllableComponent';
 import PositionalComponent from '../components/PositionalComponent';
+import ScoreComponent from '../components/ScoreComponent';
+import ScoreDisplayComponent from '../components/ScoreDisplayComponent';
 import Entity from '../dataStructures/Entity';
 import EntityManager from '../dataStructures/EntityManager';
 import Vector2D from '../dataStructures/Vector2D';
@@ -22,7 +24,9 @@ class PlayerArchetype {
         new CollisionDetectionComponent(0o0011, new Vector2D(32, 32)),
         new CanvasBoundaryComponent(new Vector2D(5, 5), new Vector2D(180, 30)),
         new KeyboardControllableComponent(inputVelocity),
-        new GunComponent(110));
+        new GunComponent(110),
+        new ScoreComponent(),
+        new ScoreDisplayComponent());
   }
 };
 
