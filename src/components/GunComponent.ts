@@ -1,11 +1,5 @@
-import IComponent from '../dataStructures/IComponent';
 
-export default class GunComponent implements IComponent {
-  static cid: number = 8;
+export default class GunComponent {
   public timeSinceLast = 0;
   constructor(public shotDelay = 150, public bulletVelocity = -12) {}
-
-  get cid() {
-    return GunComponent.cid;
-  }
 };
