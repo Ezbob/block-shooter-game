@@ -1,5 +1,4 @@
 import ShotArchetype from '../archetypes/ShotArchetype';
-import DimensionalComponent from '../components/DimensionalComponent';
 import GunComponent from '../components/GunComponent';
 import KeyboardControllableComponent from '../components/KeyboardControllableComponent';
 
@@ -55,6 +54,7 @@ export default class KeyboardControlSystem implements ISystem {
       let pv = e.getComponentByType(PositionalComponent);
       let keyboardComponent =
           e.getComponentByType(KeyboardControllableComponent);
+      let gunComp = e.getComponentByType(GunComponent);
 
       if (pv && keyboardComponent) {
         if (this.pressed.get('ArrowDown') == KeyPressType.KEY_DOWN) {
@@ -73,18 +73,15 @@ export default class KeyboardControlSystem implements ISystem {
           pv.velocity.x = keyboardComponent.inputForce.x;
         }
 
-        let dimensionComp = e.getComponentByType(DimensionalComponent);
-        let gunComp = e.getComponentByType(GunComponent);
-
-        if (dimensionComp && gunComp) {
+        if (gunComp) {
           if (this.pressed.get('Space') == KeyPressType.KEY_PRESS) {
             let diff = SharedVariables.frameClock.now - gunComp.timeSinceLast;
             if (diff > gunComp.shotDelay) {
               ShotArchetype.createNew(
                   e,
                   new Vector2D(
-                      pv.position.x + dimensionComp.dimension.x / 2,
-                      pv.position.y - dimensionComp.dimension.y),
+                      pv.position.x + pv.dimension.x / 2,
+                      pv.position.y - pv.dimension.y),
                   new Vector2D(0, gunComp.bulletVelocity), 0o0010);
               gunComp.timeSinceLast = SharedVariables.frameClock.now;
             }

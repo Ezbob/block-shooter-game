@@ -1,4 +1,3 @@
-import DimensionalComponent from '../components/DimensionalComponent';
 import DrawableComponent from '../components/DrawableComponent';
 import PathComponent from '../components/PathComponent';
 import PositionComponent from '../components/PositionalComponent';
@@ -35,24 +34,23 @@ export default class DrawingSystem implements ISystem {
 
     for (let entity of EntityManager) {
       let drawComp = entity.getComponentByType(DrawableComponent);
-      let dimenComp = entity.getComponentByType(DimensionalComponent);
       let posComp = entity.getComponentByType(PositionComponent);
       let pathComp = entity.getComponentByType(PathComponent);
 
-      if (posComp && drawComp && dimenComp) {
+      if (posComp && drawComp) {
         if (drawComp.isFilled) {
           let old = ctx.fillStyle;
           ctx.fillStyle = drawComp.color;
           ctx.fillRect(
-              posComp.position.x, posComp.position.y, dimenComp.dimension.x,
-              dimenComp.dimension.y);
+              posComp.position.x, posComp.position.y, posComp.dimension.x,
+              posComp.dimension.y);
           ctx.fillStyle = old;
         } else {
           let old = ctx.strokeStyle;
           ctx.strokeStyle = drawComp.color;
           ctx.strokeRect(
-              posComp.position.x, posComp.position.y, dimenComp.dimension.x,
-              dimenComp.dimension.y);
+              posComp.position.x, posComp.position.y, posComp.dimension.x,
+              posComp.dimension.y);
           ctx.strokeStyle = old;
         }
       }
