@@ -9,6 +9,7 @@ export default class CleanUpSystem implements ISystem {
     for (let e of EntityManager) {
       let posComp = e.getComponentByType(PositionalComponent);
       let cleanup = e.getComponentByType(CleanUpComponent);
+      let healthComp = e.getComponentByType(HealthComponent);
 
       if (posComp && cleanup) {
         if (posComp.position.y < cleanup.limitUpper) {
@@ -31,8 +32,6 @@ export default class CleanUpSystem implements ISystem {
           continue;
         }
       }
-
-      let healthComp = e.getComponentByType(HealthComponent);
 
       if (healthComp && healthComp.health <= 0) {
         EntityManager.deleteEntity(e.id);

@@ -24,8 +24,7 @@ SharedVariables.systems = [
 
 const gameLoop = () => {
   if (SharedVariables.isPaused) {
-    window.requestAnimationFrame(gameLoop);
-    return;
+    return window.requestAnimationFrame(gameLoop);
   }
 
   SharedVariables.frameClock.update();
@@ -34,7 +33,7 @@ const gameLoop = () => {
     system.update();
   }
 
-  window.requestAnimationFrame(gameLoop);
+  return window.requestAnimationFrame(gameLoop);
 };
 
 SharedVariables.levelLoader.loadFromJson('levels/first.level.json');
