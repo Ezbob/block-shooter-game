@@ -20,7 +20,7 @@ class WeakEnemyArchetype {
     return EntityManager.createNewEntity(
         new PositionalComponent(pos, velocity, this.dimensions),
         new PathComponent(path),
-        new HealthComponent(100, 100),
+        new HealthComponent(100, 100, 400),
         new AutoShootComponent(),
         new GunComponent(700, 5),
         this.drawable,

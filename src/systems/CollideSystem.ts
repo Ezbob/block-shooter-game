@@ -30,7 +30,7 @@ export default class CollideSystem implements ISystem {
               let s = damageComp.dealer.getComponentByType(ScoreComponent);
 
               if (s && healthComp.health <= 0) {
-                s.score += 20;
+                s.score += healthComp.worth;
               }
 
               EntityManager.deleteEntity(a.id);
