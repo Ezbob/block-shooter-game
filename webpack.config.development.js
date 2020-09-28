@@ -1,12 +1,11 @@
-import path from 'path';
-import webpack from 'webpack';
+const path = require('path')
 
 const babelOptions = {
   presets: ['@babel/preset-env'],
   plugins: [['@babel/plugin-transform-runtime', {'regenerator': true}]]
 };
 
-const config: webpack.Configuration = {
+module.exports = {
   mode: 'development',
 
   entry: {main: './src/Main.ts'},
@@ -38,6 +37,4 @@ const config: webpack.Configuration = {
       }
     ]
   }
-};
-
-export default config;
+}
