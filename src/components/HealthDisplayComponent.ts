@@ -1,10 +1,8 @@
 
 import Vector2D from '../dataStructures/Vector2D';
 import SharedConstants from '../SharedConstants';
+import { IHealthBeadColors } from './IHealthBeadColors';
 
-export interface IHealthBeadColors {
-  ok: string, warning: string, fatal: string
-}
 
 export default class HealthDisplayComponent {
   constructor(
@@ -14,5 +12,6 @@ export default class HealthDisplayComponent {
         fatal: 'rgb(219, 6, 6)'
       },
       public position = new Vector2D(10, SharedConstants.CANVAS_HEIGHT - 20),
-      public dimension = new Vector2D(20, 15), public maxDisplayBead = 8) {}
+      public dimension = new Vector2D(20, 15),
+      public maxDisplayBead = 8) {}
 };

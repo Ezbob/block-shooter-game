@@ -1,5 +1,6 @@
 import HealthComponent from '../components/HealthComponent';
-import HealthDisplayComponent, {IHealthBeadColors} from '../components/HealthDisplayComponent';
+import HealthDisplayComponent from '../components/HealthDisplayComponent';
+import { IHealthBeadColors } from '../components/IHealthBeadColors';
 import ScoreComponent from '../components/ScoreComponent';
 import ScoreDisplayComponent from '../components/ScoreDisplayComponent';
 import EntityManager from '../dataStructures/EntityManager';

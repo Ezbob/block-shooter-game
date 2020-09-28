@@ -1,4 +1,7 @@
 
 export default class HealthComponent {
-  constructor(public health: number, public maxHealth: number, public worth: number = 0) {}
+  constructor(
+    public health: number,
+    public maxHealth: number,
+    public worth: number = 0) {}
 };

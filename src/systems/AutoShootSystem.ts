@@ -24,7 +24,7 @@ export default class AutoShootSystem implements ISystem {
               new Vector2D(
                   posComp.position.x + posComp.dimension.x / 2,
                   posComp.position.y + posComp.dimension.y),
-              new Vector2D(0, gunComp.bulletVelocity), 0x0001);
+              new Vector2D(0, gunComp.bulletVelocity), 0b0001);
           gunComp.timeSinceLast = SharedVariables.frameClock.now;
         }
       }
