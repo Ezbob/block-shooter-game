@@ -52,7 +52,10 @@ export default class PlayerUIDisplaySystem implements ISystem {
       if (scoreComp && scoreDisplayComp) {
         ctx.fillStyle = scoreDisplayComp.color;
         ctx.font = `${scoreDisplayComp.pixelSize} ${scoreDisplayComp.fontFaceName}`
-        ctx.fillText("" + scoreComp.score, scoreDisplayComp.position.x, scoreDisplayComp.position.y)
+
+        let text = `${scoreComp.score}`;
+        let textMeasure = ctx.measureText(text);
+        ctx.fillText(text, scoreDisplayComp.position.x - (textMeasure.width / 2), scoreDisplayComp.position.y)
       }
     }
   }

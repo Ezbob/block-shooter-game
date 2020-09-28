@@ -57,19 +57,24 @@ export default class KeyboardControlSystem implements ISystem {
       let gunComp = e.getComponentByType(GunComponent);
 
       if (pv && keyboardComponent) {
-        if (this.pressed.get('ArrowDown') == KeyPressType.KEY_DOWN) {
+        let down = this.pressed.get('ArrowDown') == KeyPressType.KEY_DOWN;
+        let up = this.pressed.get('ArrowUp') == KeyPressType.KEY_DOWN;
+        let left = this.pressed.get('ArrowLeft') == KeyPressType.KEY_DOWN;
+        let right = this.pressed.get('ArrowRight') == KeyPressType.KEY_DOWN;
+
+        if (down) {
           pv.velocity.y = keyboardComponent.inputForce.y;
         }
 
-        if (this.pressed.get('ArrowUp') == KeyPressType.KEY_DOWN) {
+        if (up) {
           pv.velocity.y = -keyboardComponent.inputForce.y;
         }
 
-        if (this.pressed.get('ArrowLeft') == KeyPressType.KEY_DOWN) {
+        if (left) {
           pv.velocity.x = -keyboardComponent.inputForce.x;
         }
 
-        if (this.pressed.get('ArrowRight') == KeyPressType.KEY_DOWN) {
+        if (right) {
           pv.velocity.x = keyboardComponent.inputForce.x;
         }
 

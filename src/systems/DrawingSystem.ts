@@ -39,19 +39,15 @@ export default class DrawingSystem implements ISystem {
 
       if (posComp && drawComp) {
         if (drawComp.isFilled) {
-          let old = ctx.fillStyle;
           ctx.fillStyle = drawComp.color;
           ctx.fillRect(
               posComp.position.x, posComp.position.y, posComp.dimension.x,
               posComp.dimension.y);
-          ctx.fillStyle = old;
         } else {
-          let old = ctx.strokeStyle;
           ctx.strokeStyle = drawComp.color;
           ctx.strokeRect(
               posComp.position.x, posComp.position.y, posComp.dimension.x,
               posComp.dimension.y);
-          ctx.strokeStyle = old;
         }
       }
 
