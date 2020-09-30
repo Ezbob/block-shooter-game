@@ -1,7 +1,7 @@
 
 import FrameClock from './dataStructures/FrameClock';
 import CanvasManager from './CanvasManager';
-import EventQueue from './dataStructures/EventBus';
+import EventQueue from './dataStructures/EventQueue';
 import LevelLoader from './LevelLoader';
 
 export default {
