@@ -1,27 +1,22 @@
+import IEvent from './IEvent';
 
-export default class EventBus {
-    private eventHandlers: Map<string, Array<(...args: any[]) => void>> = new Map();
+export default class EventQueue {
+  private queue = new Array<any>();
 
-    public fireEvent(event: string, ...args: any[]) {
-        let handlers = this.eventHandlers.get(event);
-        if (handlers) {
-            for (let handler of handlers) {
-                handler(...args);
-            }
-        }
+  public putEvent(event: string, ...args: any[]) {
+    let newEvent: IEvent = {name: event, args: args ? args : null};
+    this.queue.push(newEvent);
+  }
+
+  public clear() {
+    if (this.queue.length > 0) {
+      this.queue = [];
     }
+  }
 
-    public subscribe(event: string, handler: (...args: any[]) => void): number {
-        let handlers = this.eventHandlers.get(event);
-        if (!handlers) {
-            handlers = [];
-            this.eventHandlers.set(event, handlers);
-        }
-        return handlers.push(handler) - 1;
+  public * [Symbol.iterator]() {
+    for (let q of this.queue) {
+      yield q;
     }
-
-    public unSubscribe(event: string, token: number) {
-        let handlers = this.eventHandlers.get(event)
-        handlers.splice(token, 1);
-    }
+  }
 };

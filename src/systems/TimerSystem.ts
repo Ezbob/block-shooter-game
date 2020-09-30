@@ -5,12 +5,13 @@ import ISystem from './ISystem';
 
 export default class TimerSystem implements ISystem {
   update(): void {
+    SharedVariables.timedEventQueue.clear();
     for (let e of EntityManager) {
       let component = e.getComponentByType(TimerComponent);
 
       if (component) {
         if (SharedVariables.frameClock.now >= component.expireTime) {
-          console.log('hello');
+          SharedVariables.timedEventQueue.putEvent(component.expireEventName);
           EntityManager.deleteEntity(e.id);
         }
       }

@@ -1,6 +1,7 @@
 import PathComponent from '../components/PathComponent';
 import PositionalComponent from '../components/PositionalComponent';
 import EntityManager from '../dataStructures/EntityManager';
+import SharedVariables from '../SharedVariables';
 import ISystem from './ISystem';
 
 export default class PathFollowingSystem implements ISystem {
@@ -9,6 +10,13 @@ export default class PathFollowingSystem implements ISystem {
   }
 
   update() {
+
+    for (let event of SharedVariables.timedEventQueue) {
+      if (event.name == "nextPath") {
+        console.log(event)
+      } 
+    }
+
     for (let e of EntityManager) {
       let pathComponent = e.getComponentByType(PathComponent);
       let posComponent = e.getComponentByType(PositionalComponent);

@@ -9,7 +9,10 @@ export default class LevelLoader {
   private levelValidator = AjvValidator.compile(LevelSchema);
 
   async loadFromJson(filename: string) {
-    let data = await fetch(filename).then(response => response.json());
+    let data =
+        await fetch(filename).then(response => response.json(), reason => {
+          console.error(`Could not fetch level ${filename}: ${reason}`);
+        });
     if (!this.levelValidator(data)) {
       for (let err of this.levelValidator.errors) {
         console.error(err);
@@ -58,7 +61,6 @@ export default class LevelLoader {
         new Vector2D(velocity.x, velocity.y),
     )
   }
-
 
   private instantiatePath(waypoints: [{x: number, y: number}]):
       CircularBuffer<Vector2D> {

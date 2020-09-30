@@ -1,15 +1,15 @@
+import TimerComponent from './components/TimerComponent';
+import EntityManager from './dataStructures/EntityManager';
 import SharedVariables from './SharedVariables';
 import AutoShootSystem from './systems/AutoShootSystem';
 import CleanUpSystem from './systems/CleanUpSystem';
 import CollideSystem from './systems/CollideSystem';
 import DrawingSystem from './systems/DrawingSystem';
-import PlayerUIDisplaySystem from './systems/PlayerUIDisplaySystem';
 import KeyboardControlSystem from './systems/KeyboardControlSystem';
 import MovementSystem from './systems/MovementSystem';
 import PathFollowingSystem from './systems/PathFollowingSystem';
+import PlayerUIDisplaySystem from './systems/PlayerUIDisplaySystem';
 import TimerSystem from './systems/TimerSystem';
-import EntityManager from './dataStructures/EntityManager';
-import TimerComponent from './components/TimerComponent';
 
 window.onblur = () => {
   SharedVariables.isPaused = true;
@@ -22,13 +22,10 @@ window.onfocus = () => {
 SharedVariables.systems = [
   new PathFollowingSystem(), new KeyboardControlSystem(), new MovementSystem(),
   new DrawingSystem(), new CleanUpSystem(), new CollideSystem(),
-  new AutoShootSystem(), new PlayerUIDisplaySystem(),
-  new TimerSystem()
+  new AutoShootSystem(), new PlayerUIDisplaySystem(), new TimerSystem()
 ];
 
-EntityManager.createNewEntity(new TimerComponent('hello',
-  8000
-));
+EntityManager.createNewEntity(new TimerComponent('nextPath', 8000));
 
 const gameLoop = () => {
   if (SharedVariables.isPaused) {
