@@ -11,24 +11,24 @@
       "type": "integer",
       "minimum": -1
     },
-    "entities": {
+    "enemies": {
       "type": "array",
       "items": {
-        "anyOf": [
-          {
-            "$ref": "#/definitions/enemy"
-          },
-          {
-            "$ref": "#/definitions/player"
-          }
-        ]
+        "$ref": "#/definitions/enemy"
+      }
+    },
+    "players": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/player"
       }
     }
   },
   "required": [
     "title",
     "level",
-    "entities"
+    "enemies",
+    "players"
   ],
   "definitions": {
     "vector": {

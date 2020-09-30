@@ -22,18 +22,17 @@ export default class LevelLoader {
       console.log(`Level file '${filename}' OK`)
     }
 
-    for (let entity of data.entities) {
+    for (let entity of data.players) {
+      this.instantiatePlayer(entity.movement.startAt, entity.movement.velocity)
+    }
+
+    for (let entity of data.enemies) {
       switch (entity.archetype) {
         case 'weak': {
           let path = this.instantiatePath(entity.path.waypoints);
           this.instantiateEnemy(
               entity.archetype, entity.movement.startAt,
               entity.movement.velocity, path);
-          break;
-        }
-        case 'player': {
-          this.instantiatePlayer(
-              entity.movement.startAt, entity.movement.velocity)
           break;
         }
       }
