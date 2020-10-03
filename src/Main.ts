@@ -21,8 +21,13 @@ window.onfocus = () => {
 
 SharedVariables.systems = [
   new PathFollowingSystem(), new KeyboardControlSystem(), new MovementSystem(),
-  new DrawingSystem(), new CleanUpSystem(), new CollideSystem(),
-  new AutoShootSystem(), new PlayerUIDisplaySystem(), new TimerSystem()
+  new CleanUpSystem(), new CollideSystem(), 
+  new AutoShootSystem(), 
+  new TimerSystem()
+];
+
+SharedVariables.drawSystems = [
+  new DrawingSystem(), new PlayerUIDisplaySystem(), 
 ];
 
 EntityManager.createNewEntity(new TimerComponent('nextPath', 8000));
@@ -34,7 +39,15 @@ const gameLoop = () => {
 
   SharedVariables.frameClock.update();
 
-  for (let system of SharedVariables.systems) {
+  while (SharedVariables.frameClock.shouldUpdate()) {
+    for (let system of SharedVariables.systems) {
+      system.update();
+    }
+
+    SharedVariables.frameClock.deductLag();
+  }
+
+  for (let system of SharedVariables.drawSystems) {
     system.update();
   }
 
