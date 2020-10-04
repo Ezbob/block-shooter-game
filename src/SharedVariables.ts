@@ -10,7 +10,6 @@ export const SharedVariables = {
   canvasManager: new CanvasManager(),
   frameClock: new FrameClock(SharedConstants.FPS_LIMIT),
   timedEventQueue: new EventQueue(),
-  isPaused: false,
   levelLoader: new LevelLoader(),
   systems: [] as ISystem[],
   drawSystems: [] as ISystem[]

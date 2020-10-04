@@ -11,14 +11,6 @@ import {PathFollowingSystem} from './systems/PathFollowingSystem';
 import {PlayerUIDisplaySystem} from './systems/PlayerUIDisplaySystem';
 import {TimerSystem} from './systems/TimerSystem';
 
-window.onblur = () => {
-  SharedVariables.isPaused = true;
-};
-
-window.onfocus = () => {
-  SharedVariables.isPaused = false;
-};
-
 SharedVariables.systems = [
   new PathFollowingSystem(), new KeyboardControlSystem(), new MovementSystem(),
   new CleanUpSystem(), new CollideSystem(), new AutoShootSystem(),
@@ -32,29 +24,38 @@ SharedVariables.drawSystems = [
 
 EntityManager.createNewEntity(new TimerComponent('nextPath', 8000));
 
+const frameClock = SharedVariables.frameClock;
 
-function frame() {
-  if (SharedVariables.isPaused) {
-    return window.requestAnimationFrame(frame);
+window.onblur = () => {
+  frameClock.pause();
+};
+
+window.onfocus = () => {
+  frameClock.resume();
+};
+
+function processFrame() {
+  if (frameClock.isPaused) {
+    return window.requestAnimationFrame(processFrame);
   }
 
-  SharedVariables.frameClock.update();
+  frameClock.tick();
 
-  while (SharedVariables.frameClock.shouldUpdate()) {
+  while (frameClock.shouldUpdate()) {
     for (let system of SharedVariables.systems) {
       system.update();
     }
 
-    SharedVariables.frameClock.deductLag();
+    frameClock.deductLag();
   }
 
   for (let system of SharedVariables.drawSystems) {
     system.update();
   }
 
-  window.requestAnimationFrame(frame);
+  window.requestAnimationFrame(processFrame);
 }
 
 SharedVariables.levelLoader.loadFromJson('levels/first.level.json');
 
-window.requestAnimationFrame(frame);
+window.requestAnimationFrame(processFrame);
