@@ -1,7 +1,7 @@
 import {IEvent} from './IEvent';
 
 export class EventQueue {
-  private queue = new Array<any>();
+  private queue = new Array<IEvent>();
 
   public putEvent(event: string, ...args: any[]) {
     let newEvent: IEvent = {name: event, args: args ? args : null};

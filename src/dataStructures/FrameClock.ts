@@ -1,3 +1,4 @@
+import { SharedVariables } from "../SharedVariables";
 
 export class FrameClock {
   private _lastUpdate: number = 0;
@@ -25,7 +26,10 @@ export class FrameClock {
   public resume() {
     if (this._isPaused) {
       this._isPaused = false;
-      this._lastUpdate = window.performance.now();
+      let now = window.performance.now()
+      let diff =  now - this._lastUpdate; 
+      this._lastUpdate = now;
+      SharedVariables.timedEventQueue.putEvent('timeResumed', diff);
     }
   }
 
