@@ -1,7 +1,7 @@
 
-import Vector2D from '../dataStructures/Vector2D';
+import {Vector2D} from '../dataStructures/Vector2D';
 
-export default class CanvasBoundaryComponent {
+export class CanvasBoundaryComponent {
   constructor(
       public canvasPaddingX: Vector2D = new Vector2D(0, 0),
       public canvasPaddingY: Vector2D = new Vector2D(0, 0)) {}

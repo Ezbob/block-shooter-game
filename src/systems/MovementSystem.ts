@@ -1,14 +1,13 @@
-import CanvasBoundaryComponent from '../components/CanvasBoundaryComponent';
-import FrictionComponent from '../components/FrictionComponent';
-import PositionalComponent from '../components/PositionalComponent';
-import EntityManager from '../dataStructures/EntityManager';
-import SharedConstants from '../SharedConstants';
+import {CanvasBoundaryComponent} from '../components/CanvasBoundaryComponent';
+import {FrictionComponent} from '../components/FrictionComponent';
+import {PositionalComponent} from '../components/PositionalComponent';
+import {EntityManager} from '../dataStructures/EntityManager';
+import {SharedConstants} from '../SharedConstants';
 
-import ISystem from './ISystem';
+import {ISystem} from './ISystem';
 
-export default class MovementSystem implements ISystem {
+export class MovementSystem implements ISystem {
   update() {
-
     for (let e of EntityManager) {
       let positionComp = e.getComponentByType(PositionalComponent);
       let collisionComp = e.getComponentByType(CanvasBoundaryComponent);

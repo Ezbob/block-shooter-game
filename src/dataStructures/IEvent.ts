@@ -1,5 +1,5 @@
 
-export default interface IEvent {
+export interface IEvent {
     name: string,
     args: null | any[]
 };

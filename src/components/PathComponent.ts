@@ -1,7 +1,7 @@
-import CircularBuffer from '../dataStructures/CircularBuffer';
-import Vector2D from '../dataStructures/Vector2D';
+import {CircularBuffer} from '../dataStructures/CircularBuffer';
+import {Vector2D} from '../dataStructures/Vector2D';
 
-export default class PathComponent {
+export class PathComponent {
   public nextWayPoint?: Vector2D;
   constructor(
       public path: CircularBuffer<Vector2D> = new CircularBuffer(),

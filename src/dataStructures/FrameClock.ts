@@ -1,5 +1,5 @@
 
-export default class FrameClock {
+export class FrameClock {
   private _lastUpdate: number;
   private _now: number;
   private _dt: number;

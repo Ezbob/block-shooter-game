@@ -1,9 +1,9 @@
-import TimerComponent from '../components/TimerComponent';
-import EntityManager from '../dataStructures/EntityManager';
-import SharedVariables from '../SharedVariables';
-import ISystem from './ISystem';
+import {TimerComponent} from '../components/TimerComponent';
+import {EntityManager} from '../dataStructures/EntityManager';
+import {SharedVariables} from '../SharedVariables';
+import {ISystem} from './ISystem';
 
-export default class TimerSystem implements ISystem {
+export class TimerSystem implements ISystem {
   update(): void {
     SharedVariables.timedEventQueue.clear();
     for (let e of EntityManager) {

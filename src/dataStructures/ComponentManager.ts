@@ -1,5 +1,5 @@
 
-class ComponentManager {
+export const ComponentManager = new class {
   private componentIds = new Map<{new(...a: any): any}, number>();
   private nextId: number = 0;
 
@@ -16,5 +16,3 @@ class ComponentManager {
     return this.componentIds.get(c);
   }
 };
-
-export default new ComponentManager();

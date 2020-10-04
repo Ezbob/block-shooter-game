@@ -1,5 +1,5 @@
 
-export default class Vector2D extends Array<number> {
+export class Vector2D extends Array<number> {
 
   constructor(x: number, y: number) {
     super(x, y);

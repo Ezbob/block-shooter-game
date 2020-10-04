@@ -1,13 +1,13 @@
-import HealthComponent from '../components/HealthComponent';
-import HealthDisplayComponent from '../components/HealthDisplayComponent';
-import { IHealthBeadColors } from '../components/IHealthBeadColors';
-import ScoreComponent from '../components/ScoreComponent';
-import ScoreDisplayComponent from '../components/ScoreDisplayComponent';
-import EntityManager from '../dataStructures/EntityManager';
-import SharedVariables from '../SharedVariables';
-import ISystem from './ISystem';
+import {HealthComponent} from '../components/HealthComponent';
+import {HealthDisplayComponent} from '../components/HealthDisplayComponent';
+import {IHealthBeadColors} from '../components/IHealthBeadColors';
+import {ScoreComponent} from '../components/ScoreComponent';
+import {ScoreDisplayComponent} from '../components/ScoreDisplayComponent';
+import {EntityManager} from '../dataStructures/EntityManager';
+import {SharedVariables} from '../SharedVariables';
+import {ISystem} from './ISystem';
 
-export default class PlayerUIDisplaySystem implements ISystem {
+export class PlayerUIDisplaySystem implements ISystem {
   getBeadColor(
       colors: IHealthBeadColors, numberOfBeads: number,
       maxBeads: number): string {
@@ -52,11 +52,14 @@ export default class PlayerUIDisplaySystem implements ISystem {
 
       if (scoreComp && scoreDisplayComp) {
         ctx.fillStyle = scoreDisplayComp.color;
-        ctx.font = `${scoreDisplayComp.pixelSize} ${scoreDisplayComp.fontFaceName}`
+        ctx.font =
+            `${scoreDisplayComp.pixelSize} ${scoreDisplayComp.fontFaceName}`
 
         let text = `${scoreComp.score}`;
         let textMeasure = ctx.measureText(text);
-        ctx.fillText(text, scoreDisplayComp.position.x - (textMeasure.width / 2), scoreDisplayComp.position.y)
+        ctx.fillText(
+            text, scoreDisplayComp.position.x - (textMeasure.width / 2),
+            scoreDisplayComp.position.y)
       }
     }
   }

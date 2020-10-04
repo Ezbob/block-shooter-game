@@ -1,6 +1,6 @@
-import Entity from "../dataStructures/Entity";
+import {Entity} from '../dataStructures/Entity';
 
 
-export default class DamageComponent {
+export class DamageComponent {
   constructor(public damage: number, public dealer: Entity) {}
 };

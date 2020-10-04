@@ -1,6 +1,6 @@
-import IEvent from './IEvent';
+import {IEvent} from './IEvent';
 
-export default class EventQueue {
+export class EventQueue {
   private queue = new Array<any>();
 
   public putEvent(event: string, ...args: any[]) {

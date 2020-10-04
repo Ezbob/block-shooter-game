@@ -1,5 +1,5 @@
-import Vector2D from '../dataStructures/Vector2D';
+import {Vector2D} from '../dataStructures/Vector2D';
 
-export default class CollisionDetectionComponent {
+export class CollisionDetectionComponent {
   constructor(public layers: number, public shape: Vector2D) {}
 };

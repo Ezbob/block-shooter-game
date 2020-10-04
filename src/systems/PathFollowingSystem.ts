@@ -1,20 +1,19 @@
-import PathComponent from '../components/PathComponent';
-import PositionalComponent from '../components/PositionalComponent';
-import EntityManager from '../dataStructures/EntityManager';
-import SharedVariables from '../SharedVariables';
-import ISystem from './ISystem';
+import {PathComponent} from '../components/PathComponent';
+import {PositionalComponent} from '../components/PositionalComponent';
+import {EntityManager} from '../dataStructures/EntityManager';
+import {SharedVariables} from '../SharedVariables';
+import {ISystem} from './ISystem';
 
-export default class PathFollowingSystem implements ISystem {
+export class PathFollowingSystem implements ISystem {
   hasReachedNextPoint(distance: number) {
     return distance <= 15;  // using some lower bound on closeness
   }
 
   update() {
-
     for (let event of SharedVariables.timedEventQueue) {
-      if (event.name == "nextPath") {
+      if (event.name == 'nextPath') {
         console.log(event)
-      } 
+      }
     }
 
     for (let e of EntityManager) {

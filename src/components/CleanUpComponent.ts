@@ -1,7 +1,7 @@
 
-import SharedConstants from '../SharedConstants';
+import {SharedConstants} from '../SharedConstants';
 
-export default class CleanUpComponent {
+export class CleanUpComponent {
   constructor(
       public limitUpper = -20,
       public limitLower = SharedConstants.CANVAS_HEIGHT + 20,

@@ -1,16 +1,16 @@
-import DrawableComponent from '../components/DrawableComponent';
-import PathComponent from '../components/PathComponent';
-import PositionComponent from '../components/PositionalComponent';
-import EntityManager from '../dataStructures/EntityManager';
-import Debug from '../Debug';
-import SharedConstants from '../SharedConstants';
-import Variables from '../SharedVariables'
+import {DrawableComponent} from '../components/DrawableComponent';
+import {PathComponent} from '../components/PathComponent';
+import {PositionalComponent} from '../components/PositionalComponent';
+import {EntityManager} from '../dataStructures/EntityManager';
+import {Debug} from '../Debug';
+import {SharedConstants} from '../SharedConstants';
+import {SharedVariables} from '../SharedVariables'
 
-import ISystem from './ISystem';
+import {ISystem} from './ISystem';
 
-export default class DrawingSystem implements ISystem {
+export class DrawingSystem implements ISystem {
   update(): void {
-    let ctx = Variables.canvasManager.getCanvasContext();
+    let ctx = SharedVariables.canvasManager.getCanvasContext();
 
     ctx.clearRect(
         0, 0, SharedConstants.CANVAS_WIDTH, SharedConstants.CANVAS_HEIGHT);
@@ -34,7 +34,7 @@ export default class DrawingSystem implements ISystem {
 
     for (let entity of EntityManager) {
       let drawComp = entity.getComponentByType(DrawableComponent);
-      let posComp = entity.getComponentByType(PositionComponent);
+      let posComp = entity.getComponentByType(PositionalComponent);
       let pathComp = entity.getComponentByType(PathComponent);
 
       if (posComp && drawComp) {

@@ -1,4 +1,4 @@
 
-export default class AutoShootComponent {
+export class AutoShootComponent {
   constructor(public isShooting = true) {}
-}
+};

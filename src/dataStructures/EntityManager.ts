@@ -1,6 +1,6 @@
-import Entity from './Entity';
+import {Entity} from './Entity';
 
-class EntityManager extends Array<Entity> {
+export const EntityManager = new class extends Array<Entity> {
   private nextId: number = 0;
 
   private getNextId(): number {
@@ -17,7 +17,4 @@ class EntityManager extends Array<Entity> {
     let index = this.findIndex(entity => entity.id === entityId);
     if (index != -1) this.splice(index, 1);
   }
-
 };
-
-export default new EntityManager();

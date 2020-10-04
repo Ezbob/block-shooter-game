@@ -1,5 +1,5 @@
 
-export default {
+export const SharedConstants = {
   CANVAS_HTML_ID: 'playground',
   CANVAS_WIDTH: 1080,
   CANVAS_HEIGHT: 900,

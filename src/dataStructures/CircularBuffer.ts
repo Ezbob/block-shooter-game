@@ -1,5 +1,5 @@
 
-export default class CircularBuffer<T> {
+export class CircularBuffer<T> {
   private nextIndex: number;
   private buffer: T[];
 

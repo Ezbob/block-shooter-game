@@ -1,11 +1,11 @@
-import PlayerArchetype from './archetypes/PlayerArchetype';
-import WeakEnemyArchetype from './archetypes/WeakEnemyArchetype';
-import CircularBuffer from './dataStructures/CircularBuffer';
-import Vector2D from './dataStructures/Vector2D';
-import AjvValidator from './jsonValidators/AjvValidator';
-import LevelSchema from './jsonValidators/LevelSchema.json';
+import {PlayerArchetype} from './archetypes/PlayerArchetype';
+import {WeakEnemyArchetype} from './archetypes/WeakEnemyArchetype';
+import {CircularBuffer} from './dataStructures/CircularBuffer';
+import {Vector2D} from './dataStructures/Vector2D';
+import {AjvValidator} from './jsonValidators/AjvValidator';
+import * as LevelSchema from './jsonValidators/LevelSchema.json';
 
-export default class LevelLoader {
+export class LevelLoader {
   private levelValidator = AjvValidator.compile(LevelSchema);
 
   async loadFromJson(filename: string) {

@@ -1,11 +1,11 @@
-import Vector2D from './dataStructures/Vector2D';
-import Constants from './SharedConstants';
-import Variables from './SharedVariables';
+import {Vector2D} from './dataStructures/Vector2D';
+import {SharedConstants} from './SharedConstants';
+import {SharedVariables} from './SharedVariables';
 
 let drawLineBetween =
     (start: Vector2D, end: Vector2D, color: string = 'black') => {
-      let ctx = Variables.canvasManager.getCanvasContext();
-      if (Constants.DEBUG_ON) {
+      let ctx = SharedVariables.canvasManager.getCanvasContext();
+      if (SharedConstants.DEBUG_ON) {
         ctx.beginPath();
         ctx.strokeStyle = color;
         ctx.moveTo(start.x, start.y);
@@ -16,8 +16,8 @@ let drawLineBetween =
     };
 
 let drawLine = (start: Vector2D, end: Vector2D, color: string = 'black') => {
-  let ctx = Variables.canvasManager.getCanvasContext();
-  if (Constants.DEBUG_ON) {
+  let ctx = SharedVariables.canvasManager.getCanvasContext();
+  if (SharedConstants.DEBUG_ON) {
     ctx.beginPath();
     ctx.strokeStyle = color;
     ctx.moveTo(start.x, start.y);
@@ -28,8 +28,8 @@ let drawLine = (start: Vector2D, end: Vector2D, color: string = 'black') => {
 };
 
 let drawPoint = (center: Vector2D, color: string = 'black') => {
-  if (Constants.DEBUG_ON) {
-    let ctx = Variables.canvasManager.getCanvasContext();
+  if (SharedConstants.DEBUG_ON) {
+    let ctx = SharedVariables.canvasManager.getCanvasContext();
     ctx.beginPath();
     ctx.strokeStyle = color;
     ctx.moveTo(center.x + 10, center.y);
@@ -42,9 +42,9 @@ let drawPoint = (center: Vector2D, color: string = 'black') => {
 };
 
 let drawPath = (points: Vector2D[], color: string = 'black') => {
-  let ctx = Variables.canvasManager.getCanvasContext();
+  let ctx = SharedVariables.canvasManager.getCanvasContext();
   let length = points.length;
-  if (Constants.DEBUG_ON && length >= 2) {
+  if (SharedConstants.DEBUG_ON && length >= 2) {
     ctx.beginPath();
     ctx.strokeStyle = color;
 
@@ -59,4 +59,4 @@ let drawPath = (points: Vector2D[], color: string = 'black') => {
   }
 };
 
-export default {drawLine, drawLineBetween, drawPoint, drawPath};
+export const Debug = {drawLine, drawLineBetween, drawPoint, drawPath};

@@ -1,13 +1,13 @@
-import ShotArchetype from '../archetypes/ShotArchetype';
-import GunComponent from '../components/GunComponent';
-import KeyboardControllableComponent from '../components/KeyboardControllableComponent';
+import {ShotArchetype} from '../archetypes/ShotArchetype';
+import {GunComponent} from '../components/GunComponent';
+import {KeyboardControllableComponent} from '../components/KeyboardControllableComponent';
 
-import PositionalComponent from '../components/PositionalComponent';
-import EntityManager from '../dataStructures/EntityManager';
-import Vector2D from '../dataStructures/Vector2D';
-import SharedVariables from '../SharedVariables';
+import {PositionalComponent} from '../components/PositionalComponent';
+import {EntityManager} from '../dataStructures/EntityManager';
+import {Vector2D} from '../dataStructures/Vector2D';
+import {SharedVariables} from '../SharedVariables';
 
-import ISystem from './ISystem';
+import {ISystem} from './ISystem';
 
 enum KeyPressType {
   NO_KEY,
@@ -16,7 +16,7 @@ enum KeyPressType {
   KEY_PRESS
 }
 
-export default class KeyboardControlSystem implements ISystem {
+export class KeyboardControlSystem implements ISystem {
   constructor() {
     window.onkeydown = window.onkeyup = window.onkeypress =
         this.onEvent.bind(this)

@@ -1,15 +1,13 @@
-import ShotArchetype from '../archetypes/ShotArchetype';
-import AutoShootComponent from '../components/AutoShootComponent';
-import GunComponent from '../components/GunComponent';
-import PositionalComponent from '../components/PositionalComponent';
-import EntityManager from '../dataStructures/EntityManager';
-import Vector2D from '../dataStructures/Vector2D';
-import SharedVariables from '../SharedVariables';
+import {ShotArchetype} from '../archetypes/ShotArchetype';
+import {AutoShootComponent} from '../components/AutoShootComponent';
+import {GunComponent} from '../components/GunComponent';
+import {PositionalComponent} from '../components/PositionalComponent';
+import {EntityManager} from '../dataStructures/EntityManager';
+import {Vector2D} from '../dataStructures/Vector2D';
+import {SharedVariables} from '../SharedVariables';
+import {ISystem} from './ISystem';
 
-
-import ISystem from './ISystem';
-
-export default class AutoShootSystem implements ISystem {
+export class AutoShootSystem implements ISystem {
   update() {
     for (let e of EntityManager) {
       let autoShootComp = e.getComponentByType(AutoShootComponent);

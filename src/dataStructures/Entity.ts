@@ -1,6 +1,6 @@
-import ComponentManager from "./ComponentManager";
+import {ComponentManager} from "./ComponentManager";
 
-export default class Entity {
+export class Entity {
   readonly id: number;
   public components: Map<number, any> = new Map();
 

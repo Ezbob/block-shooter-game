@@ -1,7 +1,7 @@
-import Vector2D from '../dataStructures/Vector2D';
-import SharedConstants from '../SharedConstants';
+import {Vector2D} from '../dataStructures/Vector2D';
+import {SharedConstants} from '../SharedConstants';
 
-export default class ScoreDisplayComponent {
+export class ScoreDisplayComponent {
   constructor(
       public position: Vector2D = new Vector2D(
           SharedConstants.CANVAS_WIDTH - SharedConstants.CANVAS_WIDTH / 11,

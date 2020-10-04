@@ -1,10 +1,10 @@
-import CleanUpComponent from '../components/CleanUpComponent';
-import HealthComponent from '../components/HealthComponent';
-import PositionalComponent from '../components/PositionalComponent';
-import EntityManager from '../dataStructures/EntityManager';
-import ISystem from './ISystem';
+import {CleanUpComponent} from '../components/CleanUpComponent';
+import {HealthComponent} from '../components/HealthComponent';
+import {PositionalComponent} from '../components/PositionalComponent';
+import {EntityManager} from '../dataStructures/EntityManager';
+import {ISystem} from './ISystem';
 
-export default class CleanUpSystem implements ISystem {
+export class CleanUpSystem implements ISystem {
   update(): void {
     for (let e of EntityManager) {
       let posComp = e.getComponentByType(PositionalComponent);

@@ -1,5 +1,5 @@
 
-export default class HealthComponent {
+export class HealthComponent {
   constructor(
     public health: number,
     public maxHealth: number,

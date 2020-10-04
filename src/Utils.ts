@@ -1,12 +1,9 @@
-'use strict';
+import {Vector2D} from './dataStructures/Vector2D';
 
-import Vector2D from './dataStructures/Vector2D';
-
-export default {
-  randomBetween(low: number, max: number):
-      number {
-        return low + Math.floor((Math.random() * max));
-      },
+export const Utils = {
+  randomBetween(low: number, max: number): number {
+    return low + Math.floor((Math.random() * max));
+  },
   randomFloatBetween(low: number, max: number) {
     return Math.random() * (max - low) + low;
   },
