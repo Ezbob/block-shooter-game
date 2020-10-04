@@ -1,5 +1,6 @@
+import { IPathBuffer } from "./IPathBuffer";
 
-export class CircularBuffer<T> {
+export class CircularBuffer<T> implements IPathBuffer<T> {
   private nextIndex: number;
   private buffer: T[];
 
@@ -24,12 +25,6 @@ export class CircularBuffer<T> {
 
   reset() {
     this.nextIndex = 0;
-  }
-
-  *[Symbol.iterator]() {
-    for (let e of this.buffer) {
-      yield e;
-    }
   }
 
   get length(): number {

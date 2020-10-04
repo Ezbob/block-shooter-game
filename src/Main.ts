@@ -1,5 +1,3 @@
-import {TimerComponent} from './components/TimerComponent';
-import {EntityManager} from './dataStructures/EntityManager';
 import {SharedVariables} from './SharedVariables';
 import {AutoShootSystem} from './systems/AutoShootSystem';
 import {CleanUpSystem} from './systems/CleanUpSystem';
@@ -21,8 +19,6 @@ SharedVariables.drawSystems = [
   new DrawingSystem(),
   new PlayerUIDisplaySystem(),
 ];
-
-EntityManager.createNewEntity(new TimerComponent('nextPath', 8000));
 
 const frameClock = SharedVariables.frameClock;
 

@@ -6,8 +6,8 @@ import {GunComponent} from '../components/GunComponent';
 import {HealthComponent} from '../components/HealthComponent';
 import {PathComponent} from '../components/PathComponent';
 import {PositionalComponent} from '../components/PositionalComponent';
-import {CircularBuffer} from '../dataStructures/CircularBuffer';
 import {EntityManager} from '../dataStructures/EntityManager';
+import { IPathBuffer } from '../dataStructures/IPathBuffer';
 import {Vector2D} from '../dataStructures/Vector2D';
 
 
@@ -16,7 +16,7 @@ export const WeakEnemyArchetype = new class {
   private drawable = new DrawableComponent(1, 'red');
   private dimensions = new Vector2D(32, 32);
 
-  createNew(pos: Vector2D, velocity: Vector2D, path: CircularBuffer<Vector2D>) {
+  createNew(pos: Vector2D, velocity: Vector2D, path: IPathBuffer<Vector2D>) {
     return EntityManager.createNewEntity(
         new PositionalComponent(pos, velocity, this.dimensions),
         new PathComponent(path),
