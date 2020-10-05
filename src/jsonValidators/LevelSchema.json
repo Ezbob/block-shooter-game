@@ -79,7 +79,7 @@
               "description": "Type of path",
               "enum": [
                 "circular",
-                "one_pass"
+                "single_pass"
               ]
             },
             "waypoints": {

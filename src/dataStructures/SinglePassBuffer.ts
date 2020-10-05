@@ -19,4 +19,10 @@ export class SinglePassBuffer<T> implements IPathBuffer<T> {
   get length(): number {
     return this.buffer.length;
   }
+
+  *[Symbol.iterator](): Generator<T> {
+    for (let e of this.buffer) {
+      yield e;
+    }
+  }
 };

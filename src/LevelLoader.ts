@@ -72,7 +72,7 @@ export class LevelLoader {
 
     let buffer: null | IPathBuffer<Vector2D> = null;
     switch (type) {
-      case "one_pass":
+      case "single_pass":
         buffer = new SinglePassBuffer(...wp);
         break;
       case "circular":

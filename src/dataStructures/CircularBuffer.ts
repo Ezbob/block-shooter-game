@@ -19,15 +19,13 @@ export class CircularBuffer<T> implements IPathBuffer<T> {
     return this.buffer[0];
   }
 
-  last(): T | undefined {
-    return this.buffer[this.length - 1];
-  }
-
-  reset() {
-    this.nextIndex = 0;
-  }
-
   get length(): number {
     return this.buffer.length;
+  }
+
+  *[Symbol.iterator]() : Generator<T> {
+    for (let e of this.buffer) {
+      yield e;
+    }
   }
 };

@@ -33,6 +33,10 @@ export class PathFollowingSystem implements ISystem {
 
           if (this.hasReachedNextPoint(distance)) {
             pathComponent.nextWayPoint = path.next();
+
+            if (pathComponent.nextWayPoint == null) {
+              EntityManager.deleteEntity(e.id);
+            }
           } else {
             posComponent.velocity =
                 displacement.mulMembers(pathComponent.followingVelocity)
