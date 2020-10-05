@@ -1,6 +1,8 @@
 import {PlayerArchetype} from './archetypes/PlayerArchetype';
 import {WeakEnemyArchetype} from './archetypes/WeakEnemyArchetype';
 import {CircularBuffer} from './dataStructures/CircularBuffer';
+import {IPathBuffer} from './dataStructures/IPathBuffer';
+import {SinglePassBuffer} from './dataStructures/SinglePassBuffer';
 import {Vector2D} from './dataStructures/Vector2D';
 import {AjvValidator} from './jsonValidators/AjvValidator';
 import * as LevelSchema from './jsonValidators/LevelSchema.json';
@@ -29,7 +31,7 @@ export class LevelLoader {
     for (let entity of data.enemies) {
       switch (entity.archetype) {
         case 'weak': {
-          let path = this.instantiatePath(entity.path.waypoints);
+          let path = this.instantiatePath(entity.path.type, entity.path.waypoints);
           this.instantiateEnemy(
               entity.archetype, entity.movement.startAt,
               entity.movement.velocity, path);
@@ -44,7 +46,7 @@ export class LevelLoader {
 
   private instantiateEnemy(
       archetype: string, startingPoint: {x: number, y: number},
-      velocity: {x: number, y: number}, path: CircularBuffer<Vector2D>) {
+      velocity: {x: number, y: number}, path: IPathBuffer<Vector2D>) {
     switch (archetype) {
       case 'weak':
         return WeakEnemyArchetype.createNew(
@@ -61,12 +63,25 @@ export class LevelLoader {
     )
   }
 
-  private instantiatePath(waypoints: [{x: number, y: number}]):
-      CircularBuffer<Vector2D> {
-    let res = [];
+  private instantiatePath(type: string, waypoints: [{x: number, y: number}]):
+      IPathBuffer<Vector2D> {
+    let wp = [];
     for (let w of waypoints) {
-      res.push(new Vector2D(w.x, w.y));
+      wp.push(new Vector2D(w.x, w.y));
     }
-    return new CircularBuffer<Vector2D>(...res);
+
+    let buffer: null | IPathBuffer<Vector2D> = null;
+    switch (type) {
+      case "one_pass":
+        buffer = new SinglePassBuffer(...wp);
+        break;
+      case "circular":
+        buffer = new CircularBuffer(...wp);
+        break;
+      default:
+        buffer = new SinglePassBuffer(...wp);
+        break;
+    }
+    return buffer;
   }
 };
