@@ -2,7 +2,7 @@ import {SharedConstants} from './SharedConstants';
 import {SharedVariables} from './SharedVariables';
 
 let drawLineBetween =
-    (start: {x: number, y: number}, end: {x: number, y: number}, color: string = 'black') => {
+    (start: MathVector2d, end: MathVector2d, color: string = 'black') => {
       let ctx = SharedVariables.canvasManager.getCanvasContext();
       if (SharedConstants.DEBUG_ON) {
         ctx.beginPath();
@@ -14,7 +14,7 @@ let drawLineBetween =
       }
     };
 
-let drawLine = (start: {x: number, y: number}, end: {x: number, y: number}, color: string = 'black') => {
+let drawLine = (start: MathVector2d, end: MathVector2d, color: string = 'black') => {
   let ctx = SharedVariables.canvasManager.getCanvasContext();
   if (SharedConstants.DEBUG_ON) {
     ctx.beginPath();
@@ -26,7 +26,7 @@ let drawLine = (start: {x: number, y: number}, end: {x: number, y: number}, colo
   }
 };
 
-let drawPoint = (center: {x: number, y: number}, color: string = 'black') => {
+let drawPoint = (center: MathVector2d, color: string = 'black') => {
   if (SharedConstants.DEBUG_ON) {
     let ctx = SharedVariables.canvasManager.getCanvasContext();
     ctx.beginPath();
@@ -40,7 +40,7 @@ let drawPoint = (center: {x: number, y: number}, color: string = 'black') => {
   }
 };
 
-let drawPath = (points: {x: number, y: number}[], color: string = 'black') => {
+let drawPath = (points: MathVector2d[], color: string = 'black') => {
   let ctx = SharedVariables.canvasManager.getCanvasContext();
   let length = points.length;
   if (SharedConstants.DEBUG_ON && length >= 2) {
@@ -58,7 +58,7 @@ let drawPath = (points: {x: number, y: number}[], color: string = 'black') => {
   }
 };
 
-let drawCircle = (center: {x: number, y: number}, radius: number) => {
+let drawCircle = (center: MathVector2d, radius: number) => {
   let ctx = SharedVariables.canvasManager.getCanvasContext();
   ctx.beginPath();
   ctx.arc(center.x, center.y, radius, 0, 2 * Math.PI);

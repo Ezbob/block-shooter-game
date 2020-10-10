@@ -8,15 +8,14 @@ import {PathComponent} from '../components/PathComponent';
 import {PositionalComponent} from '../components/PositionalComponent';
 import {EntityManager} from '../dataStructures/EntityManager';
 import { IPathBuffer } from '../dataStructures/IPathBuffer';
-import {Vector2D} from '../dataStructures/Vector2D';
 
 
 export const WeakEnemyArchetype = new class {
   private friction = new FrictionComponent();
   private drawable = new DrawableComponent(1, 'red');
-  private dimensions = new Vector2D(32, 32);
+  private dimensions = {x: 32, y: 32};
 
-  createNew(pos: Vector2D, velocity: Vector2D, path: IPathBuffer<Vector2D>) {
+  createNew(pos: MathVector2d, velocity: MathVector2d, path: IPathBuffer<MathVector2d>) {
     return EntityManager.createNewEntity(
         new PositionalComponent(pos, velocity, this.dimensions),
         new PathComponent(path),
@@ -25,7 +24,7 @@ export const WeakEnemyArchetype = new class {
         new GunComponent(700, 5),
         this.drawable,
         this.friction,
-        new CollisionDetectionComponent(0o0010, new Vector2D(32, 32)),
+        new CollisionDetectionComponent(0o0010, {x: 32, y: 32}),
     );
   }
 }

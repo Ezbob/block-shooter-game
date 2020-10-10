@@ -2,6 +2,7 @@ import {PathComponent} from '../components/PathComponent';
 import {PositionalComponent} from '../components/PositionalComponent';
 import {EntityManager} from '../dataStructures/EntityManager';
 import {SharedVariables} from '../SharedVariables';
+import { Vec2dLength, Vec2dNormalizeMut, Vec2dSub } from '../VectorOperations';
 import {ISystem} from './ISystem';
 
 export class PathFollowingSystem implements ISystem {
@@ -25,9 +26,10 @@ export class PathFollowingSystem implements ISystem {
         let position = posComponent.position;
 
         if (pathComponent.nextWayPoint) {
-          let displacement = pathComponent.nextWayPoint.sub(position);
-          let distance = displacement.magnitude();
-          displacement.normMut();
+          let displacement = Vec2dSub(pathComponent.nextWayPoint, position);
+          let distance = Vec2dLength(displacement);
+
+          Vec2dNormalizeMut(displacement);
 
           if (this.hasReachedNextPoint(distance)) {
             pathComponent.nextWayPoint = path.next();
@@ -36,8 +38,10 @@ export class PathFollowingSystem implements ISystem {
               EntityManager.deleteEntity(e.id);
             }
           } else {
-            posComponent.velocity =
-                displacement.mulMembers(pathComponent.followingVelocity)
+            posComponent.velocity = {
+              x: displacement.x * pathComponent.followingVelocity.x,
+              y: displacement.y * pathComponent.followingVelocity.y
+            };
           }
         }
       }

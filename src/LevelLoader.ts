@@ -3,7 +3,6 @@ import {WeakEnemyArchetype} from './archetypes/WeakEnemyArchetype';
 import {CircularBuffer} from './dataStructures/CircularBuffer';
 import {IPathBuffer} from './dataStructures/IPathBuffer';
 import {SinglePassBuffer} from './dataStructures/SinglePassBuffer';
-import {Vector2D} from './dataStructures/Vector2D';
 import {AjvValidator} from './jsonValidators/AjvValidator';
 import * as LevelSchema from './jsonValidators/LevelSchema.json';
 
@@ -43,43 +42,33 @@ export class LevelLoader {
     return data;
   }
 
-
   private instantiateEnemy(
-      archetype: string, startingPoint: {x: number, y: number},
-      velocity: {x: number, y: number}, path: IPathBuffer<Vector2D>) {
+      archetype: string, startingPoint: MathVector2d,
+      velocity: MathVector2d, path: IPathBuffer<MathVector2d>) {
     switch (archetype) {
       case 'weak':
-        return WeakEnemyArchetype.createNew(
-            new Vector2D(startingPoint.x, startingPoint.y),
-            new Vector2D(velocity.x, velocity.y), path)
+        return WeakEnemyArchetype.createNew(startingPoint, velocity, path);
     }
   }
 
   private instantiatePlayer(
-      startingPoint: {x: number, y: number}, velocity: {x: number, y: number}) {
-    return PlayerArchetype.createNew(
-        new Vector2D(startingPoint.x, startingPoint.y),
-        new Vector2D(velocity.x, velocity.y),
-    )
+      startingPoint: MathVector2d, velocity: MathVector2d) {
+    return PlayerArchetype.createNew(startingPoint, velocity);
   }
 
-  private instantiatePath(type: string, waypoints: [{x: number, y: number}]):
-      IPathBuffer<Vector2D> {
-    let wp = [];
-    for (let w of waypoints) {
-      wp.push(new Vector2D(w.x, w.y));
-    }
+  private instantiatePath(type: string, waypoints: [MathVector2d]):
+      IPathBuffer<MathVector2d> {
 
-    let buffer: null | IPathBuffer<Vector2D> = null;
+    let buffer: null | IPathBuffer<MathVector2d> = null;
     switch (type) {
       case "single_pass":
-        buffer = new SinglePassBuffer(...wp);
+        buffer = new SinglePassBuffer(...waypoints);
         break;
       case "circular":
-        buffer = new CircularBuffer(...wp);
+        buffer = new CircularBuffer(...waypoints);
         break;
       default:
-        buffer = new SinglePassBuffer(...wp);
+        buffer = new SinglePassBuffer(...waypoints);
         break;
     }
     return buffer;

@@ -4,7 +4,6 @@ import {KeyboardControllableComponent} from '../components/KeyboardControllableC
 
 import {PositionalComponent} from '../components/PositionalComponent';
 import {EntityManager} from '../dataStructures/EntityManager';
-import {Vector2D} from '../dataStructures/Vector2D';
 import {SharedVariables} from '../SharedVariables';
 
 import {ISystem} from './ISystem';
@@ -84,10 +83,14 @@ export class KeyboardControlSystem implements ISystem {
             if (diff > gunComp.shotDelay) {
               ShotArchetype.createNew(
                   e,
-                  new Vector2D(
-                      pv.position.x + pv.dimension.x / 2,
-                      pv.position.y - pv.dimension.y),
-                  new Vector2D(0, gunComp.bulletVelocity), 0o0010);
+                  {
+                    x:  pv.position.x + pv.dimension.x / 2,
+                    y:  pv.position.y - pv.dimension.y
+                  },
+                  {
+                    x: 0, 
+                    y: gunComp.bulletVelocity
+                  }, 0o0010);
               gunComp.timeSinceLast = SharedVariables.frameClock.now;
             }
           }

@@ -3,6 +3,7 @@ import {FrictionComponent} from '../components/FrictionComponent';
 import {PositionalComponent} from '../components/PositionalComponent';
 import {EntityManager} from '../dataStructures/EntityManager';
 import {SharedConstants} from '../SharedConstants';
+import { Vec2dAdd, Vec2dMul, Vec2dMulMut } from '../VectorOperations';
 
 import {ISystem} from './ISystem';
 
@@ -14,8 +15,8 @@ export class MovementSystem implements ISystem {
       let frictionComp = e.getComponentByType(FrictionComponent);
 
       if (positionComp && collisionComp) {
-        let nextPos = positionComp.position.add(positionComp.velocity.mul(
-            1 - positionComp.breakingForcePercentage));
+
+        let nextPos = Vec2dAdd(positionComp.position, Vec2dMul(positionComp.velocity, 1 - positionComp.breakingForcePercentage ) );
 
         if (collisionComp.canvasPaddingX.x > nextPos.x) {
           positionComp.position.x = collisionComp.canvasPaddingX.x;
@@ -43,7 +44,7 @@ export class MovementSystem implements ISystem {
       }
 
       if (frictionComp && positionComp) {
-        positionComp.velocity.mulMut(1 - frictionComp.frictionBreakingForce)
+        Vec2dMulMut(positionComp.velocity, 1 - frictionComp.frictionBreakingForce);
       }
 
       if (positionComp) {
