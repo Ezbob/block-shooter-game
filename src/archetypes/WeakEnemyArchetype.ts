@@ -19,7 +19,7 @@ export const WeakEnemyArchetype = new class {
     return EntityManager.createNewEntity(
         new PositionalComponent(pos, velocity, this.dimensions),
         new PathComponent(path),
-        new HealthComponent(100, 100, 400),
+        new HealthComponent(50, 50, 400),
         new AutoShootComponent(),
         new GunComponent(700, 5),
         this.drawable,

@@ -4,4 +4,10 @@ let prodConfig = developConfig;
 
 prodConfig.mode = 'production';
 
+prodConfig.optimization = {
+        splitChunks: {
+            chunks: 'all'
+        }
+    };
+
 module.exports = prodConfig;
