@@ -6,7 +6,7 @@ import {ISystem} from './ISystem';
 
 export class PathFollowingSystem implements ISystem {
   hasReachedNextPoint(distance: number) {
-    return distance <= 15;  // using some lower bound on closeness
+    return distance <= 5;  // using some lower bound on closeness
   }
 
   update() {
@@ -24,10 +24,8 @@ export class PathFollowingSystem implements ISystem {
         let path = pathComponent.path;
         let position = posComponent.position;
 
-        let nextWayPoint = pathComponent.nextWayPoint;
-
-        if (nextWayPoint) {
-          let displacement = nextWayPoint.sub(position);
+        if (pathComponent.nextWayPoint) {
+          let displacement = pathComponent.nextWayPoint.sub(position);
           let distance = displacement.magnitude();
           displacement.normMut();
 

@@ -59,6 +59,7 @@ export class DrawingSystem implements ISystem {
       if (pathComp) {
         for (let p of pathComp.path) {
           Debug.drawPoint(p);
+          Debug.drawCircle(p, 5);
         }
       }
     }

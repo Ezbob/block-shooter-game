@@ -1,9 +1,8 @@
-import {Vector2D} from './dataStructures/Vector2D';
 import {SharedConstants} from './SharedConstants';
 import {SharedVariables} from './SharedVariables';
 
 let drawLineBetween =
-    (start: Vector2D, end: Vector2D, color: string = 'black') => {
+    (start: {x: number, y: number}, end: {x: number, y: number}, color: string = 'black') => {
       let ctx = SharedVariables.canvasManager.getCanvasContext();
       if (SharedConstants.DEBUG_ON) {
         ctx.beginPath();
@@ -15,7 +14,7 @@ let drawLineBetween =
       }
     };
 
-let drawLine = (start: Vector2D, end: Vector2D, color: string = 'black') => {
+let drawLine = (start: {x: number, y: number}, end: {x: number, y: number}, color: string = 'black') => {
   let ctx = SharedVariables.canvasManager.getCanvasContext();
   if (SharedConstants.DEBUG_ON) {
     ctx.beginPath();
@@ -27,7 +26,7 @@ let drawLine = (start: Vector2D, end: Vector2D, color: string = 'black') => {
   }
 };
 
-let drawPoint = (center: Vector2D, color: string = 'black') => {
+let drawPoint = (center: {x: number, y: number}, color: string = 'black') => {
   if (SharedConstants.DEBUG_ON) {
     let ctx = SharedVariables.canvasManager.getCanvasContext();
     ctx.beginPath();
@@ -41,7 +40,7 @@ let drawPoint = (center: Vector2D, color: string = 'black') => {
   }
 };
 
-let drawPath = (points: Vector2D[], color: string = 'black') => {
+let drawPath = (points: {x: number, y: number}[], color: string = 'black') => {
   let ctx = SharedVariables.canvasManager.getCanvasContext();
   let length = points.length;
   if (SharedConstants.DEBUG_ON && length >= 2) {
@@ -59,4 +58,11 @@ let drawPath = (points: Vector2D[], color: string = 'black') => {
   }
 };
 
-export const Debug = {drawLine, drawLineBetween, drawPoint, drawPath};
+let drawCircle = (center: {x: number, y: number}, radius: number) => {
+  let ctx = SharedVariables.canvasManager.getCanvasContext();
+  ctx.beginPath();
+  ctx.arc(center.x, center.y, radius, 0, 2 * Math.PI);
+  ctx.stroke()
+};
+
+export const Debug = {drawLine, drawLineBetween, drawPoint, drawPath, drawCircle};
