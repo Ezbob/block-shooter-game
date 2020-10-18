@@ -11,7 +11,7 @@
       "type": "integer",
       "minimum": -1
     },
-    "entities": {
+    "events": {
       "type": "array",
       "items": {
         "anyOf": [
@@ -20,6 +20,9 @@
           },
           {
             "$ref": "#/definitions/player"
+          },
+          {
+            "$ref": "#/definitions/condition"
           }
         ]
       }
@@ -28,7 +31,7 @@
   "required": [
     "title",
     "level",
-    "entities"
+    "events"
   ],
   "definitions": {
     "vector": {
@@ -117,6 +120,30 @@
       "required": [
         "movement",
         "archetype"
+      ]
+    },
+    "condition": {
+      "type": "object",
+      "description": "Conditional entity",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "timer",
+            "enemies_defeated"
+          ]
+        },
+        "argument": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "description": "integer argument to the condition, may be time in seconds or number of entities"
+            }
+          ]
+        }
+      },
+      "required": [
+        "type"
       ]
     }
   }
