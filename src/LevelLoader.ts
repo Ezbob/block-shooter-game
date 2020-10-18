@@ -14,6 +14,7 @@ export class LevelLoader {
         await fetch(filename).then(response => response.json(), reason => {
           console.error(`Could not fetch level ${filename}: ${reason}`);
         });
+
     if (!this.levelValidator(data)) {
       for (let err of this.levelValidator.errors) {
         console.error(err);
@@ -23,52 +24,48 @@ export class LevelLoader {
       console.log(`Level file '${filename}' OK`)
     }
 
-    for (let entity of data.players) {
-      this.instantiatePlayer(entity.movement.startAt, entity.movement.velocity)
-    }
-
-    for (let entity of data.enemies) {
-      switch (entity.archetype) {
-        case 'weak': {
-          let path = this.instantiatePath(entity.path.type, entity.path.waypoints);
-          this.instantiateEnemy(
-              entity.archetype, entity.movement.startAt,
-              entity.movement.velocity, path);
-          break;
+      for (let event of data.events) {
+        switch(event.event_type) {
+          case 'weak':
+            this.instantiateEnemy(event);
+            break;
+          case 'player':
+            this.instantiatePlayer(event);
+            break;
         }
       }
-    }
 
     return data;
   }
 
-  private instantiateEnemy(
-      archetype: string, startingPoint: MathVector2d,
-      velocity: MathVector2d, path: IPathBuffer<MathVector2d>) {
-    switch (archetype) {
+  private instantiateEnemy(enemy: EnemyJson) {
+    switch (enemy.event_type) {
       case 'weak':
-        return WeakEnemyArchetype.createNew(startingPoint, velocity, path);
+        let path = this.instantiatePath(enemy.path);
+        return WeakEnemyArchetype.createNew(enemy.movement.startAt, enemy.movement.velocity, path);
     }
   }
 
-  private instantiatePlayer(
-      startingPoint: MathVector2d, velocity: MathVector2d) {
-    return PlayerArchetype.createNew(startingPoint, velocity);
+  private instantiatePlayer(player: PlayerJson) {
+    return PlayerArchetype.createNew(player.movement.startAt, player.movement.velocity);
   }
 
-  private instantiatePath(type: string, waypoints: [MathVector2d]):
+  private instantiatePath(rawPath: {
+    waypoints: [MathVector2d],
+    type: string
+  }):
       IPathBuffer<MathVector2d> {
 
     let buffer: null | IPathBuffer<MathVector2d> = null;
-    switch (type) {
+    switch (rawPath.type) {
       case "single_pass":
-        buffer = new SinglePassBuffer(...waypoints);
+        buffer = new SinglePassBuffer(...rawPath.waypoints);
         break;
       case "circular":
-        buffer = new CircularBuffer(...waypoints);
+        buffer = new CircularBuffer(...rawPath.waypoints);
         break;
       default:
-        buffer = new SinglePassBuffer(...waypoints);
+        buffer = new SinglePassBuffer(...rawPath.waypoints);
         break;
     }
     return buffer;

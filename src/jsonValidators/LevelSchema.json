@@ -34,6 +34,7 @@
     "events"
   ],
   "definitions": {
+
     "vector": {
       "type": "object",
       "properties": {
@@ -49,6 +50,7 @@
         "y"
       ]
     },
+
     "movement": {
       "type": "object",
       "properties": {
@@ -64,10 +66,11 @@
         "velocity"
       ]
     },
+
     "enemy": {
       "type": "object",
       "properties": {
-        "archetype": {
+        "event_type": {
           "type": "string",
           "description": "Type of the enemy"
         },
@@ -100,18 +103,19 @@
         }
       },
       "required": [
-        "archetype",
+        "event_type",
         "path",
         "movement"
       ]
     },
+
     "player": {
       "type": "object",
       "properties": {
         "movement": {
           "$ref": "#/definitions/movement"
         },
-        "archetype": {
+        "event_type": {
           "type": "string",
           "enum": [
             "player"
@@ -120,14 +124,15 @@
       },
       "required": [
         "movement",
-        "archetype"
+        "event_type"
       ]
     },
+
     "condition": {
       "type": "object",
       "description": "Conditional entity",
       "properties": {
-        "type": {
+        "event_type": {
           "type": "string",
           "enum": [
             "timer",
@@ -144,7 +149,7 @@
         }
       },
       "required": [
-        "type"
+        "event_type"
       ]
     }
   }

@@ -17,7 +17,7 @@ module.exports = {
 
   resolve: {
     extensions:
-        ['.tsx', '.ts', '.js'],  // order of module resolution by extension
+        ['.ts', '.js'],  // order of module resolution by extension
   },
 
   module: {

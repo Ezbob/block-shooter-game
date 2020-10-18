@@ -3,7 +3,7 @@
     "level": 1,
     "events": [
         {
-            "archetype": "player",
+            "event_type": "player",
             "movement": {
                 "startAt": {
                     "x": 524,
@@ -16,7 +16,7 @@
             }
         },
         {
-            "archetype": "weak",
+            "event_type": "weak",
             "movement": {
                 "startAt": {
                     "x": 10,
@@ -58,7 +58,7 @@
             }
         },
         {
-            "archetype": "weak",
+            "event_type": "weak",
             "movement": {
                 "startAt": {
                     "x": 600,
@@ -100,7 +100,7 @@
             }
         },
         {
-            "archetype": "weak",
+            "event_type": "weak",
             "movement": {
                 "startAt": {
                     "x": 800,
