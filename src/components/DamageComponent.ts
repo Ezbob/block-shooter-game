@@ -1,13 +1,5 @@
-import IComponent from "../dataStructures/IComponent";
+import {Entity} from '../dataStructures/Entity';
 
-export default class DamageComponent implements IComponent {
-    static cid: number = 4;
-
-    constructor(
-        public damage: number
-    ) {}
-
-    get cid() {
-        return DamageComponent.cid;
-    }
+export class DamageComponent {
+  constructor(public damage: number, public dealer: Entity) {}
 };

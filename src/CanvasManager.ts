@@ -1,17 +1,17 @@
-import Constants from './SharedConstants';
+import {SharedConstants} from './SharedConstants';
 
-export default class CanvasManager {
+export class CanvasManager {
   private _isAttached: boolean = false;
   private htmlElement: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;
 
-  constructor(private elementId: string = Constants.CANVAS_HTML_ID) {
+  constructor(private elementId: string = SharedConstants.CANVAS_HTML_ID) {
     try {
       this.htmlElement =
           document.getElementById(this.elementId) as HTMLCanvasElement;
       this.context = this.htmlElement.getContext('2d');
-      this.htmlElement.setAttribute('width', Constants.CANVAS_WIDTH.toString());
-      this.htmlElement.setAttribute('height', Constants.CANVAS_HEIGHT.toString());
+      this.htmlElement.setAttribute('width', SharedConstants.CANVAS_WIDTH.toString());
+      this.htmlElement.setAttribute('height', SharedConstants.CANVAS_HEIGHT.toString());
     } catch (exception) {
       this._isAttached = false;
       throw exception;

@@ -1,14 +1,16 @@
 
-import FrameClock from './dataStructures/FrameClock';
-import CanvasManager from './CanvasManager';
-import EventBus from './dataStructures/EventBus';
-import LevelLoader from './LevelLoader';
+import {CanvasManager} from './CanvasManager';
+import {EventQueue} from './dataStructures/EventQueue';
+import {FrameClock} from './dataStructures/FrameClock';
+import {LevelLoader} from './LevelLoader';
+import {SharedConstants} from './SharedConstants';
+import {ISystem} from './systems/ISystem';
 
-export default {
+export const SharedVariables = {
   canvasManager: new CanvasManager(),
-  frameClock: new FrameClock(),
-  eventBus: new EventBus(),
-  isPaused: false,
+  frameClock: new FrameClock(SharedConstants.FPS_LIMIT),
+  timedEventQueue: new EventQueue(),
   levelLoader: new LevelLoader(),
-  systems: []
+  systems: [] as ISystem[],
+  drawSystems: [] as ISystem[]
 };

@@ -17,6 +17,10 @@
         "preserveConstEnums": true,
         "sourceMap": true,
         "skipLibCheck": true,
-        "resolveJsonModule": true
-    }
+        "resolveJsonModule": true,
+        "allowJs": true
+    },
+    "exclude": [
+        "node_modules",
+    ]
 }

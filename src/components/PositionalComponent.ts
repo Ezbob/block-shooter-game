@@ -1,14 +1,8 @@
-import IComponent from '../dataStructures/IComponent';
-import Vector2D from '../dataStructures/Vector2D'
 
-export default class PositionalComponent implements IComponent {
-  static cid: number = 13;
+export class PositionalComponent {
   constructor(
-      public position: Vector2D = new Vector2D(0, 0),
-      public velocity: Vector2D = new Vector2D(0, 0),
+      public position: MathVector2d = {x: 0, y: 0},
+      public velocity: MathVector2d = {x: 0, y: 0},
+      public dimension: MathVector2d = {x: 10, y: 10},
       public breakingForcePercentage: number = 0.6) {}
-
-  get cid() {
-    return PositionalComponent.cid;
-  }
 }

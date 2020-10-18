@@ -1,14 +1,12 @@
-import ShotArchetype from '../archetypes/ShotArchetype';
-import DimensionalComponent from '../components/DimensionalComponent';
-import GunComponent from '../components/GunComponent';
-import KeyboardControllableComponent from '../components/KeyboardControllableComponent';
+import {ShotArchetype} from '../archetypes/ShotArchetype';
+import {GunComponent} from '../components/GunComponent';
+import {KeyboardControllableComponent} from '../components/KeyboardControllableComponent';
 
-import PositionalComponent from '../components/PositionalComponent';
-import EntityManager from '../dataStructures/EntityManager';
-import Vector2D from '../dataStructures/Vector2D';
-import SharedVariables from '../SharedVariables';
+import {PositionalComponent} from '../components/PositionalComponent';
+import {EntityManager} from '../dataStructures/EntityManager';
+import {SharedVariables} from '../SharedVariables';
 
-import ISystem from './ISystem';
+import {ISystem} from './ISystem';
 
 enum KeyPressType {
   NO_KEY,
@@ -17,7 +15,7 @@ enum KeyPressType {
   KEY_PRESS
 }
 
-export default class KeyboardControlSystem implements ISystem {
+export class KeyboardControlSystem implements ISystem {
   constructor() {
     window.onkeydown = window.onkeyup = window.onkeypress =
         this.onEvent.bind(this)
@@ -51,41 +49,48 @@ export default class KeyboardControlSystem implements ISystem {
   }
 
   update() {
-
     for (let e of EntityManager) {
       let pv = e.getComponentByType(PositionalComponent);
       let keyboardComponent =
           e.getComponentByType(KeyboardControllableComponent);
+      let gunComp = e.getComponentByType(GunComponent);
 
       if (pv && keyboardComponent) {
-        if (this.pressed.get('ArrowDown') == KeyPressType.KEY_DOWN) {
+        let down = this.pressed.get('ArrowDown') == KeyPressType.KEY_DOWN;
+        let up = this.pressed.get('ArrowUp') == KeyPressType.KEY_DOWN;
+        let left = this.pressed.get('ArrowLeft') == KeyPressType.KEY_DOWN;
+        let right = this.pressed.get('ArrowRight') == KeyPressType.KEY_DOWN;
+
+        if (down) {
           pv.velocity.y = keyboardComponent.inputForce.y;
         }
 
-        if (this.pressed.get('ArrowUp') == KeyPressType.KEY_DOWN) {
+        if (up) {
           pv.velocity.y = -keyboardComponent.inputForce.y;
         }
 
-        if (this.pressed.get('ArrowLeft') == KeyPressType.KEY_DOWN) {
+        if (left) {
           pv.velocity.x = -keyboardComponent.inputForce.x;
         }
 
-        if (this.pressed.get('ArrowRight') == KeyPressType.KEY_DOWN) {
+        if (right) {
           pv.velocity.x = keyboardComponent.inputForce.x;
         }
 
-        let dimensionComp = e.getComponentByType(DimensionalComponent);
-        let gunComp = e.getComponentByType(GunComponent);
-  
-        if (dimensionComp && gunComp) {
+        if (gunComp) {
           if (this.pressed.get('Space') == KeyPressType.KEY_PRESS) {
             let diff = SharedVariables.frameClock.now - gunComp.timeSinceLast;
             if (diff > gunComp.shotDelay) {
               ShotArchetype.createNew(
-                  new Vector2D(
-                      pv.position.x + dimensionComp.dimension.x / 2,
-                      pv.position.y - dimensionComp.dimension.y),
-                  new Vector2D(0, gunComp.bulletVelocity), 0o0010);
+                  e,
+                  {
+                    x:  pv.position.x + pv.dimension.x / 2,
+                    y:  pv.position.y - pv.dimension.y
+                  },
+                  {
+                    x: 0, 
+                    y: gunComp.bulletVelocity
+                  }, 0o0010);
               gunComp.timeSinceLast = SharedVariables.frameClock.now;
             }
           }

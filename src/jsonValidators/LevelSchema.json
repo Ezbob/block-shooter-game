@@ -81,7 +81,8 @@
               "type": "string",
               "description": "Type of path",
               "enum": [
-                "circular"
+                "circular",
+                "single_pass"
               ]
             },
             "waypoints": {

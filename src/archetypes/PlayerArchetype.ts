@@ -1,29 +1,27 @@
-import CanvasBoundaryComponent from '../components/CanvasBoundaryComponent';
-import CollisionDetectionComponent from '../components/CollisionDetectionComponent';
-import DimensionalComponent from '../components/DimensionalComponent';
-import DrawableComponent from '../components/DrawableComponent';
-import FrictionComponent from '../components/FrictionComponent';
-import GunComponent from '../components/GunComponent';
-import HealthComponent from '../components/HealthComponent';
-import HealthDisplayComponent from '../components/HealthDisplayComponent';
-import KeyboardControllableComponent from '../components/KeyboardControllableComponent';
-import PositionalComponent from '../components/PositionalComponent';
-import Entity from '../dataStructures/Entity';
-import EntityManager from '../dataStructures/EntityManager';
-import Vector2D from '../dataStructures/Vector2D';
+import {CanvasBoundaryComponent} from '../components/CanvasBoundaryComponent';
+import {CollisionDetectionComponent} from '../components/CollisionDetectionComponent';
+import {DrawableComponent} from '../components/DrawableComponent';
+import {FrictionComponent} from '../components/FrictionComponent';
+import {GunComponent} from '../components/GunComponent';
+import {HealthComponent} from '../components/HealthComponent';
+import {HealthDisplayComponent} from '../components/HealthDisplayComponent';
+import {KeyboardControllableComponent} from '../components/KeyboardControllableComponent';
+import {PositionalComponent} from '../components/PositionalComponent';
+import {ScoreComponent} from '../components/ScoreComponent';
+import {ScoreDisplayComponent} from '../components/ScoreDisplayComponent';
+import {Entity} from '../dataStructures/Entity';
+import {EntityManager} from '../dataStructures/EntityManager';
 
-class PlayerArchetype {
-  createNew(initialPosition: Vector2D, inputVelocity: Vector2D): Entity {
+export const PlayerArchetype = new class {
+  createNew(initialPosition: MathVector2d, inputVelocity: MathVector2d): Entity {
     return EntityManager.createNewEntity(
-        new PositionalComponent(initialPosition),
-        new DimensionalComponent(new Vector2D(32, 32)),
+        new PositionalComponent(
+            initialPosition, {x: 0, y: 0}, {x: 32, y: 32}),
         new DrawableComponent(2, 'blue'), new FrictionComponent(),
         new HealthComponent(100, 100), new HealthDisplayComponent(),
-        new CollisionDetectionComponent(0o0011, new Vector2D(32, 32)),
-        new CanvasBoundaryComponent(new Vector2D(5, 5), new Vector2D(180, 30)),
-        new KeyboardControllableComponent(inputVelocity),
-        new GunComponent(110));
+        new CollisionDetectionComponent(0o0011, {x: 32, y: 32}),
+        new CanvasBoundaryComponent({x: 5, y: 5}, {x: 180, y: 30}),
+        new KeyboardControllableComponent(inputVelocity), new GunComponent(110),
+        new ScoreComponent(), new ScoreDisplayComponent());
   }
 };
-
-export default new PlayerArchetype();

@@ -1,18 +1,14 @@
-'use strict';
 
-import Vector2D from './dataStructures/Vector2D';
-
-export default {
-  randomBetween(low: number, max: number):
-      number {
-        return low + Math.floor((Math.random() * max));
-      },
+export const Utils = {
+  randomBetween(low: number, max: number): number {
+    return low + Math.floor((Math.random() * max));
+  },
   randomFloatBetween(low: number, max: number) {
     return Math.random() * (max - low) + low;
   },
   intersectingRectangles(
-      rectA: {position: Vector2D, dimension: Vector2D},
-      rectB: {position: Vector2D, dimension: Vector2D}) {
+      rectA: {position: MathVector2d, dimension: MathVector2d},
+      rectB: {position: MathVector2d, dimension: MathVector2d}) {
     var ALeft = rectA.position.x;            // x1
     var ARight = ALeft + rectA.dimension.x;  // x1 + w1
     var ATop = rectA.position.y;             // y1
@@ -27,8 +23,8 @@ export default {
         ARight < BLeft || BRight < ALeft || ABottom < BTop || BBottom < ATop);
   },
   intersectingRectanglesFlat(
-      positionA: Vector2D, dimensionA: Vector2D, positionB: Vector2D,
-      dimensionB: Vector2D) {
+      positionA: MathVector2d, dimensionA: MathVector2d, positionB: MathVector2d,
+      dimensionB: MathVector2d) {
     var ALeft = positionA.x;            // x1
     var ARight = ALeft + dimensionA.x;  // x1 + w1
     var ATop = positionA.y;             // y1

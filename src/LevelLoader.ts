@@ -1,15 +1,19 @@
-import PlayerArchetype from './archetypes/PlayerArchetype';
-import WeakEnemyArchetype from './archetypes/WeakEnemyArchetype';
-import CircularBuffer from './dataStructures/CircularBuffer';
-import Vector2D from './dataStructures/Vector2D';
-import AjvValidator from './jsonValidators/AjvValidator';
-import LevelSchema from './jsonValidators/LevelSchema.json';
+import {PlayerArchetype} from './archetypes/PlayerArchetype';
+import {WeakEnemyArchetype} from './archetypes/WeakEnemyArchetype';
+import {CircularBuffer} from './dataStructures/CircularBuffer';
+import {IPathBuffer} from './dataStructures/IPathBuffer';
+import {SinglePassBuffer} from './dataStructures/SinglePassBuffer';
+import {AjvValidator} from './jsonValidators/AjvValidator';
+import * as LevelSchema from './jsonValidators/LevelSchema.json';
 
-export default class LevelLoader {
+export class LevelLoader {
   private levelValidator = AjvValidator.compile(LevelSchema);
 
   async loadFromJson(filename: string) {
-    let data = await fetch(filename).then(response => response.json());
+    let data =
+        await fetch(filename).then(response => response.json(), reason => {
+          console.error(`Could not fetch level ${filename}: ${reason}`);
+        });
     if (!this.levelValidator(data)) {
       for (let err of this.levelValidator.errors) {
         console.error(err);
@@ -19,18 +23,17 @@ export default class LevelLoader {
       console.log(`Level file '${filename}' OK`)
     }
 
-    for (let entity of data.entities) {
+    for (let entity of data.players) {
+      this.instantiatePlayer(entity.movement.startAt, entity.movement.velocity)
+    }
+
+    for (let entity of data.enemies) {
       switch (entity.archetype) {
         case 'weak': {
-          let path = this.instantiatePath(entity.path.waypoints);
+          let path = this.instantiatePath(entity.path.type, entity.path.waypoints);
           this.instantiateEnemy(
               entity.archetype, entity.movement.startAt,
               entity.movement.velocity, path);
-          break;
-        }
-        case 'player': {
-          this.instantiatePlayer(
-              entity.movement.startAt, entity.movement.velocity)
           break;
         }
       }
@@ -39,33 +42,35 @@ export default class LevelLoader {
     return data;
   }
 
-
   private instantiateEnemy(
-      archetype: string, startingPoint: {x: number, y: number},
-      velocity: {x: number, y: number}, path: CircularBuffer<Vector2D>) {
+      archetype: string, startingPoint: MathVector2d,
+      velocity: MathVector2d, path: IPathBuffer<MathVector2d>) {
     switch (archetype) {
       case 'weak':
-        return WeakEnemyArchetype.createNew(
-            new Vector2D(startingPoint.x, startingPoint.y),
-            new Vector2D(velocity.x, velocity.y), path)
+        return WeakEnemyArchetype.createNew(startingPoint, velocity, path);
     }
   }
 
   private instantiatePlayer(
-      startingPoint: {x: number, y: number}, velocity: {x: number, y: number}) {
-    return PlayerArchetype.createNew(
-        new Vector2D(startingPoint.x, startingPoint.y),
-        new Vector2D(velocity.x, velocity.y),
-    )
+      startingPoint: MathVector2d, velocity: MathVector2d) {
+    return PlayerArchetype.createNew(startingPoint, velocity);
   }
 
+  private instantiatePath(type: string, waypoints: [MathVector2d]):
+      IPathBuffer<MathVector2d> {
 
-  private instantiatePath(waypoints: [{x: number, y: number}]):
-      CircularBuffer<Vector2D> {
-    let res = [];
-    for (let w of waypoints) {
-      res.push(new Vector2D(w.x, w.y));
+    let buffer: null | IPathBuffer<MathVector2d> = null;
+    switch (type) {
+      case "single_pass":
+        buffer = new SinglePassBuffer(...waypoints);
+        break;
+      case "circular":
+        buffer = new CircularBuffer(...waypoints);
+        break;
+      default:
+        buffer = new SinglePassBuffer(...waypoints);
+        break;
     }
-    return new CircularBuffer<Vector2D>(...res);
+    return buffer;
   }
 };

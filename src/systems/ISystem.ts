@@ -1,3 +1,3 @@
-export default interface ISystem {
+export interface ISystem {
     update(): void;
 };

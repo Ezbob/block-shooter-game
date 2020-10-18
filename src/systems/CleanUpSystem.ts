@@ -1,14 +1,15 @@
-import CleanUpComponent from '../components/CleanUpComponent';
-import HealthComponent from '../components/HealthComponent';
-import PositionalComponent from '../components/PositionalComponent';
-import EntityManager from '../dataStructures/EntityManager';
-import ISystem from './ISystem';
+import {CleanUpComponent} from '../components/CleanUpComponent';
+import {HealthComponent} from '../components/HealthComponent';
+import {PositionalComponent} from '../components/PositionalComponent';
+import {EntityManager} from '../dataStructures/EntityManager';
+import {ISystem} from './ISystem';
 
-export default class CleanUpSystem implements ISystem {
+export class CleanUpSystem implements ISystem {
   update(): void {
     for (let e of EntityManager) {
       let posComp = e.getComponentByType(PositionalComponent);
       let cleanup = e.getComponentByType(CleanUpComponent);
+      let healthComp = e.getComponentByType(HealthComponent);
 
       if (posComp && cleanup) {
         if (posComp.position.y < cleanup.limitUpper) {
@@ -31,8 +32,6 @@ export default class CleanUpSystem implements ISystem {
           continue;
         }
       }
-
-      let healthComp = e.getComponentByType(HealthComponent);
 
       if (healthComp && healthComp.health <= 0) {
         EntityManager.deleteEntity(e.id);
