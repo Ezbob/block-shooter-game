@@ -8,6 +8,22 @@ import {MovementSystem} from './systems/MovementSystem';
 import {PathFollowingSystem} from './systems/PathFollowingSystem';
 import {PlayerUIDisplaySystem} from './systems/PlayerUIDisplaySystem';
 import {TimerSystem} from './systems/TimerSystem';
+import * as Stats from 'stats.js';
+import { SharedConstants } from './SharedConstants';
+
+let updateState = new Stats();
+let renderState = new Stats();
+
+if (SharedConstants.DEBUG_ON) {
+
+  updateState.dom.style.position = renderState.dom.style.position = "relative"
+
+  updateState.showPanel(0);
+  document.getElementById('updateState').appendChild(updateState.dom);
+
+  renderState.showPanel(0);
+  document.getElementById('renderState').appendChild(renderState.dom);
+}
 
 SharedVariables.systems = [
   new PathFollowingSystem(), new KeyboardControlSystem(), new MovementSystem(),
@@ -38,16 +54,22 @@ function processFrame() {
   frameClock.tick();
 
   while (frameClock.shouldUpdate()) {
+    if (SharedConstants.DEBUG_ON) updateState.begin();
+
     for (let system of SharedVariables.systems) {
       system.update();
     }
 
     frameClock.deductLag();
+
+    if (SharedConstants.DEBUG_ON) updateState.end();
   }
 
+  if (SharedConstants.DEBUG_ON) renderState.begin();
   for (let system of SharedVariables.drawSystems) {
     system.update();
   }
+  if (SharedConstants.DEBUG_ON) renderState.end();
 
   window.requestAnimationFrame(processFrame);
 }
