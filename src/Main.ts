@@ -9,14 +9,20 @@ import {PathFollowingSystem} from './systems/PathFollowingSystem';
 import {PlayerUIDisplaySystem} from './systems/PlayerUIDisplaySystem';
 import {TimerSystem} from './systems/TimerSystem';
 import * as Stats from 'stats.js';
-import { SharedConstants } from './SharedConstants';
 
 let updateState = new Stats();
 let renderState = new Stats();
 
-if (SharedConstants.DEBUG_ON) {
+SharedVariables.init({
+  CANVAS_HTML_ID: "playground",
+  CANVAS_HEIGHT: 900,
+  CANVAS_WIDTH: 1080,
+  DEBUG_ON: true,
+  FPS_LIMIT: 60
+});
 
-  updateState.dom.style.position = renderState.dom.style.position = "relative"
+if (SharedVariables.debugging.debugOn) {
+  updateState.dom.style.position = renderState.dom.style.position = "relative";
 
   updateState.showPanel(0);
   document.getElementById('updateState').appendChild(updateState.dom);
@@ -25,15 +31,15 @@ if (SharedConstants.DEBUG_ON) {
   document.getElementById('renderState').appendChild(renderState.dom);
 }
 
-SharedVariables.systems = [
+const systems = [
   new PathFollowingSystem(), new KeyboardControlSystem(), new MovementSystem(),
   new CleanUpSystem(), new CollideSystem(), new AutoShootSystem(),
   new TimerSystem()
 ];
 
-SharedVariables.drawSystems = [
+const drawSystems = [
   new DrawingSystem(),
-  new PlayerUIDisplaySystem(),
+  new PlayerUIDisplaySystem()
 ];
 
 const frameClock = SharedVariables.frameClock;
@@ -46,7 +52,7 @@ window.onfocus = () => {
   frameClock.resume();
 };
 
-function processFrame() {
+const processFrame = () => {
   if (frameClock.isPaused) {
     return window.requestAnimationFrame(processFrame);
   }
@@ -54,22 +60,22 @@ function processFrame() {
   frameClock.tick();
 
   while (frameClock.shouldUpdate()) {
-    if (SharedConstants.DEBUG_ON) updateState.begin();
+    if (SharedVariables.debugging.debugOn) updateState.begin();
 
-    for (let system of SharedVariables.systems) {
+    for (let system of systems) {
       system.update();
     }
 
     frameClock.deductLag();
 
-    if (SharedConstants.DEBUG_ON) updateState.end();
+    if (SharedVariables.debugging.debugOn) updateState.end();
   }
 
-  if (SharedConstants.DEBUG_ON) renderState.begin();
-  for (let system of SharedVariables.drawSystems) {
+  if (SharedVariables.debugging.debugOn) renderState.begin();
+  for (let system of drawSystems) {
     system.update();
   }
-  if (SharedConstants.DEBUG_ON) renderState.end();
+  if (SharedVariables.debugging.debugOn) renderState.end();
 
   window.requestAnimationFrame(processFrame);
 }

@@ -2,10 +2,8 @@ import {DrawableComponent} from '../components/DrawableComponent';
 import {PathComponent} from '../components/PathComponent';
 import {PositionalComponent} from '../components/PositionalComponent';
 import {EntityManager} from '../dataStructures/EntityManager';
-import {Debug} from '../Debug';
-import {SharedConstants} from '../SharedConstants';
 import {SharedVariables} from '../SharedVariables';
-import { Vec2dAdd, Vec2dMul } from '../VectorOperations';
+import {Vec2dAdd, Vec2dMul} from '../VectorOperations';
 import {ISystem} from './ISystem';
 
 export class DrawingSystem implements ISystem {
@@ -13,7 +11,7 @@ export class DrawingSystem implements ISystem {
     let ctx = SharedVariables.canvasManager.getCanvasContext();
 
     ctx.clearRect(
-        0, 0, SharedConstants.CANVAS_WIDTH, SharedConstants.CANVAS_HEIGHT);
+        0, 0, SharedVariables.canvasManager.canvasWidth, SharedVariables.canvasManager.canvasHeight);
 
     EntityManager.sort((a, b) => {
       let aDrawComp = a.getComponentByType(DrawableComponent);
@@ -52,7 +50,7 @@ export class DrawingSystem implements ISystem {
       }
 
       if (posComp) {
-        Debug.drawLineBetween(
+        SharedVariables.debugging.drawLineBetween(
             posComp.position,
             Vec2dAdd(posComp.position, Vec2dMul(posComp.velocity, 4))
         );
@@ -60,8 +58,8 @@ export class DrawingSystem implements ISystem {
 
       if (pathComp) {
         for (let p of pathComp.path) {
-          Debug.drawPoint(p);
-          Debug.drawCircle(p, 5);
+          SharedVariables.debugging.drawPoint(p);
+          SharedVariables.debugging.drawCircle(p, 5);
         }
       }
     }

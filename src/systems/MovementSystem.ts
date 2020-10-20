@@ -2,8 +2,8 @@ import {CanvasBoundaryComponent} from '../components/CanvasBoundaryComponent';
 import {FrictionComponent} from '../components/FrictionComponent';
 import {PositionalComponent} from '../components/PositionalComponent';
 import {EntityManager} from '../dataStructures/EntityManager';
-import {SharedConstants} from '../SharedConstants';
-import { Vec2dAdd, Vec2dMul, Vec2dMulMut } from '../VectorOperations';
+import {SharedVariables} from '../SharedVariables';
+import {Vec2dAdd, Vec2dMul, Vec2dMulMut} from '../VectorOperations';
 
 import {ISystem} from './ISystem';
 
@@ -14,6 +14,9 @@ export class MovementSystem implements ISystem {
       let collisionComp = e.getComponentByType(CanvasBoundaryComponent);
       let frictionComp = e.getComponentByType(FrictionComponent);
 
+      const canvasWidth = SharedVariables.canvasManager.canvasWidth;
+      const canvasHeight = SharedVariables.canvasManager.canvasHeight;
+
       if (positionComp && collisionComp) {
 
         let nextPos = Vec2dAdd(positionComp.position, Vec2dMul(positionComp.velocity, 1 - positionComp.breakingForcePercentage ) );
@@ -23,9 +26,9 @@ export class MovementSystem implements ISystem {
           positionComp.velocity.x = 0;
         }
         if (nextPos.x + positionComp.dimension.x >
-            SharedConstants.CANVAS_WIDTH - collisionComp.canvasPaddingX.y) {
+          canvasWidth - collisionComp.canvasPaddingX.y) {
           positionComp.position.x =
-              (SharedConstants.CANVAS_WIDTH - positionComp.dimension.x -
+              (canvasWidth - positionComp.dimension.x -
                collisionComp.canvasPaddingX.y);
           positionComp.velocity.x = 0;
         }
@@ -34,11 +37,8 @@ export class MovementSystem implements ISystem {
           positionComp.position.y = collisionComp.canvasPaddingY.x;
           positionComp.velocity.y = 0;
         }
-        if (nextPos.y + positionComp.dimension.y >
-            SharedConstants.CANVAS_HEIGHT - collisionComp.canvasPaddingY.y) {
-          positionComp.position.y =
-              (SharedConstants.CANVAS_HEIGHT - positionComp.dimension.y -
-               collisionComp.canvasPaddingY.y);
+        if (nextPos.y + positionComp.dimension.y > canvasHeight - collisionComp.canvasPaddingY.y) {
+          positionComp.position.y = (canvasHeight - positionComp.dimension.y - collisionComp.canvasPaddingY.y);
           positionComp.velocity.y = 0;
         }
       }

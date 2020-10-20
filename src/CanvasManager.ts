@@ -1,17 +1,20 @@
-import {SharedConstants} from './SharedConstants';
 
 export class CanvasManager {
   private _isAttached: boolean = false;
   private htmlElement: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;
+  private _height: number;
+  private _width: number;
 
-  constructor(private elementId: string = SharedConstants.CANVAS_HTML_ID) {
+  constructor(private elementId: string, width: number, height: number) {
     try {
       this.htmlElement =
           document.getElementById(this.elementId) as HTMLCanvasElement;
       this.context = this.htmlElement.getContext('2d');
-      this.htmlElement.setAttribute('width', SharedConstants.CANVAS_WIDTH.toString());
-      this.htmlElement.setAttribute('height', SharedConstants.CANVAS_HEIGHT.toString());
+      this.htmlElement.setAttribute('width', "" + width);
+      this.htmlElement.setAttribute('height', "" + height);
+      this._width = width;
+      this._height = height;
     } catch (exception) {
       this._isAttached = false;
       throw exception;
@@ -21,6 +24,14 @@ export class CanvasManager {
     } else {
       this._isAttached = false;
     }
+  }
+
+  get canvasWidth() {
+    return this._width;
+  }
+
+  get canvasHeight() {
+    return this._height;
   }
 
   getCanvasDOMId() {
