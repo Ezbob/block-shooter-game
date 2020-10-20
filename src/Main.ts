@@ -21,17 +21,7 @@ SharedVariables.init({
   FPS_LIMIT: 60
 });
 
-if (SharedVariables.debugging.debugOn) {
-  updateState.dom.style.position = renderState.dom.style.position = "relative";
-
-  updateState.showPanel(0);
-  document.getElementById('updateState').appendChild(updateState.dom);
-
-  renderState.showPanel(0);
-  document.getElementById('renderState').appendChild(renderState.dom);
-}
-
-const systems = [
+const updateSystems = [
   new PathFollowingSystem(), new KeyboardControlSystem(), new MovementSystem(),
   new CleanUpSystem(), new CollideSystem(), new AutoShootSystem(),
   new TimerSystem()
@@ -42,31 +32,29 @@ const drawSystems = [
   new PlayerUIDisplaySystem()
 ];
 
-const frameClock = SharedVariables.frameClock;
-
 window.onblur = () => {
-  frameClock.pause();
+  SharedVariables.frameClock.pause();
 };
 
 window.onfocus = () => {
-  frameClock.resume();
+  SharedVariables.frameClock.resume();
 };
 
 const processFrame = () => {
-  if (frameClock.isPaused) {
+  if ( SharedVariables.frameClock.isPaused) {
     return window.requestAnimationFrame(processFrame);
   }
 
-  frameClock.tick();
+  SharedVariables.frameClock.tick();
 
-  while (frameClock.shouldUpdate()) {
+  while ( SharedVariables.frameClock.shouldUpdate()) {
     if (SharedVariables.debugging.debugOn) updateState.begin();
 
-    for (let system of systems) {
+    for (let system of updateSystems) {
       system.update();
     }
 
-    frameClock.deductLag();
+    SharedVariables.frameClock.deductLag();
 
     if (SharedVariables.debugging.debugOn) updateState.end();
   }
@@ -81,5 +69,15 @@ const processFrame = () => {
 }
 
 SharedVariables.levelLoader.loadFromJson('levels/first.level.json');
+
+if (SharedVariables.debugging.debugOn) {
+  updateState.dom.style.position = renderState.dom.style.position = "relative";
+
+  updateState.showPanel(0);
+  document.getElementById('updateState').appendChild(updateState.dom);
+
+  renderState.showPanel(0);
+  document.getElementById('renderState').appendChild(renderState.dom);
+}
 
 window.requestAnimationFrame(processFrame);
