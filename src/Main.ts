@@ -68,7 +68,9 @@ const processFrame = () => {
   window.requestAnimationFrame(processFrame);
 }
 
-SharedVariables.levelLoader.loadFromJson('levels/first.level.json');
+SharedVariables.levelLoader.loadFromJson('levels/first.level.json').then((events) => {
+  while(events.instantiateNext());
+});
 
 if (SharedVariables.debugging.debugOn) {
   updateState.dom.style.position = renderState.dom.style.position = "relative";
@@ -79,5 +81,6 @@ if (SharedVariables.debugging.debugOn) {
   renderState.showPanel(0);
   document.getElementById('renderState').appendChild(renderState.dom);
 }
+
 
 window.requestAnimationFrame(processFrame);
