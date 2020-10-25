@@ -9,6 +9,9 @@ import {PathFollowingSystem} from './systems/PathFollowingSystem';
 import {PlayerUIDisplaySystem} from './systems/PlayerUIDisplaySystem';
 import {TimerSystem} from './systems/TimerSystem';
 import * as Stats from 'stats.js';
+import { SpawnSystem } from './systems/SpawnSystem';
+import { EntityManager } from './dataStructures/EntityManager';
+import { SpawnComponent } from './components/SpawnComponent';
 
 let updateState = new Stats();
 let renderState = new Stats();
@@ -24,7 +27,7 @@ SharedVariables.init({
 const updateSystems = [
   new PathFollowingSystem(), new KeyboardControlSystem(), new MovementSystem(),
   new CleanUpSystem(), new CollideSystem(), new AutoShootSystem(),
-  new TimerSystem()
+  new TimerSystem(), new SpawnSystem()
 ];
 
 const drawSystems = [
@@ -68,10 +71,6 @@ const processFrame = () => {
   window.requestAnimationFrame(processFrame);
 }
 
-SharedVariables.levelLoader.loadFromJson('levels/first.level.json').then((events) => {
-  while(events.instantiateNext());
-});
-
 if (SharedVariables.debugging.debugOn) {
   updateState.dom.style.position = renderState.dom.style.position = "relative";
 
@@ -82,5 +81,6 @@ if (SharedVariables.debugging.debugOn) {
   document.getElementById('renderState').appendChild(renderState.dom);
 }
 
+EntityManager.createNewEntity(new SpawnComponent('levels/first.level.json'))
 
 window.requestAnimationFrame(processFrame);
