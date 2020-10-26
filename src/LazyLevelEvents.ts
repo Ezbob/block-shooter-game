@@ -1,6 +1,10 @@
 import { PlayerArchetype } from "./archetypes/PlayerArchetype";
 import { WeakEnemyArchetype } from "./archetypes/WeakEnemyArchetype";
+import { SpawnComponent } from "./components/SpawnComponent";
+import { TimerComponent } from "./components/TimerComponent";
 import { CircularBuffer } from "./dataStructures/CircularBuffer";
+import { Entity } from "./dataStructures/Entity";
+import { EntityManager } from "./dataStructures/EntityManager";
 import { IPathBuffer } from "./dataStructures/IPathBuffer";
 import { SinglePassBuffer } from "./dataStructures/SinglePassBuffer";
 
@@ -12,22 +16,34 @@ export class LazyLevelEvents {
   ) {
   }
 
-  public instantiateNext(): boolean {
+  public instantiateNext(spawn: SpawnComponent): Entity | null {
     let next = this.events.pop();
     if (!next) {
-      return false;
+      return null;
     }
 
     switch(next.event_type) {
       case 'weak':
-        this.instantiateEnemy(next as EnemyJson);
-        break;
+        return this.instantiateEnemy(next as EnemyJson);
       case 'player':
-        this.instantiatePlayer(next as PlayerJson);
-        break;
+        return this.instantiatePlayer(next as PlayerJson);
+      case 'timer':
+      case 'enemies_defeated':
+        return this.instantiateCondition(next as ConditionJson, spawn);
     }
 
-    return true;
+    return null;
+  }
+
+  private instantiateCondition(next: ConditionJson, spawn: SpawnComponent): Entity | null {
+      switch(next.event_type) {
+        case 'timer':
+          spawn.shouldSpawn = false
+          return EntityManager.createNewEntity(new TimerComponent('spawnTimeout', next.argument, [spawn]))
+        case 'enemies_defeated':
+          break;
+      }
+      return null
   }
 
   private instantiateEnemy(enemy: EnemyJson) {

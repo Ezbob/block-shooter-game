@@ -3,19 +3,6 @@
     "level": 1,
     "events": [
         {
-            "event_type": "player",
-            "movement": {
-                "startAt": {
-                    "x": 524,
-                    "y": 800
-                },
-                "velocity": {
-                    "x": 10,
-                    "y": 10
-                }
-            }
-        },
-        {
             "event_type": "weak",
             "movement": {
                 "startAt": {
@@ -57,6 +44,7 @@
                 ]
             }
         },
+
         {
             "event_type": "weak",
             "movement": {
@@ -73,7 +61,7 @@
                 "type": "single_pass",
                 "waypoints": [
                     {
-                        "x": 10,
+                        "x": -60,
                         "y": 15
                     },
                     {
@@ -98,6 +86,10 @@
                     }
                 ]
             }
+        },
+        {
+            "event_type": "timer",
+            "argument": 3000
         },
         {
             "event_type": "weak",
@@ -131,6 +123,19 @@
                         "y": 188
                     }
                 ]
+            }
+        },
+        {
+            "event_type": "player",
+            "movement": {
+                "startAt": {
+                    "x": 524,
+                    "y": 800
+                },
+                "velocity": {
+                    "x": 10,
+                    "y": 10
+                }
             }
         }
     ]

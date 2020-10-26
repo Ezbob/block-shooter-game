@@ -30,7 +30,7 @@ export class TimerSystem implements ISystem {
           component.expireTime += this.extendTime;
         }
         if (SharedVariables.frameClock.now >= (component.expireTime) ) {
-          SharedVariables.timedEventQueue.putEvent(component.expireEventName);
+          SharedVariables.timedEventQueue.putEvent(component.expireEventName, ...component.eventArguments);
           EntityManager.deleteEntity(e.id);
         }
       }
