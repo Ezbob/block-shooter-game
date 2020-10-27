@@ -17,7 +17,7 @@ export class LazyLevelEvents {
   }
 
   public instantiateNext(spawn: SpawnComponent): Entity | null {
-    let next = this.events.pop();
+    let next = this.events.shift();
     if (!next) {
       return null;
     }
