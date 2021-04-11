@@ -1,5 +1,5 @@
 import {AjvValidator} from './jsonValidators/AjvValidator';
-import * as LevelSchema from './jsonValidators/LevelSchema.json';
+import LevelSchema from './jsonValidators/LevelSchema.json';
 import { LazyLevelEvents } from './LazyLevelEvents';
 
 export class LevelLoader {
