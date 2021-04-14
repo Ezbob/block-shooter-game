@@ -1,4 +1,5 @@
-import {SharedVariables} from './SharedVariables';
+
+// Systems
 import {AutoShootSystem} from './systems/AutoShootSystem';
 import {CleanUpSystem} from './systems/CleanUpSystem';
 import {CollideSystem} from './systems/CollideSystem';
@@ -9,6 +10,9 @@ import {PathFollowingSystem} from './systems/PathFollowingSystem';
 import {PlayerUIDisplaySystem} from './systems/PlayerUIDisplaySystem';
 import {TimerSystem} from './systems/TimerSystem';
 import { SpawnSystem } from './systems/SpawnSystem';
+
+// other
+import { SharedVariables } from './SharedVariables';
 import { EntityManager } from './dataStructures/EntityManager';
 import { SpawnComponent } from './components/SpawnComponent';
 import { DefaultGameLoop } from './DefaultGameLoop';
