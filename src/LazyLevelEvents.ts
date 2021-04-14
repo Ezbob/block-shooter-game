@@ -61,8 +61,7 @@ export class LazyLevelEvents {
   private instantiatePath(rawPath: {
     waypoints: [MathVector2d],
     type: string
-  }):
-      IPathBuffer<MathVector2d> {
+  }): IPathBuffer<MathVector2d> {
 
     let buffer: null | IPathBuffer<MathVector2d> = null;
     switch (rawPath.type) {
