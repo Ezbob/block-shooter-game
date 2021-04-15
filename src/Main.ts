@@ -25,8 +25,6 @@ SharedVariables.init({
   FPS_LIMIT: 60
 });
 
-const loop = new DefaultGameLoop();
-
 const updateSystems = [
   new PathFollowingSystem(), new KeyboardControlSystem(), new MovementSystem(),
   new CleanUpSystem(), new CollideSystem(), new AutoShootSystem(),
@@ -38,14 +36,13 @@ const drawSystems = [
   new PlayerUIDisplaySystem()
 ];
 
-window.onblur = () => {
-  SharedVariables.frameClock.pause();
-};
+window.onblur = SharedVariables.frameClock.pause
 
-window.onfocus = () => {
-  SharedVariables.frameClock.resume();
-};
+window.onfocus = SharedVariables.frameClock.resume
 
 EntityManager.createNewEntity(new SpawnComponent('levels/first.level.json'))
 
-loop.run(updateSystems, drawSystems);
+new DefaultGameLoop()
+  .setDrawSystems(drawSystems)
+  .setUpdateSystems(updateSystems)
+  .run();

@@ -1,5 +1,7 @@
 import { ISystem } from "./systems/ISystem";
 
 export interface IGameLoop {
-    run(update: ISystem[], draw: ISystem[]): void;
+    run(): void;
+    setUpdateSystems(update: ISystem[]): IGameLoop;
+    setDrawSystems(draw: ISystem[]) : IGameLoop;
 };

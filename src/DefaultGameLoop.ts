@@ -5,13 +5,21 @@ import { ISystem } from './systems/ISystem';
 
 export class DefaultGameLoop implements IGameLoop {
 
-    private updateSystems: (ISystem[] | null) = null;
-    private drawingSystems: (ISystem[] | null) = null;
+    private updateSystems: (ISystem[] | null) = [];
+    private drawingSystems: (ISystem[] | null) = [];
 
-    public run(updateSystems: ISystem[], drawingSystems: ISystem[] = []): void {
-        this.updateSystems = updateSystems;
-        this.drawingSystems = drawingSystems;
+    public run(): void {
         window.requestAnimationFrame(this.loop);
+    }
+
+    public setUpdateSystems(update: ISystem[]): IGameLoop {
+        this.updateSystems = update
+        return this
+    }
+
+    public setDrawSystems(draw: ISystem[]): IGameLoop {
+        this.drawingSystems = draw
+        return this
     }
 
     private loop = () => {
