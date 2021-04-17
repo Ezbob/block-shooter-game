@@ -1,6 +1,5 @@
 import {AjvValidator} from '../jsonValidators/AjvValidator';
 import LevelSchema from '../jsonValidators/LevelSchema.json';
-import {LazyLevelEvents} from '../LazyLevelEvents';
 import { LevelLoadComponent } from '../components/LevelLoadComponent';
 import {EntityManager} from '../dataStructures/EntityManager';
 import {ISystem} from './ISystem';
@@ -40,6 +39,6 @@ export class LevelLoaderSystem implements ISystem {
             console.log(`Level file '${filename}' OK`)
         }
 
-        return new LazyLevelEvents(data.events as Array<PlayerJson | EnemyJson | ConditionJson>);
+        return (data.events as Array<PlayerJson | EnemyJson | ConditionJson>);
     }
 };

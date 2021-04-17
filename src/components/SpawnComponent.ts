@@ -1,8 +1,7 @@
-import { LazyLevelEvents } from "../LazyLevelEvents";
 
 export class SpawnComponent {
     public shouldSpawn: boolean = true
     constructor(
-        public spawningSet: LazyLevelEvents | null = null
+        public spawningSet: Array<PlayerJson | EnemyJson | ConditionJson>
     ) {}
 };
