@@ -19,15 +19,7 @@ export class SpawnSystem implements ISystem {
 
             if (spawnComponent && spawnComponent.shouldSpawn) {
 
-                if (!spawnComponent.spawningSet && spawnComponent.filename) {
-                    SharedVariables.levelLoader.loadFromJson(spawnComponent.filename)
-                     .then((value) => {
-                            spawnComponent.spawningSet = value;
-                        }, (reason) => {
-                            console.log("level load of {} rejected: ", reason)
-                        });
-                    spawnComponent.filename = null
-                } else if (spawnComponent.spawningSet) {
+                if (spawnComponent.spawningSet) {
                     let entity = null
                     while (entity = spawnComponent.spawningSet.instantiateNext(spawnComponent)) {
                         if ( entity.getComponentByType(TimerComponent) ) {

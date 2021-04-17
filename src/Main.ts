@@ -14,8 +14,9 @@ import { SpawnSystem } from './systems/SpawnSystem';
 // other
 import { SharedVariables } from './SharedVariables';
 import { EntityManager } from './dataStructures/EntityManager';
-import { SpawnComponent } from './components/SpawnComponent';
+import { LevelLoadComponent } from './components/LevelLoadComponent';
 import { DefaultGameLoop } from './DefaultGameLoop';
+import { LevelLoaderSystem } from './systems/LevelLoaderSystem';
 
 SharedVariables.init({
   CANVAS_HTML_ID: "playground",
@@ -28,7 +29,7 @@ SharedVariables.init({
 const updateSystems = [
   new PathFollowingSystem(), new KeyboardControlSystem(), new MovementSystem(),
   new CleanUpSystem(), new CollideSystem(), new AutoShootSystem(),
-  new TimerSystem(), new SpawnSystem()
+  new TimerSystem(), new SpawnSystem(), new LevelLoaderSystem()
 ];
 
 const drawSystems = [
@@ -40,7 +41,7 @@ window.onblur = SharedVariables.frameClock.pause
 
 window.onfocus = SharedVariables.frameClock.resume
 
-EntityManager.createNewEntity(new SpawnComponent('levels/first.level.json'))
+EntityManager.createNewEntity(new LevelLoadComponent('levels/first.level.json'))
 
 new DefaultGameLoop()
   .setDrawSystems(drawSystems)
