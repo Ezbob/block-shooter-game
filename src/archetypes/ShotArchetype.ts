@@ -12,18 +12,19 @@ export const ShotArchetype = new class {
   private cleanup = new CleanUpComponent(-20, 20, 20, -20);
   private drawable = new DrawableComponent(-1, 'orange');
 
-  createNew(
-      shooter: Entity, initialPosition: MathVector2d, velocity: MathVector2d,
+  createNew(shooter: Entity, initialPosition: MathVector2d, velocity: MathVector2d,
       collisionMask: number): Entity {
 
     this.cleanup.limitLower = SharedVariables.canvasManager.canvasHeight + 20;
     this.cleanup.limitXRight = SharedVariables.canvasManager.canvasWidth + 20;
 
     return EntityManager.createNewEntity(
-        new PositionalComponent(initialPosition, velocity, this.dimensions),
-        this.dimensions, this.drawable,
-        new CollisionDetectionComponent(collisionMask, this.dimensions),
-        this.cleanup, 
-        new DamageComponent(10, shooter));
+      new PositionalComponent(initialPosition, velocity, this.dimensions),
+      new CollisionDetectionComponent(collisionMask, this.dimensions),
+      new DamageComponent(10, shooter),
+      this.dimensions, 
+      this.drawable,
+      this.cleanup
+    );
   }
 };

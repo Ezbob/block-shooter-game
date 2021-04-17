@@ -1,5 +1,4 @@
 
-
 export class CanvasBoundaryComponent {
   constructor(
       public canvasPaddingX: MathVector2d = {x: 0, y: 0},

@@ -22,9 +22,9 @@ export const WeakEnemyArchetype = new class {
         new HealthComponent(50, 50, 400),
         new AutoShootComponent(),
         new GunComponent(700, 5),
+        new CollisionDetectionComponent(0o0010, {x: 32, y: 32}),
         this.drawable,
         this.friction,
-        new CollisionDetectionComponent(0o0010, {x: 32, y: 32}),
     );
   }
 }
