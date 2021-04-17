@@ -16,7 +16,7 @@
             }
         },
         {
-            "event_type": "timer",
+            "event_type": "timeout",
             "argument": 3000
         },
         {
@@ -62,7 +62,7 @@
             }
         },
         {
-            "event_type": "timer",
+            "event_type": "timeout",
             "argument": 3000
         },
         {

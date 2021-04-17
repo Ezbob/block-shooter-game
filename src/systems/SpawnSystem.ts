@@ -22,11 +22,10 @@ export class SpawnSystem implements ISystem {
                 if (!spawnComponent.spawningSet && spawnComponent.filename) {
                     SharedVariables.levelLoader.loadFromJson(spawnComponent.filename)
                      .then((value) => {
-                        spawnComponent.spawningSet = value;
-                    }, (reason) => {
-                        console.log("level load of {} rejected: ", reason)
-                    }
-                    );
+                            spawnComponent.spawningSet = value;
+                        }, (reason) => {
+                            console.log("level load of {} rejected: ", reason)
+                        });
                     spawnComponent.filename = null
                 } else if (spawnComponent.spawningSet) {
                     let entity = null
@@ -37,6 +36,7 @@ export class SpawnSystem implements ISystem {
                     }
                 }
             }
+
         }
     }
 }

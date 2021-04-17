@@ -27,7 +27,7 @@ export class LazyLevelEvents {
         return this.instantiateEnemy(next as EnemyJson);
       case 'player':
         return this.instantiatePlayer(next as PlayerJson);
-      case 'timer':
+      case 'timeout':
       case 'enemies_defeated':
         return this.instantiateCondition(next as ConditionJson, spawn);
     }
@@ -37,7 +37,7 @@ export class LazyLevelEvents {
 
   private instantiateCondition(next: ConditionJson, spawn: SpawnComponent): Entity | null {
       switch(next.event_type) {
-        case 'timer':
+        case 'timeout':
           spawn.shouldSpawn = false
           return EntityManager.createNewEntity(new TimerComponent('spawnTimeout', next.argument, [spawn]))
         case 'enemies_defeated':

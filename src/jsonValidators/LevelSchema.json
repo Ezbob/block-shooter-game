@@ -135,7 +135,7 @@
         "event_type": {
           "type": "string",
           "enum": [
-            "timer",
+            "timeout",
             "enemies_defeated"
           ]
         },
