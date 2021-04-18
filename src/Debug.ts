@@ -1,11 +1,12 @@
-import {SharedVariables} from './SharedVariables';
+import {CanvasManager} from './CanvasManager';
+
 
 export class Debug {
 
   constructor(private isDebugOn = false) {}
 
-  drawLineBetween(start: MathVector2d, end: MathVector2d, color: string = 'black') {
-    let ctx = SharedVariables.canvasManager.getCanvasContext();
+  drawLineBetween(manager: CanvasManager, start: MathVector2d, end: MathVector2d, color: string = 'black') {
+    let ctx = manager.getCanvasContext();
     if (this.isDebugOn) {
       ctx.beginPath();
       ctx.strokeStyle = color;
@@ -16,8 +17,8 @@ export class Debug {
     }
   }
 
-  drawLine(start: MathVector2d, end: MathVector2d, color: string = 'black') {
-    let ctx = SharedVariables.canvasManager.getCanvasContext();
+  drawLine(manager: CanvasManager, start: MathVector2d, end: MathVector2d, color: string = 'black') {
+    let ctx = manager.getCanvasContext();
     if (this.isDebugOn) {
       ctx.beginPath();
       ctx.strokeStyle = color;
@@ -28,9 +29,9 @@ export class Debug {
     }
   }
 
-  drawPoint(center: MathVector2d, color: string = 'black') {
+  drawPoint(manager: CanvasManager, center: MathVector2d, color: string = 'black') {
     if (this.isDebugOn) {
-      let ctx = SharedVariables.canvasManager.getCanvasContext();
+      let ctx = manager.getCanvasContext();
       ctx.beginPath();
       ctx.strokeStyle = color;
       ctx.moveTo(center.x + 10, center.y);
@@ -42,8 +43,8 @@ export class Debug {
     }
   }
 
-  drawPath(points: MathVector2d[], color: string = 'black') {
-    let ctx = SharedVariables.canvasManager.getCanvasContext();
+  drawPath(manager: CanvasManager, points: MathVector2d[], color: string = 'black') {
+    let ctx = manager.getCanvasContext();
     let length = points.length;
     if (this.isDebugOn && length >= 2) {
       ctx.beginPath();
@@ -60,8 +61,8 @@ export class Debug {
     }
   }
 
-  drawCircle(center: MathVector2d, radius: number) {
-    let ctx = SharedVariables.canvasManager.getCanvasContext();
+  drawCircle(manager: CanvasManager, center: MathVector2d, radius: number) {
+    let ctx = manager.getCanvasContext();
     if (this.isDebugOn) {
       ctx.beginPath();
       ctx.arc(center.x, center.y, radius, 0, 2 * Math.PI);

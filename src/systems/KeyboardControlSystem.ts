@@ -4,7 +4,7 @@ import {KeyboardControllableComponent} from '../components/KeyboardControllableC
 
 import {PositionalComponent} from '../components/PositionalComponent';
 import {EntityManager} from '../dataStructures/EntityManager';
-import {SharedVariables} from '../SharedVariables';
+import {GameContext} from '../GameContext';
 
 import {ISystem} from './ISystem';
 
@@ -48,7 +48,7 @@ export class KeyboardControlSystem implements ISystem {
     }
   }
 
-  update() {
+  update(ctx: GameContext) {
     for (let e of EntityManager) {
       let pv = e.getComponentByType(PositionalComponent);
       let keyboardComponent =
@@ -79,7 +79,7 @@ export class KeyboardControlSystem implements ISystem {
 
         if (gunComp) {
           if (this.pressed.get('Space') == KeyPressType.KEY_PRESS) {
-            let diff = SharedVariables.frameClock.now - gunComp.timeSinceLast;
+            let diff = ctx.frameClock.now - gunComp.timeSinceLast;
             if (diff > gunComp.shotDelay) {
               ShotArchetype.createNew(
                   e,
@@ -90,8 +90,10 @@ export class KeyboardControlSystem implements ISystem {
                   {
                     x: 0, 
                     y: gunComp.bulletVelocity
-                  }, 0o0010);
-              gunComp.timeSinceLast = SharedVariables.frameClock.now;
+                  },
+                  0o0010, 
+                  ctx.canvasManager);
+              gunComp.timeSinceLast = ctx.frameClock.now;
             }
           }
         }

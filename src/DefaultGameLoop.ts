@@ -1,5 +1,5 @@
 import { IGameLoop } from './IGameLoop';
-import { SharedVariables } from './SharedVariables';
+import { GameContext } from './GameContext';
 import { ISystem } from './systems/ISystem';
 
 
@@ -7,6 +7,8 @@ export class DefaultGameLoop implements IGameLoop {
 
     private updateSystems: (ISystem[] | null) = [];
     private drawingSystems: (ISystem[] | null) = [];
+
+    constructor(private gameContext: GameContext) {}
 
     public run(): void {
         window.requestAnimationFrame(this.loop);
@@ -23,22 +25,22 @@ export class DefaultGameLoop implements IGameLoop {
     }
 
     private loop = () => {
-        if (SharedVariables.frameClock.isPaused) {
+        if (this.gameContext.frameClock.isPaused) {
             return window.requestAnimationFrame(this.loop);
         }
 
-        SharedVariables.frameClock.tick();
+        this.gameContext.frameClock.tick();
 
-        while (SharedVariables.frameClock.shouldUpdate()) {
+        while ( this.gameContext.frameClock.shouldUpdate()) {
             for (let system of this.updateSystems) {
-                system.update();
+                system.update(this.gameContext);
             }
 
-            SharedVariables.frameClock.deductLag();
+            this.gameContext.frameClock.deductLag();
         }
 
         for (let system of this.drawingSystems) {
-            system.update();
+            system.update(this.gameContext);
         }
 
         window.requestAnimationFrame(this.loop);

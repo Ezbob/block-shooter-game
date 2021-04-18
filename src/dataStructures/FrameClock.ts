@@ -1,4 +1,4 @@
-import { SharedVariables } from "../SharedVariables";
+import { EventQueue } from "./EventQueue";
 
 export class FrameClock {
   private _lastUpdate: number = 0;
@@ -8,7 +8,7 @@ export class FrameClock {
   private msPerUpdate: number = 0;
   private _isPaused: boolean = false;
 
-  constructor(fpsLimit: number) {
+  constructor(fpsLimit: number, private eventQueue: EventQueue) {
     this.msPerUpdate = (1 / fpsLimit) * 1000;
   }
 
@@ -29,7 +29,7 @@ export class FrameClock {
       let now = window.performance.now()
       let diff =  now - this._lastUpdate; 
       this._lastUpdate = now;
-      SharedVariables.timedEventQueue.putEvent('timeResumed', diff);
+      this.eventQueue.putEvent('timeResumed', diff);
     }
   }
 

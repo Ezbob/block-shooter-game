@@ -2,16 +2,16 @@ import {DrawableComponent} from '../components/DrawableComponent';
 import {PathComponent} from '../components/PathComponent';
 import {PositionalComponent} from '../components/PositionalComponent';
 import {EntityManager} from '../dataStructures/EntityManager';
-import {SharedVariables} from '../SharedVariables';
+import {GameContext} from '../GameContext';
 import {Vec2dAdd, Vec2dMul} from '../VectorOperations';
 import {ISystem} from './ISystem';
 
 export class DrawingSystem implements ISystem {
-  update(): void {
-    let ctx = SharedVariables.canvasManager.getCanvasContext();
+  update(gctx: GameContext): void {
+    let ctx = gctx.canvasManager.getCanvasContext();
 
     ctx.clearRect(
-        0, 0, SharedVariables.canvasManager.canvasWidth, SharedVariables.canvasManager.canvasHeight);
+        0, 0, gctx.canvasManager.canvasWidth, gctx.canvasManager.canvasHeight);
 
     EntityManager.sort((a, b) => {
       let aDrawComp = a.getComponentByType(DrawableComponent);
@@ -50,7 +50,8 @@ export class DrawingSystem implements ISystem {
       }
 
       if (posComp) {
-        SharedVariables.debugging.drawLineBetween(
+        gctx.debugging.drawLineBetween(
+            gctx.canvasManager,
             posComp.position,
             Vec2dAdd(posComp.position, Vec2dMul(posComp.velocity, 4))
         );
@@ -58,8 +59,8 @@ export class DrawingSystem implements ISystem {
 
       if (pathComp) {
         for (let p of pathComp.path) {
-          SharedVariables.debugging.drawPoint(p);
-          SharedVariables.debugging.drawCircle(p, 5);
+          gctx.debugging.drawPoint(gctx.canvasManager, p);
+          gctx.debugging.drawCircle(gctx.canvasManager, p, 5);
         }
       }
     }

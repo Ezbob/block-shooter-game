@@ -107,3 +107,6 @@ typings/
 
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
+
+*_bundle.js
+*_bundle.js.LICENSE.txt

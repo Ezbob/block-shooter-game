@@ -2,10 +2,11 @@ import {CleanUpComponent} from '../components/CleanUpComponent';
 import {HealthComponent} from '../components/HealthComponent';
 import {PositionalComponent} from '../components/PositionalComponent';
 import {EntityManager} from '../dataStructures/EntityManager';
+import {GameContext} from '../GameContext';
 import {ISystem} from './ISystem';
 
 export class CleanUpSystem implements ISystem {
-  update(): void {
+  update(_ctx: GameContext): void {
     for (let e of EntityManager) {
       let posComp = e.getComponentByType(PositionalComponent);
       let cleanup = e.getComponentByType(CleanUpComponent);

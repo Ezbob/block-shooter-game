@@ -4,11 +4,12 @@ import { LevelLoadComponent } from '../components/LevelLoadComponent';
 import {EntityManager} from '../dataStructures/EntityManager';
 import {ISystem} from './ISystem';
 import { SpawnComponent } from '../components/SpawnComponent';
+import { GameContext } from '../GameContext';
 
 export class LevelLoaderSystem implements ISystem {
     private levelValidator = AjvValidator.compile(LevelSchema);
 
-    update() {
+    update(_ctx: GameContext) {
         for (let e of EntityManager) {
             const eventLoadComp = e.getComponentByType(LevelLoadComponent)
             if (eventLoadComp) {

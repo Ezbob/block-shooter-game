@@ -4,7 +4,7 @@ import {IHealthBeadColors} from '../components/IHealthBeadColors';
 import {ScoreComponent} from '../components/ScoreComponent';
 import {ScoreDisplayComponent} from '../components/ScoreDisplayComponent';
 import {EntityManager} from '../dataStructures/EntityManager';
-import {SharedVariables} from '../SharedVariables';
+import {GameContext} from '../GameContext';
 import {ISystem} from './ISystem';
 
 export class PlayerUIDisplaySystem implements ISystem {
@@ -22,8 +22,8 @@ export class PlayerUIDisplaySystem implements ISystem {
     }
   }
 
-  update(): void {
-    let ctx = SharedVariables.canvasManager.getCanvasContext();
+  update(gctx: GameContext): void {
+    let ctx = gctx.canvasManager.getCanvasContext();
 
     for (let e of EntityManager) {
       let healthComp = e.getComponentByType(HealthComponent)

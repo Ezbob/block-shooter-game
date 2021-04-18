@@ -12,13 +12,13 @@ import {TimerSystem} from './systems/TimerSystem';
 import { SpawnSystem } from './systems/SpawnSystem';
 
 // other
-import { SharedVariables } from './SharedVariables';
+import { initGameContext } from './GameContext';
 import { EntityManager } from './dataStructures/EntityManager';
 import { LevelLoadComponent } from './components/LevelLoadComponent';
 import { DefaultGameLoop } from './DefaultGameLoop';
 import { LevelLoaderSystem } from './systems/LevelLoaderSystem';
 
-SharedVariables.init({
+const gameContext = initGameContext({
   CANVAS_HTML_ID: "playground",
   CANVAS_HEIGHT: 900,
   CANVAS_WIDTH: 1080,
@@ -37,13 +37,13 @@ const drawSystems = [
   new PlayerUIDisplaySystem()
 ];
 
-window.onblur = SharedVariables.frameClock.pause
+window.onblur = gameContext.frameClock.pause
 
-window.onfocus = SharedVariables.frameClock.resume
+window.onfocus = gameContext.frameClock.resume
 
 EntityManager.createNewEntity(new LevelLoadComponent('levels/first.level.json'))
 
-new DefaultGameLoop()
+new DefaultGameLoop(gameContext)
   .setDrawSystems(drawSystems)
   .setUpdateSystems(updateSystems)
   .run();

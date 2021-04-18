@@ -3,18 +3,18 @@ import {AutoShootComponent} from '../components/AutoShootComponent';
 import {GunComponent} from '../components/GunComponent';
 import {PositionalComponent} from '../components/PositionalComponent';
 import {EntityManager} from '../dataStructures/EntityManager';
-import {SharedVariables} from '../SharedVariables';
+import {GameContext} from '../GameContext';
 import {ISystem} from './ISystem';
 
 export class AutoShootSystem implements ISystem {
-  update() {
+  update(ctx: GameContext) {
     for (let e of EntityManager) {
       let autoShootComp = e.getComponentByType(AutoShootComponent);
       let gunComp = e.getComponentByType(GunComponent);
       let posComp = e.getComponentByType(PositionalComponent);
 
       if (autoShootComp && autoShootComp.isShooting && gunComp && posComp) {
-        let diff = SharedVariables.frameClock.now - gunComp.timeSinceLast;
+        let diff = ctx.frameClock.now - gunComp.timeSinceLast;
         if (diff > gunComp.shotDelay) {
           ShotArchetype.createNew(
               e,
@@ -25,8 +25,10 @@ export class AutoShootSystem implements ISystem {
               {
                 x: 0,
                 y: gunComp.bulletVelocity
-              }, 0b0001);
-          gunComp.timeSinceLast = SharedVariables.frameClock.now;
+              },
+              0b0001,
+              ctx.canvasManager);
+          gunComp.timeSinceLast = ctx.frameClock.now;
         }
       }
     }

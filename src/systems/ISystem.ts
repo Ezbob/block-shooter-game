@@ -1,3 +1,5 @@
+import { GameContext } from "../GameContext";
+
 export interface ISystem {
-    update(): void;
+    update(ctx: GameContext): void;
 };

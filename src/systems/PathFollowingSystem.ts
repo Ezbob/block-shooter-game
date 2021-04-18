@@ -1,7 +1,7 @@
 import {PathComponent} from '../components/PathComponent';
 import {PositionalComponent} from '../components/PositionalComponent';
 import {EntityManager} from '../dataStructures/EntityManager';
-import {SharedVariables} from '../SharedVariables';
+import {GameContext} from '../GameContext';
 import { Vec2dLength, Vec2dNormalizeMut, Vec2dSub } from '../VectorOperations';
 import {ISystem} from './ISystem';
 
@@ -10,8 +10,8 @@ export class PathFollowingSystem implements ISystem {
     return distance <= 5;  // using some lower bound on closeness
   }
 
-  update() {
-    for (let event of SharedVariables.timedEventQueue) {
+  update(ctx: GameContext) {
+    for (let event of ctx.timedEventQueue) {
       if (event.name == 'nextPath') {
         console.log(event)
       }

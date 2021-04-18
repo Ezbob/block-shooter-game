@@ -2,20 +2,20 @@ import {CanvasBoundaryComponent} from '../components/CanvasBoundaryComponent';
 import {FrictionComponent} from '../components/FrictionComponent';
 import {PositionalComponent} from '../components/PositionalComponent';
 import {EntityManager} from '../dataStructures/EntityManager';
-import {SharedVariables} from '../SharedVariables';
+import {GameContext} from '../GameContext';
 import {Vec2dAdd, Vec2dMul, Vec2dMulMut} from '../VectorOperations';
 
 import {ISystem} from './ISystem';
 
 export class MovementSystem implements ISystem {
-  update() {
+  update(gtx: GameContext) {
     for (let e of EntityManager) {
       let positionComp = e.getComponentByType(PositionalComponent);
       let collisionComp = e.getComponentByType(CanvasBoundaryComponent);
       let frictionComp = e.getComponentByType(FrictionComponent);
 
-      const canvasWidth = SharedVariables.canvasManager.canvasWidth;
-      const canvasHeight = SharedVariables.canvasManager.canvasHeight;
+      const canvasWidth = gtx.canvasManager.canvasWidth;
+      const canvasHeight = gtx.canvasManager.canvasHeight;
 
       if (positionComp && collisionComp) {
 

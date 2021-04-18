@@ -4,12 +4,13 @@ import {HealthComponent} from '../components/HealthComponent';
 import {PositionalComponent} from '../components/PositionalComponent';
 import {ScoreComponent} from '../components/ScoreComponent';
 import {EntityManager} from '../dataStructures/EntityManager';
+import { GameContext } from '../GameContext';
 import {Utils} from '../Utils';
 
 import {ISystem} from './ISystem';
 
 export class CollideSystem implements ISystem {
-  update() {
+  update(_ctx: GameContext) {
     for (let e of EntityManager) {
       let compE = e.getComponentByType(CollisionDetectionComponent);
       let posE = e.getComponentByType(PositionalComponent);
