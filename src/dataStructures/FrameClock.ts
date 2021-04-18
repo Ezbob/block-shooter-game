@@ -19,11 +19,11 @@ export class FrameClock {
     this.lagTime += this._dt;
   }
 
-  public pause() {
+  public pause = () => {
     this._isPaused = true;
   }
 
-  public resume() {
+  public resume = () => {
     if (this._isPaused) {
       this._isPaused = false;
       let now = window.performance.now()
