@@ -20,10 +20,14 @@ const Vec2dDivMut = (out: MathVector2d, scalar: number) => {
 }
 
 const Vec2dNormalizeMut = (out: MathVector2d) => {
-    Vec2dDivMut(out, Vec2dLength(out));
+    const len = Vec2dLength(out);
+    if (len != 0) {
+        Vec2dDivMut(out, Vec2dLength(out));
+        return true;
+    } else {
+        return false;
+    }
 }
-
-
 
 const Vec2dAdd = (out: MathVector2d, other: MathVector2d): MathVector2d => {
     return {
@@ -54,15 +58,18 @@ const Vec2dDiv = (out: MathVector2d, scalar: number) => {
 }
 
 const Vec2dNormalize = (out: MathVector2d): MathVector2d => {
-    return Vec2dDiv(out, Vec2dLength(out));
+    const len = Vec2dLength(out);
+    if (len != 0) {
+        return Vec2dDiv(out, len);
+    } else {
+        return {x: 0, y: 0};
+    }
 }
 
 
 const Vec2dLength = (out: MathVector2d): number => {
     return Math.sqrt(Math.pow(out.x, 2) + Math.pow(out.y, 2));
 }
-
-
 
 export {
     Vec2dAddMut,
