@@ -66,7 +66,6 @@ const Vec2dNormalize = (out: MathVector2d): MathVector2d => {
     }
 }
 
-
 const Vec2dLength = (out: MathVector2d): number => {
     return Math.sqrt(Math.pow(out.x, 2) + Math.pow(out.y, 2));
 }

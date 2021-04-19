@@ -5,6 +5,7 @@ import {KeyboardControllableComponent} from '../components/KeyboardControllableC
 import {PositionalComponent} from '../components/PositionalComponent';
 import {EntityManager} from '../dataStructures/EntityManager';
 import {GameContext} from '../GameContext';
+import { Vec2dDivMut } from '../VectorOperations';
 
 import {ISystem} from './ISystem';
 
@@ -22,6 +23,8 @@ export class KeyboardControlSystem implements ISystem {
   }
 
   private pressed: Map<string, KeyPressType> = new Map<string, KeyPressType>();
+
+  private squareRoot2 = Math.sqrt(2);
 
   onEvent(event: KeyboardEvent) {
     switch (event.type) {
@@ -61,20 +64,24 @@ export class KeyboardControlSystem implements ISystem {
         let left = this.pressed.get('ArrowLeft') == KeyPressType.KEY_DOWN;
         let right = this.pressed.get('ArrowRight') == KeyPressType.KEY_DOWN;
 
-        if (down) {
+        if (down && !up) {
           pv.velocity.y = keyboardComponent.inputForce.y;
         }
 
-        if (up) {
+        if (up && !down) {
           pv.velocity.y = -keyboardComponent.inputForce.y;
         }
 
-        if (left) {
+        if (left && !right) {
           pv.velocity.x = -keyboardComponent.inputForce.x;
         }
 
-        if (right) {
+        if (right && !left) {
           pv.velocity.x = keyboardComponent.inputForce.x;
+        }
+
+        if (Math.abs(pv.velocity.x) == Math.abs(pv.velocity.y)) {
+          Vec2dDivMut(pv.velocity, this.squareRoot2) // scales back diagonal movement
         }
 
         if (gunComp) {
