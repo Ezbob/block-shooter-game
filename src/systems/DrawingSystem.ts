@@ -13,21 +13,18 @@ export class DrawingSystem implements ISystem {
     ctx.clearRect(
         0, 0, gctx.canvasManager.canvasWidth, gctx.canvasManager.canvasHeight);
 
-    EntityManager.sort((a, b) => {
-      let aDrawComp = a.getComponentByType(DrawableComponent);
-      let bDrawComp = b.getComponentByType(DrawableComponent);
+    /**
+     * Painter's algorithm
+     * Sort the the drawable component by priority to order the drawing
+     */
+    EntityManager.sort((aEntity, bEntity) => {
+      let aDrawComp = aEntity.getComponentByType(DrawableComponent);
+      let bDrawComp = bEntity.getComponentByType(DrawableComponent);
 
-      if (!(aDrawComp && bDrawComp)) {
-        return 0;
-      } else if (!aDrawComp || !bDrawComp) {
-        if (aDrawComp) {
-          return -1;
-        } else {
-          return 1;
-        }
+      if (aDrawComp && bDrawComp) {
+        return aDrawComp.priority - bDrawComp.priority;
       }
-
-      return aDrawComp.priority - bDrawComp.priority;
+      return 0;
     });
 
     for (let entity of EntityManager) {
