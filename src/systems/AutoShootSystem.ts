@@ -27,7 +27,7 @@ export class AutoShootSystem implements ISystem {
 
           let collisionMask = 0b0001
 
-          ShotArchetype.createNew(ctx, entity, initialPosition, velocity, collisionMask, ctx.canvasManager)
+          ShotArchetype.createNew(ctx, entity, initialPosition, velocity, collisionMask)
           gunComp.timeSinceLast = ctx.frameClock.now
         }
       }

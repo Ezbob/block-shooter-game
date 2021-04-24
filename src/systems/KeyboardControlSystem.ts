@@ -98,8 +98,7 @@ export class KeyboardControlSystem implements ISystem {
                     x: 0, 
                     y: gunComp.bulletVelocity
                   },
-                  0o0010, 
-                  gtx.canvasManager);
+                  0o0010);
               gunComp.timeSinceLast = gtx.frameClock.now;
             }
           }
