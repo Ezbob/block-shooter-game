@@ -1,7 +1,6 @@
 import {AjvValidator} from '../jsonValidators/AjvValidator';
 import LevelSchema from '../jsonValidators/LevelSchema.json';
 import { LevelLoadComponent } from '../components/LevelLoadComponent';
-import {EntityManager} from '../dataStructures/EntityManager';
 import {ISystem} from './ISystem';
 import { SpawnComponent } from '../components/SpawnComponent';
 import { GameContext } from '../GameContext';
@@ -9,18 +8,18 @@ import { GameContext } from '../GameContext';
 export class LevelLoaderSystem implements ISystem {
     private levelValidator = AjvValidator.compile(LevelSchema);
 
-    update(_ctx: GameContext) {
-        for (let e of EntityManager) {
-            const eventLoadComp = e.getComponentByType(LevelLoadComponent)
+    update(ctx: GameContext) {
+        for (let e of ctx.entityManager) {
+            const eventLoadComp = e.getComponent(LevelLoadComponent)
             if (eventLoadComp) {
                 this.loadFromJson(eventLoadComp.filename)
                     .then((levelEvents) => {
-                        EntityManager.createNewEntity(new SpawnComponent(levelEvents))
+                        ctx.entityManager.createEntity(new SpawnComponent(levelEvents))
                     })
                     .catch((reason) => {
                         console.error(`Error in loading events: ${reason}`)
                     })
-                EntityManager.deleteEntity(e.id)
+                ctx.entityManager.deleteEntity(e.id)
             }
         }
     }

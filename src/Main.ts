@@ -13,7 +13,6 @@ import { SpawnSystem } from './systems/SpawnSystem';
 
 // other
 import { initGameContext } from './GameContext';
-import { EntityManager } from './dataStructures/EntityManager';
 import { LevelLoadComponent } from './components/LevelLoadComponent';
 import { DefaultGameLoop } from './DefaultGameLoop';
 import { LevelLoaderSystem } from './systems/LevelLoaderSystem';
@@ -41,7 +40,7 @@ window.onblur = gameContext.frameClock.pause
 
 window.onfocus = gameContext.frameClock.resume
 
-EntityManager.createNewEntity(new LevelLoadComponent('levels/first.level.json'))
+gameContext.entityManager.createEntity(new LevelLoadComponent('levels/first.level.json'))
 
 new DefaultGameLoop(gameContext)
   .setDrawSystems(drawSystems)

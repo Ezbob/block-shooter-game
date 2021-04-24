@@ -10,15 +10,16 @@ import {PositionalComponent} from '../components/PositionalComponent';
 import {ScoreComponent} from '../components/ScoreComponent';
 import {ScoreDisplayComponent} from '../components/ScoreDisplayComponent';
 import {Entity} from '../dataStructures/Entity';
-import {EntityManager} from '../dataStructures/EntityManager';
+import { GameContext } from '../GameContext';
 
 export const PlayerArchetype = new class {
   createNew(
+    gtx: GameContext,
     initialPosition: MathVector2d, 
     inputVelocity: MathVector2d, 
     healthPos: MathVector2d, 
     scorePos: MathVector2d): Entity {
-    return EntityManager.createNewEntity(
+    return gtx.entityManager.createEntity(
       new PositionalComponent(initialPosition, {x: 0, y: 0}, {x: 32, y: 32}),
       new DrawableComponent(2, 'blue'), 
       new FrictionComponent(),

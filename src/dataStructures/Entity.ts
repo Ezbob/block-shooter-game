@@ -11,20 +11,12 @@ export class Entity {
     }
   }
 
-  getComponentByType<T>(c: { new (...arg: any): T }): T | undefined {
+  getComponent(c: ComponentConstructor) {
     let cid = ComponentManager.getId(c);
-    return this.components.get(cid) as T; 
+    return this.components.get(cid); 
   }
 
-  getComponentById(componentId: number) : any | undefined {
-    return this.components.get(componentId);
-  }
-
-  hasComponentId(componentId: number) {
-    return this.components.has(componentId);
-  }
-
-  removeComponentById(componentId: number) {
+  removeComponent(componentId: number) {
     this.components.delete(componentId);
   }
 

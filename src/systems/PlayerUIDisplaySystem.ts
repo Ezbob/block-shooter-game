@@ -3,7 +3,6 @@ import {HealthDisplayComponent} from '../components/HealthDisplayComponent';
 import {IHealthBeadColors} from '../components/IHealthBeadColors';
 import {ScoreComponent} from '../components/ScoreComponent';
 import {ScoreDisplayComponent} from '../components/ScoreDisplayComponent';
-import {EntityManager} from '../dataStructures/EntityManager';
 import {GameContext} from '../GameContext';
 import {ISystem} from './ISystem';
 
@@ -22,14 +21,14 @@ export class PlayerUIDisplaySystem implements ISystem {
     }
   }
 
-  update(gctx: GameContext): void {
-    let ctx = gctx.canvasManager.getCanvasContext();
+  update(gtx: GameContext): void {
+    let ctx = gtx.canvasManager.getCanvasContext();
 
-    for (let e of EntityManager) {
-      let healthComp = e.getComponentByType(HealthComponent)
-      let healthDispComp = e.getComponentByType(HealthDisplayComponent)
-      let scoreComp = e.getComponentByType(ScoreComponent);
-      let scoreDisplayComp = e.getComponentByType(ScoreDisplayComponent);
+    for (let e of gtx.entityManager) {
+      let healthComp = e.getComponent(HealthComponent)
+      let healthDispComp = e.getComponent(HealthDisplayComponent)
+      let scoreComp = e.getComponent(ScoreComponent);
+      let scoreDisplayComp = e.getComponent(ScoreDisplayComponent);
 
       if (healthComp && healthDispComp) {
         let beads = Math.floor(

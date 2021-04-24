@@ -3,7 +3,6 @@ import {GunComponent} from '../components/GunComponent';
 import {KeyboardControllableComponent} from '../components/KeyboardControllableComponent';
 
 import {PositionalComponent} from '../components/PositionalComponent';
-import {EntityManager} from '../dataStructures/EntityManager';
 import {GameContext} from '../GameContext';
 import { Vec2dDivMut } from '../VectorOperations';
 
@@ -51,12 +50,12 @@ export class KeyboardControlSystem implements ISystem {
     }
   }
 
-  update(ctx: GameContext) {
-    for (let e of EntityManager) {
-      let pv = e.getComponentByType(PositionalComponent);
+  update(gtx: GameContext) {
+    for (let e of gtx.entityManager) {
+      let pv = e.getComponent(PositionalComponent);
       let keyboardComponent =
-          e.getComponentByType(KeyboardControllableComponent);
-      let gunComp = e.getComponentByType(GunComponent);
+          e.getComponent(KeyboardControllableComponent);
+      let gunComp = e.getComponent(GunComponent);
 
       if (pv && keyboardComponent) {
         let down = this.pressed.get('ArrowDown') == KeyPressType.KEY_DOWN;
@@ -86,9 +85,10 @@ export class KeyboardControlSystem implements ISystem {
 
         if (gunComp) {
           if (this.pressed.get('Space') == KeyPressType.KEY_PRESS) {
-            let diff = ctx.frameClock.now - gunComp.timeSinceLast;
+            let diff = gtx.frameClock.now - gunComp.timeSinceLast;
             if (diff > gunComp.shotDelay) {
               ShotArchetype.createNew(
+                  gtx,
                   e,
                   {
                     x:  pv.position.x + pv.dimension.x / 2,
@@ -99,8 +99,8 @@ export class KeyboardControlSystem implements ISystem {
                     y: gunComp.bulletVelocity
                   },
                   0o0010, 
-                  ctx.canvasManager);
-              gunComp.timeSinceLast = ctx.frameClock.now;
+                  gtx.canvasManager);
+              gunComp.timeSinceLast = gtx.frameClock.now;
             }
           }
         }

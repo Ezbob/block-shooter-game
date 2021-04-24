@@ -1,7 +1,6 @@
 import {DrawableComponent} from '../components/DrawableComponent';
 import {PathComponent} from '../components/PathComponent';
 import {PositionalComponent} from '../components/PositionalComponent';
-import {EntityManager} from '../dataStructures/EntityManager';
 import {GameContext} from '../GameContext';
 import {Vec2dAdd, Vec2dMul} from '../VectorOperations';
 import {ISystem} from './ISystem';
@@ -17,9 +16,9 @@ export class DrawingSystem implements ISystem {
      * Painter's algorithm
      * Sort the the drawable component by priority to order the drawing
      */
-    EntityManager.sort((aEntity, bEntity) => {
-      let aDrawComp = aEntity.getComponentByType(DrawableComponent);
-      let bDrawComp = bEntity.getComponentByType(DrawableComponent);
+    gctx.entityManager.data.sort((aEntity, bEntity) => {
+      let aDrawComp = aEntity.getComponent(DrawableComponent);
+      let bDrawComp = bEntity.getComponent(DrawableComponent);
 
       if (aDrawComp && bDrawComp) {
         return aDrawComp.priority - bDrawComp.priority;
@@ -27,10 +26,10 @@ export class DrawingSystem implements ISystem {
       return 0;
     });
 
-    for (let entity of EntityManager) {
-      let drawComp = entity.getComponentByType(DrawableComponent);
-      let posComp = entity.getComponentByType(PositionalComponent);
-      let pathComp = entity.getComponentByType(PathComponent);
+    for (let entity of gctx.entityManager) {
+      let drawComp = entity.getComponent(DrawableComponent);
+      let posComp = entity.getComponent(PositionalComponent);
+      let pathComp = entity.getComponent(PathComponent);
 
       if (posComp && drawComp) {
         if (drawComp.isFilled) {

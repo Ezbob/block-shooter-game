@@ -1,6 +1,5 @@
 import {PathComponent} from '../components/PathComponent';
 import {PositionalComponent} from '../components/PositionalComponent';
-import {EntityManager} from '../dataStructures/EntityManager';
 import {GameContext} from '../GameContext';
 import { Vec2dLength, Vec2dNormalizeMut, Vec2dSub } from '../VectorOperations';
 import {ISystem} from './ISystem';
@@ -10,16 +9,16 @@ export class PathFollowingSystem implements ISystem {
     return distance <= 5;  // using some lower bound on closeness
   }
 
-  update(ctx: GameContext) {
-    for (let event of ctx.timedEventQueue) {
+  update(gtx: GameContext) {
+    for (let event of gtx.timedEventQueue) {
       if (event.name == 'nextPath') {
         console.log(event)
       }
     }
 
-    for (let e of EntityManager) {
-      let pathComponent = e.getComponentByType(PathComponent);
-      let posComponent = e.getComponentByType(PositionalComponent);
+    for (let e of gtx.entityManager) {
+      let pathComponent = e.getComponent(PathComponent);
+      let posComponent = e.getComponent(PositionalComponent);
 
       if (pathComponent && posComponent) {
         let path = pathComponent.path;
@@ -35,7 +34,7 @@ export class PathFollowingSystem implements ISystem {
             pathComponent.nextWayPoint = path.next();
 
             if (pathComponent.nextWayPoint == null) {
-              EntityManager.deleteEntity(e.id);
+              gtx.entityManager.deleteEntity(e.id);
             }
           } else {
             posComponent.velocity = {

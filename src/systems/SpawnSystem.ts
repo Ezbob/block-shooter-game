@@ -1,12 +1,9 @@
 import { PlayerArchetype } from "../archetypes/PlayerArchetype";
 import { WeakEnemyArchetype } from "../archetypes/WeakEnemyArchetype";
-import { CanvasManager } from "../CanvasManager";
 import { SpawnComponent } from "../components/SpawnComponent";
 import { TimerComponent } from "../components/TimerComponent";
 import { CircularBuffer } from "../dataStructures/CircularBuffer";
 import { Entity } from "../dataStructures/Entity";
-import { EntityManager } from "../dataStructures/EntityManager";
-import { FrameClock } from "../dataStructures/FrameClock";
 import { IPathBuffer } from "../dataStructures/IPathBuffer";
 import { SinglePassBuffer } from "../dataStructures/SinglePassBuffer";
 import { GameContext } from "../GameContext";
@@ -22,15 +19,15 @@ export class SpawnSystem implements ISystem {
                 spawnComponent.shouldSpawn = true;
             }
         }
-        for (let e of EntityManager) {
-            let spawnComponent = e.getComponentByType(SpawnComponent);
+        for (let e of ctx.entityManager) {
+            let spawnComponent = e.getComponent(SpawnComponent);
 
             if (spawnComponent && spawnComponent.shouldSpawn) {
 
                 if (spawnComponent.spawningSet) {
                     let entity = null
-                    while (entity = this.instantiateNext(spawnComponent, ctx.frameClock, ctx.canvasManager)) {
-                        if ( entity.getComponentByType(TimerComponent) ) {
+                    while (entity = this.instantiateNext(spawnComponent, ctx)) {
+                        if ( entity.getComponent(TimerComponent) ) {
                             break;
                         }
                     }
@@ -40,7 +37,7 @@ export class SpawnSystem implements ISystem {
         }
     }
 
-    private instantiateNext(spawn: SpawnComponent, timer: FrameClock, canvasManager: CanvasManager): Entity | null {
+    private instantiateNext(spawn: SpawnComponent, gtx: GameContext): Entity | null {
         let next = spawn.spawningSet.shift();
         if (!next) {
             return null;
@@ -48,46 +45,47 @@ export class SpawnSystem implements ISystem {
 
         switch(next.event_type) {
             case 'weak':
-                return this.instantiateEnemy(next as EnemyJson);
+                return this.instantiateEnemy(next as EnemyJson, gtx);
             case 'player':
-                return this.instantiatePlayer(next as PlayerJson, canvasManager);
+                return this.instantiatePlayer(next as PlayerJson, gtx);
             case 'timeout':
             case 'enemies_defeated':
-                return this.instantiateCondition(next as ConditionJson, spawn, timer);
+                return this.instantiateCondition(next as ConditionJson, spawn, gtx);
         }
 
         return null;
     }
 
-    private instantiateCondition(next: ConditionJson, spawn: SpawnComponent, timer: FrameClock): Entity | null {
+    private instantiateCondition(next: ConditionJson, spawn: SpawnComponent, gtx: GameContext): Entity | null {
         switch(next.event_type) {
             case 'timeout':
                 spawn.shouldSpawn = false
-                return EntityManager.createNewEntity(new TimerComponent('spawnTimeout', timer.now + next.argument, [spawn]))
+                return gtx.entityManager.createEntity(new TimerComponent('spawnTimeout', gtx.frameClock.now + next.argument, [spawn]))
             case 'enemies_defeated':
                 break;
         }
         return null
     }
 
-    private instantiateEnemy(enemy: EnemyJson) {
+    private instantiateEnemy(enemy: EnemyJson, gtx: GameContext) {
         switch (enemy.event_type) {
             case 'weak':
             let path = this.instantiatePath(enemy.path);
-            return WeakEnemyArchetype.createNew(enemy.movement.startAt, enemy.movement.velocity, path);
+            return WeakEnemyArchetype.createNew(gtx, enemy.movement.startAt, enemy.movement.velocity, path);
         }
     }
 
-    private instantiatePlayer(player: PlayerJson, canvasManager: CanvasManager) {
+    private instantiatePlayer(player: PlayerJson, gtx: GameContext) {
         return PlayerArchetype.createNew(
+            gtx,
             player.movement.startAt,
             player.movement.velocity,
             {
                 x: 10,
-                y: canvasManager.canvasHeight - 20
+                y: gtx.canvasManager.canvasHeight - 20
             },{
-                x: canvasManager.canvasWidth - canvasManager.canvasWidth / 11,
-                y: canvasManager.canvasHeight - 10
+                x: gtx.canvasManager.canvasWidth - gtx.canvasManager.canvasWidth / 11,
+                y: gtx.canvasManager.canvasHeight - 10
             });
     }
 

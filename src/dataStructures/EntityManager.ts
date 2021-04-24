@@ -1,20 +1,37 @@
 import {Entity} from './Entity';
 
-export const EntityManager = new class extends Array<Entity> {
+export class EntityManager {
   private nextId: number = 0;
+  private entities: Entity[] = []
 
   private getNextId(): number {
     return this.nextId++;
   }
 
-  createNewEntity(...components: any[]) {
+  public createEntity(...components: any[]) {
     let entity = new Entity(this.getNextId(), ...components);
-    this.push(entity);
+    this.entities.push(entity);
     return entity;
   }
 
-  deleteEntity(entityId: number) {
-    let index = this.findIndex(entity => entity.id === entityId);
-    if (index != -1) this.splice(index, 1);
+  public deleteEntity(entityId: number) {
+    let index = this.entities.findIndex(entity => entity.id === entityId);
+    if (index != -1) {
+      this.entities.splice(index, 1);
+    }
+  }
+
+  get data() {
+    return this.entities
+  }
+
+  get length() {
+    return this.entities.length
+  }
+
+  *[Symbol.iterator](): Generator<Entity> {
+    for (let e of this.entities) {
+      yield e
+    }
   }
 };
