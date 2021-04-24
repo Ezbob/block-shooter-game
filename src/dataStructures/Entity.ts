@@ -5,25 +5,26 @@ export class Entity {
   private componentRegistry: ComponentRegistry;
   private components: Map<number, any> = new Map();
 
-  constructor(componentRegistry: ComponentRegistry, id: number,  ...components: any) {
+  constructor(componentRegistry: ComponentRegistry, id: number, ...components: ComponentInstance[]) {
     this.id = id;
     this.componentRegistry = componentRegistry;
     for (let component of components) {
-      let componentId = this.componentRegistry.register(component.constructor)
-      this.components.set(componentId, component);
+      this.addComponent(component)
     }
   }
 
   getComponent(c: ComponentConstructor) {
-    let cid =  this.componentRegistry.getId(c);
+    let cid = this.componentRegistry.getId(c);
     return this.components.get(cid); 
   }
 
-  removeComponent(componentId: number) {
-    this.components.delete(componentId);
+  removeComponent(component: ComponentInstance) {
+    let cid = this.componentRegistry.getId(component.constructor);
+    this.components.delete(cid);
   }
 
-  addComponent(componentInstance: any) {
-    this.components.set(componentInstance.cid, componentInstance)
+  addComponent(component: ComponentInstance) {
+    let componentId = this.componentRegistry.register(component.constructor)
+    this.components.set(componentId, component);
   }
 };
