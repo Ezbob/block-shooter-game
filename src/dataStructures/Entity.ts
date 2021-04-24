@@ -15,10 +15,12 @@ export class Entity {
     return this.components.get(cid); 
   }
 
-  removeComponent(component: ComponentConstructor) {
-    let cid = this.componentRegistry.getId(component);
-    if (cid) {
-      this.components.delete(cid);
+  removeComponent(...components: ComponentConstructor[]) {
+    for (let component of components) {
+      let cid = this.componentRegistry.getId(component);
+      if (cid) {
+        this.components.delete(cid);
+      }
     }
   }
 
