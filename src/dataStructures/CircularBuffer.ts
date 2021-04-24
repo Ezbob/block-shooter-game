@@ -1,18 +1,15 @@
 import { IPathBuffer } from "./IPathBuffer";
 
 export class CircularBuffer<T> implements IPathBuffer<T> {
-  private nextIndex: number;
+  private nextIndex: number = 0;
   private buffer: T[];
 
   constructor(...args: T[]) {
     this.buffer = args;
-    this.nextIndex = 0;
   }
 
   next(): T | undefined {
-    let res = this.buffer[this.nextIndex];
-    this.nextIndex = (this.nextIndex + 1) % this.length;
-    return res;
+    return this.buffer[this.nextIndex++ % this.length];
   }
 
   first(): T | undefined {

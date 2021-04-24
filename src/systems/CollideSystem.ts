@@ -11,10 +11,10 @@ import {ISystem} from './ISystem';
 
 export class CollideSystem implements ISystem {
   update(_ctx: GameContext) {
-    for (let e of EntityManager) {
-      let compE = e.getComponentByType(CollisionDetectionComponent);
-      let posE = e.getComponentByType(PositionalComponent);
-      let healthComp = e.getComponentByType(HealthComponent);
+    for (let entity of EntityManager) {
+      let compE = entity.getComponentByType(CollisionDetectionComponent);
+      let posE = entity.getComponentByType(PositionalComponent);
+      let healthComp = entity.getComponentByType(HealthComponent);
 
       if (compE && posE && healthComp) {
         for (let a of EntityManager) {
@@ -23,7 +23,7 @@ export class CollideSystem implements ISystem {
           let damageComp = a.getComponentByType(DamageComponent);
 
           if (compA && posA && damageComp) {
-            if (e.id != a.id && (compA.layers & compE.layers) != 0 &&
+            if (entity.id != a.id && (compA.layers & compE.layers) != 0 &&
                 Utils.intersectingRectanglesFlat(
                     posE.position, compE.shape, posA.position, compA.shape)) {
               healthComp.health -= damageComp.damage;
