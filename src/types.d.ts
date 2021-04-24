@@ -1,6 +1,8 @@
 
 type MathVector2d = {x: number, y: number};
 
+type ComponentConstructor = {new(...a: any): any};
+
 type MovementJson = {
     startAt: MathVector2d,
     velocity: MathVector2d

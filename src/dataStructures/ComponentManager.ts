@@ -1,9 +1,9 @@
 
 export const ComponentManager = new class {
-  private componentIds = new Map<{new(...a: any): any}, number>();
+  private componentIds = new Map<ComponentConstructor, number>()
   private nextId: number = 0;
 
-  public register(c: {new(...a: any): any}): number {
+  public register(c: ComponentConstructor): number {
     if (this.componentIds.has(c)) {
       return this.componentIds.get(c);
     }
@@ -12,7 +12,7 @@ export const ComponentManager = new class {
     return res;
   }
 
-  public getId(c: {new(...a: any): any}): number | undefined {
+  public getId(c: ComponentConstructor): number | undefined {
     return this.componentIds.get(c);
   }
 };

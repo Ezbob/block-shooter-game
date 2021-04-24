@@ -16,7 +16,6 @@ export class LevelLoaderSystem implements ISystem {
                 this.loadFromJson(eventLoadComp.filename)
                     .then((levelEvents) => {
                         EntityManager.createNewEntity(new SpawnComponent(levelEvents))
-                        console.log("loaded",EntityManager)
                     })
                     .catch((reason) => {
                         console.error(`Error in loading events: ${reason}`)
@@ -27,7 +26,7 @@ export class LevelLoaderSystem implements ISystem {
     }
 
     async loadFromJson(filename: string) {
-        let data = await fetch(filename).then(response => response.json(), reason => {
+        let data = await fetch(filename).then(response => response.json()).catch(reason => {
             console.error(`Could not fetch level ${filename}: ${reason}`);
         });
 
