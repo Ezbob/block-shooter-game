@@ -1,18 +1,21 @@
-import {ComponentManager} from "./ComponentManager";
+import {ComponentRegistry} from "./ComponentRegistry";
 
 export class Entity {
   readonly id: number;
-  public components: Map<number, any> = new Map();
+  private componentRegistry: ComponentRegistry;
+  private components: Map<number, any> = new Map();
 
-  constructor(id: number, ...args: any) {
+  constructor(componentRegistry: ComponentRegistry, id: number,  ...components: any) {
     this.id = id;
-    for (let c of args) {
-      this.components.set(ComponentManager.register(c.constructor), c);
+    this.componentRegistry = componentRegistry;
+    for (let component of components) {
+      let componentId = this.componentRegistry.register(component.constructor)
+      this.components.set(componentId, component);
     }
   }
 
   getComponent(c: ComponentConstructor) {
-    let cid = ComponentManager.getId(c);
+    let cid =  this.componentRegistry.getId(c);
     return this.components.get(cid); 
   }
 

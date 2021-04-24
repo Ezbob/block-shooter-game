@@ -1,15 +1,18 @@
+import { ComponentRegistry } from './ComponentRegistry';
 import {Entity} from './Entity';
 
 export class EntityManager {
   private nextId: number = 0;
   private entities: Entity[] = []
 
+  constructor(private componentRegistry: ComponentRegistry) {}
+
   private getNextId(): number {
     return this.nextId++;
   }
 
   public createEntity(...components: any[]) {
-    let entity = new Entity(this.getNextId(), ...components);
+    let entity = new Entity(this.componentRegistry, this.getNextId(), ...components);
     this.entities.push(entity);
     return entity;
   }

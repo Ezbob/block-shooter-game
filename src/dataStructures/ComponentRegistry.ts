@@ -1,5 +1,5 @@
 
-export const ComponentManager = new class {
+export class ComponentRegistry {
   private componentIds = new Map<ComponentConstructor, number>()
   private nextId: number = 0;
 
