@@ -5,12 +5,9 @@ export class Entity {
   private componentRegistry: ComponentRegistry;
   private components: Map<number, any> = new Map();
 
-  constructor(componentRegistry: ComponentRegistry, id: number, ...components: ComponentInstance[]) {
+  constructor(componentRegistry: ComponentRegistry, id: number) {
     this.id = id;
     this.componentRegistry = componentRegistry;
-    for (let component of components) {
-      this.addComponent(component)
-    }
   }
 
   getComponent(c: ComponentConstructor) {
@@ -18,13 +15,17 @@ export class Entity {
     return this.components.get(cid); 
   }
 
-  removeComponent(component: ComponentInstance) {
-    let cid = this.componentRegistry.getId(component.constructor);
-    this.components.delete(cid);
+  removeComponent(component: ComponentConstructor) {
+    let cid = this.componentRegistry.getId(component);
+    if (cid) {
+      this.components.delete(cid);
+    }
   }
 
-  addComponent(component: ComponentInstance) {
-    let componentId = this.componentRegistry.register(component.constructor)
-    this.components.set(componentId, component);
+  addComponent(...components: ComponentInstance[]) {
+    for (let component of components) {
+      let componentId = this.componentRegistry.register(component.constructor)
+      this.components.set(componentId, component);
+    }
   }
 };
