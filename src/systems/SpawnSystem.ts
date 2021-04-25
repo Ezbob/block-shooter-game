@@ -3,7 +3,6 @@ import { WeakEnemyArchetype } from "../archetypes/WeakEnemyArchetype";
 import { SpawnComponent } from "../components/SpawnComponent";
 import { TimerComponent } from "../components/TimerComponent";
 import { CircularBuffer } from "../dataStructures/CircularBuffer";
-import { Entity } from "../dataStructures/Entity";
 import { IPathBuffer } from "../dataStructures/IPathBuffer";
 import { SinglePassBuffer } from "../dataStructures/SinglePassBuffer";
 import { GameContext } from "../GameContext";
@@ -22,14 +21,11 @@ export class SpawnSystem implements ISystem {
         for (let e of ctx.entityManager) {
             let spawnComponent = e.getComponent(SpawnComponent);
 
-            if (spawnComponent && spawnComponent.shouldSpawn) {
-
-                if (spawnComponent.spawningSet) {
-                    let entity = null
-                    while (entity = this.instantiateNext(spawnComponent, ctx)) {
-                        if ( entity.getComponent(TimerComponent) ) {
-                            break;
-                        }
+            if (spawnComponent && spawnComponent.shouldSpawn && spawnComponent.spawningSet) {
+                let entity = null
+                while (entity = this.instantiateNext(spawnComponent, ctx)) {
+                    if ( entity.getComponent(TimerComponent) ) {
+                        break;
                     }
                 }
             }
@@ -37,7 +33,7 @@ export class SpawnSystem implements ISystem {
         }
     }
 
-    private instantiateNext(spawn: SpawnComponent, gtx: GameContext): Entity | null {
+    private instantiateNext(spawn: SpawnComponent, gtx: GameContext) {
         let next = spawn.spawningSet.shift();
         if (!next) {
             return null;
@@ -56,7 +52,7 @@ export class SpawnSystem implements ISystem {
         return null;
     }
 
-    private instantiateCondition(next: ConditionJson, spawn: SpawnComponent, gtx: GameContext): Entity | null {
+    private instantiateCondition(next: ConditionJson, spawn: SpawnComponent, gtx: GameContext) {
         switch(next.event_type) {
             case 'timeout':
                 spawn.shouldSpawn = false

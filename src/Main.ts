@@ -10,12 +10,12 @@ import {PathFollowingSystem} from './systems/PathFollowingSystem';
 import {PlayerUIDisplaySystem} from './systems/PlayerUIDisplaySystem';
 import {TimerSystem} from './systems/TimerSystem';
 import { SpawnSystem } from './systems/SpawnSystem';
+import { LevelLoaderSystem } from './systems/LevelLoaderSystem';
 
 // other
 import { initGameContext } from './GameContext';
 import { LevelLoadComponent } from './components/LevelLoadComponent';
 import { DefaultGameLoop } from './DefaultGameLoop';
-import { LevelLoaderSystem } from './systems/LevelLoaderSystem';
 
 const gameContext = initGameContext({
   CANVAS_HTML_ID: "playground",

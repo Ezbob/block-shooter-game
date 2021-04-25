@@ -24,7 +24,7 @@ export class TimerSystem implements ISystem {
       let component = e.getComponent(TimerComponent);
 
       if (component) {
-       
+
         if (shouldExtend) {
           component.expireTime += this.extendTime;
         }
