@@ -52,9 +52,9 @@ export class KeyboardControlSystem implements ISystem {
 
   update(gtx: GameContext) {
     for (let entity of gtx.entityManager) {
-      let positionComponent = entity.getComponent(PositionalComponent);
-      let keyboardComponent = entity.getComponent(KeyboardControllableComponent);
-      let gunComponent = entity.getComponent(GunComponent);
+      let positionComponent = entity.getComponent(PositionalComponent)
+      let keyboardComponent = entity.getComponent(KeyboardControllableComponent)
+      let gunComponent = entity.getComponent(GunComponent)
 
       if (positionComponent && keyboardComponent) {
         let down = this.pressed.get('ArrowDown') == KeyPressType.KEY_DOWN;
@@ -82,27 +82,28 @@ export class KeyboardControlSystem implements ISystem {
           Vec2dDivMut(positionComponent.velocity, this.squareRoot2) // scales back diagonal movement
         }
 
-        if (gunComponent) {
-          if (this.pressed.get('Space') == KeyPressType.KEY_PRESS) {
-            let diff = gtx.frameClock.now - gunComponent.timeSinceLast;
-            if (diff > gunComponent.shotDelay) {
-              let initialPosition = {
-                x:  positionComponent.position.x + positionComponent.dimension.x / 2,
-                y:  positionComponent.position.y - positionComponent.dimension.y
-              }
-              let velocity = {
-                x: 0, 
-                y: gunComponent.bulletVelocity
-              }
-              ShotArchetype.createNew(
-                gtx,
-                entity,
-                initialPosition,
-                velocity,
-                0o0010
-              );
-              gunComponent.timeSinceLast = gtx.frameClock.now;
+        if (gunComponent && this.pressed.get('Space') == KeyPressType.KEY_PRESS) {
+          let diff = gtx.frameClock.now - gunComponent.timeSinceLast;
+          if (diff > gunComponent.shotDelay) {
+            let initialPosition = {
+              x:  positionComponent.position.x + positionComponent.dimension.x / 2,
+              y:  positionComponent.position.y - positionComponent.dimension.y
             }
+            let velocity = {
+              x: 0, 
+              y: gunComponent.bulletVelocity
+            }
+            let collision = 0o0010
+
+            ShotArchetype.createNew(
+              gtx,
+              entity,
+              initialPosition,
+              velocity,
+              collision
+            );
+
+            gunComponent.timeSinceLast = gtx.frameClock.now;
           }
         }
       }

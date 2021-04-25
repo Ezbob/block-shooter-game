@@ -10,7 +10,7 @@ export class Entity {
     this.componentRegistry = componentRegistry;
   }
 
-  getComponent(c: ComponentConstructor) {
+  getComponent<T>(c: ComponentConstructor<T>): T | undefined {
     let cid = this.componentRegistry.getId(c);
     return this.components.get(cid); 
   }

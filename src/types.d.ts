@@ -1,7 +1,7 @@
 
 type MathVector2d = {x: number, y: number};
 
-type ComponentConstructor = {new(...a: any): any};
+type ComponentConstructor<T = any> = {new(...a: any): T};
 
 type ComponentInstance = {constructor: ComponentConstructor};
 
