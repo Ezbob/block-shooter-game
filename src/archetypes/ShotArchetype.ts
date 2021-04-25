@@ -22,7 +22,6 @@ export const ShotArchetype = new class {
       new PositionalComponent(initialPosition, velocity, this.dimensions),
       new CollisionDetectionComponent(collisionMask, this.dimensions),
       new DamageComponent(10, shooter),
-      this.dimensions, 
       this.drawable,
       this.cleanup
     );

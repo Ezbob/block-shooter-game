@@ -26,7 +26,7 @@ export class Entity {
 
   addComponent(...components: ComponentInstance[]) {
     for (let component of components) {
-      let componentId = this.componentRegistry.register(component.constructor)
+      let componentId = this.componentRegistry.register(component.constructor as ComponentConstructor)
       this.components.set(componentId, component);
     }
   }

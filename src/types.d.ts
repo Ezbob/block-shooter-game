@@ -3,7 +3,7 @@ type MathVector2d = {x: number, y: number};
 
 type ComponentConstructor<T = any> = {new(...a: any): T};
 
-type ComponentInstance = {constructor: ComponentConstructor};
+type ComponentInstance = {constructor: Function};
 
 type MovementJson = {
     startAt: MathVector2d,

@@ -11,7 +11,7 @@ export class EntityManager {
     return this.nextId++;
   }
 
-  public createEntity(...components: any[]) {
+  public createEntity(...components: ComponentInstance[]) {
     let entity = new Entity(this.componentRegistry, this.getNextId());
     entity.addComponent(...components)
     this.entities.push(entity);
