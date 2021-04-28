@@ -13,28 +13,28 @@ export class CleanUpSystem implements ISystem {
 
       if (posComp && cleanup) {
         if (posComp.position.y < cleanup.limitUpper) {
-          gtx.entityManager.deleteEntity(e.id);
+          gtx.entityManager.deleteEntity(e);
           continue;
         }
 
         if (posComp.position.y > cleanup.limitLower) {
-          gtx.entityManager.deleteEntity(e.id);
+          gtx.entityManager.deleteEntity(e);
           continue;
         }
 
         if (posComp.position.x < cleanup.limitXLeft) {
-          gtx.entityManager.deleteEntity(e.id);
+          gtx.entityManager.deleteEntity(e);
           continue;
         }
 
         if (posComp.position.x > cleanup.limitXRight) {
-          gtx.entityManager.deleteEntity(e.id);
+          gtx.entityManager.deleteEntity(e);
           continue;
         }
       }
 
       if (healthComp && healthComp.health <= 0) {
-        gtx.entityManager.deleteEntity(e.id);
+        gtx.entityManager.deleteEntity(e);
       }
     }
   }

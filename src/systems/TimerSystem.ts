@@ -30,7 +30,7 @@ export class TimerSystem implements ISystem {
         }
         if (gtx.frameClock.now >= (component.expireTime) ) {
           gtx.timedEventQueue.putEvent(component.expireEventName, ...component.eventArguments);
-          gtx.entityManager.deleteEntity(e.id);
+          gtx.entityManager.deleteEntity(e);
         }
       }
     }

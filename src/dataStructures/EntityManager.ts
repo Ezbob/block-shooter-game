@@ -18,8 +18,8 @@ export class EntityManager {
     return entity;
   }
 
-  public deleteEntity(entityId: number) {
-    let index = this.entities.findIndex(entity => entity.id === entityId);
+  public deleteEntity(entity: Entity) {
+    let index = this.entities.findIndex(otherEntity => otherEntity.id === entity.id);
     if (index != -1) {
       this.entities.splice(index, 1);
     }

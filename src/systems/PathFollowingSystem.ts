@@ -34,7 +34,7 @@ export class PathFollowingSystem implements ISystem {
             pathComponent.nextWayPoint = path.next();
 
             if (pathComponent.nextWayPoint == null) {
-              gtx.entityManager.deleteEntity(e.id);
+              gtx.entityManager.deleteEntity(e);
             }
           } else {
             posComponent.velocity = {

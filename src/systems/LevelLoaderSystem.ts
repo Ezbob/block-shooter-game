@@ -19,7 +19,7 @@ export class LevelLoaderSystem implements ISystem {
                     .catch((reason) => {
                         console.error(`Error in loading events: ${reason}`)
                     })
-                ctx.entityManager.deleteEntity(e.id)
+                ctx.entityManager.deleteEntity(e)
             }
         }
     }

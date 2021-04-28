@@ -33,7 +33,7 @@ export class CollideSystem implements ISystem {
                 s.score += healthComp.worth;
               }
 
-              gtx.entityManager.deleteEntity(a.id);
+              gtx.entityManager.deleteEntity(a);
 
               if (healthComp.health <= 0) {
                 compE.layers = 0;  // disable collision
