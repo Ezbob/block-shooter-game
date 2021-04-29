@@ -11,11 +11,11 @@ export class TimerSystem implements ISystem {
     for (let e of gtx.entityManager) {
       let component = e.getComponent(TimerComponent);
 
-      if (component && component.expireEventName == "timeResumed") {
+      if (component && component.eventName == "timeResumed") {
         // this timer component extends the time of all other timed components.
         // This makes it possible to separate the in-game time from the real time such
         // that spawn f.x. always takes a certain amount in-game time
-        extendTime = component.expireTime
+        extendTime += component.time
         gtx.entityManager.deleteEntity(e)
       }
     }
@@ -24,12 +24,11 @@ export class TimerSystem implements ISystem {
       let component = e.getComponent(TimerComponent);
 
       if (component) {
+        component.time += extendTime;
 
-        component.expireTime += extendTime;
+        if (gtx.frameClock.now >= (component.time) ) {
 
-        if (gtx.frameClock.now >= (component.expireTime) ) {
-
-          switch(component.expireEventName) {
+          switch(component.eventName) {
             case 'spawnTimeout':
               let spawn = component.eventArguments[0] as SpawnComponent
               spawn.shouldSpawn = true
