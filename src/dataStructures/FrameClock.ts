@@ -1,4 +1,5 @@
-import { EventQueue } from "./EventQueue";
+import { TimerComponent } from "../components/TimerComponent";
+import { EntityManager } from "./EntityManager";
 
 export class FrameClock {
   private _lastUpdate: number = 0;
@@ -8,7 +9,7 @@ export class FrameClock {
   private msPerUpdate: number = 0;
   private _isPaused: boolean = false;
 
-  constructor(fpsLimit: number, private eventQueue: EventQueue) {
+  constructor(private entityManager: EntityManager, fpsLimit: number) {
     this.msPerUpdate = (1 / fpsLimit) * 1000;
   }
 
@@ -29,7 +30,8 @@ export class FrameClock {
       let now = window.performance.now()
       let diff =  now - this._lastUpdate; 
       this._lastUpdate = now;
-      this.eventQueue.putEvent('timeResumed', diff);
+
+      this.entityManager.createEntity(new TimerComponent('timeResumed', diff))
     }
   }
 

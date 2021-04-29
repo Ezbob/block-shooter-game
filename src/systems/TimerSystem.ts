@@ -1,35 +1,41 @@
+import { SpawnComponent } from '../components/SpawnComponent';
 import {TimerComponent} from '../components/TimerComponent';
 import {GameContext} from '../GameContext';
 import {ISystem} from './ISystem';
 
 export class TimerSystem implements ISystem {
-  private extendTime: number = 0;
-
-  private checkExtend(gtx: GameContext) {
-    this.extendTime = 0;
-    for (let event of gtx.timedEventQueue) {
-      if (event.name == 'timeResumed') {
-        this.extendTime = event.args[0];
-        return true;
-      }
-    }
-    return false
-  }
 
   update(gtx: GameContext): void {
-    let shouldExtend = this.checkExtend(gtx);
+    let extendTime = 0;
 
-    gtx.timedEventQueue.clear();
+    for (let e of gtx.entityManager) {
+      let component = e.getComponent(TimerComponent);
+
+      if (component && component.expireEventName == "timeResumed") {
+        // this timer component extends the time of all other timed components.
+        // This makes it possible to separate the in-game time from the real time such
+        // that spawn f.x. always takes a certain amount in-game time
+        extendTime = component.expireTime
+        gtx.entityManager.deleteEntity(e)
+      }
+    }
+
     for (let e of gtx.entityManager) {
       let component = e.getComponent(TimerComponent);
 
       if (component) {
 
-        if (shouldExtend) {
-          component.expireTime += this.extendTime;
-        }
+        component.expireTime += extendTime;
+
         if (gtx.frameClock.now >= (component.expireTime) ) {
-          gtx.timedEventQueue.putEvent(component.expireEventName, ...component.eventArguments);
+
+          switch(component.expireEventName) {
+            case 'spawnTimeout':
+              let spawn = component.eventArguments[0] as SpawnComponent
+              spawn.shouldSpawn = true
+              break;
+          }
+
           gtx.entityManager.deleteEntity(e);
         }
       }

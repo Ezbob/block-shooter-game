@@ -10,11 +10,6 @@ export class PathFollowingSystem implements ISystem {
   }
 
   update(gtx: GameContext) {
-    for (let event of gtx.timedEventQueue) {
-      if (event.name == 'nextPath') {
-        console.log(event)
-      }
-    }
 
     for (let e of gtx.entityManager) {
       let pathComponent = e.getComponent(PathComponent);

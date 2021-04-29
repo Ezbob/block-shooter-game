@@ -11,17 +11,11 @@ import { ISystem } from "./ISystem";
 export class SpawnSystem implements ISystem {
 
     update(ctx: GameContext): void {
-        for (let event of ctx.timedEventQueue) {
-            if (event.name == 'spawnTimeout') {
-                console.log("spawntimeout")
-                let spawnComponent = event.args[0]
-                spawnComponent.shouldSpawn = true;
-            }
-        }
+
         for (let e of ctx.entityManager) {
             let spawnComponent = e.getComponent(SpawnComponent);
 
-            if (spawnComponent && spawnComponent.shouldSpawn && spawnComponent.spawningSet) {
+            if (spawnComponent && this.canSpawn(spawnComponent)) {
                 let entity = null
                 while (entity = this.instantiateNext(spawnComponent, ctx)) {
                     if ( entity.getComponent(TimerComponent) ) {
@@ -31,6 +25,10 @@ export class SpawnSystem implements ISystem {
             }
 
         }
+    }
+
+    private canSpawn(spawn: SpawnComponent) {
+        return spawn.shouldSpawn && spawn.spawningSet.length > 0
     }
 
     private instantiateNext(spawn: SpawnComponent, gtx: GameContext) {
