@@ -1,6 +1,5 @@
 import {HealthComponent} from '../components/HealthComponent';
 import {HealthDisplayComponent} from '../components/HealthDisplayComponent';
-import {IHealthBeadColors} from '../components/IHealthBeadColors';
 import {ScoreComponent} from '../components/ScoreComponent';
 import {ScoreDisplayComponent} from '../components/ScoreDisplayComponent';
 import {GameContext} from '../GameContext';
@@ -8,7 +7,9 @@ import {ISystem} from './ISystem';
 
 export class PlayerUIDisplaySystem implements ISystem {
   getBeadColor(
-      colors: IHealthBeadColors, numberOfBeads: number,
+      colors: {
+        ok: string, warning: string, fatal: string
+      }, numberOfBeads: number,
       maxBeads: number): string {
     var mid = Math.floor(maxBeads * 0.5);
     var lower = Math.floor(maxBeads * 0.25);

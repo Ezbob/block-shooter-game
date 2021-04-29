@@ -54,7 +54,13 @@ export class SpawnSystem implements ISystem {
         switch(next.event_type) {
             case 'timeout':
                 spawn.shouldSpawn = false
-                return gtx.entityManager.createEntity(new TimerComponent('spawnTimeout', gtx.frameClock.now + next.argument, [spawn]))
+                return gtx.entityManager.createEntity(
+                    new TimerComponent(
+                        'spawnTimeout',
+                        gtx.frameClock.now + next.argument,
+                        [spawn]
+                    )
+                )
             case 'enemies_defeated':
                 break;
         }
