@@ -1,5 +1,5 @@
 import {PathComponent} from '../components/PathComponent';
-import {PositionalComponent} from '../components/PositionalComponent';
+import {DynamicPositionalComponent} from '../components/DynamicPositionalComponent';
 import {GameContext} from '../GameContext';
 import { Vec2dLength, Vec2dNormalizeMut, Vec2dSub } from '../VectorOperations';
 import {ISystem} from './ISystem';
@@ -13,7 +13,7 @@ export class PathFollowingSystem implements ISystem {
 
     for (let e of gtx.entityManager) {
       let pathComponent = e.getComponent(PathComponent);
-      let posComponent = e.getComponent(PositionalComponent);
+      let posComponent = e.getComponent(DynamicPositionalComponent);
 
       if (pathComponent && posComponent) {
         let path = pathComponent.path;

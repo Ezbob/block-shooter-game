@@ -1,7 +1,7 @@
 import {CollisionDetectionComponent} from '../components/CollisionDetectionComponent';
 import {DamageComponent} from '../components/DamageComponent';
 import {HealthComponent} from '../components/HealthComponent';
-import {PositionalComponent} from '../components/PositionalComponent';
+import {DynamicPositionalComponent} from '../components/DynamicPositionalComponent';
 import {ScoreComponent} from '../components/ScoreComponent';
 import { GameContext } from '../GameContext';
 import {Utils} from '../Utils';
@@ -12,13 +12,13 @@ export class CollideSystem implements ISystem {
   update(gtx: GameContext) {
     for (let entity of gtx.entityManager) {
       let compE = entity.getComponent(CollisionDetectionComponent);
-      let posE = entity.getComponent(PositionalComponent);
+      let posE = entity.getComponent(DynamicPositionalComponent);
       let healthComp = entity.getComponent(HealthComponent);
 
       if (compE && posE && healthComp) {
         for (let a of gtx.entityManager) {
           let compA = a.getComponent(CollisionDetectionComponent);
-          let posA = a.getComponent(PositionalComponent);
+          let posA = a.getComponent(DynamicPositionalComponent);
           let damageComp = a.getComponent(DamageComponent);
 
           if (compA && posA && damageComp) {

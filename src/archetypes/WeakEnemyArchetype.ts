@@ -5,19 +5,19 @@ import {FrictionComponent} from '../components/FrictionComponent';
 import {GunComponent} from '../components/GunComponent';
 import {HealthComponent} from '../components/HealthComponent';
 import {PathComponent} from '../components/PathComponent';
-import {PositionalComponent} from '../components/PositionalComponent';
+import {DynamicPositionalComponent} from '../components/DynamicPositionalComponent';
 import { IPathBuffer } from '../dataStructures/IPathBuffer';
 import { GameContext } from '../GameContext';
 
 
 export const WeakEnemyArchetype = new class {
   private friction = new FrictionComponent();
-  private drawable = new DrawableComponent(1, 'red');
+  private drawable = new DrawableComponent(1, 'red', true, 'game');
   private dimensions = {x: 32, y: 32};
 
   createNew(gtx: GameContext, pos: MathVector2d, velocity: MathVector2d, path: IPathBuffer<MathVector2d>) {
     return gtx.entityManager.createEntity(
-        new PositionalComponent(pos, velocity, this.dimensions),
+        new DynamicPositionalComponent(pos, velocity, this.dimensions),
         new PathComponent(path),
         new HealthComponent(50, 50, 400),
         new AutoShootComponent(),

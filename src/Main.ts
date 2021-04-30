@@ -18,7 +18,7 @@ import { LevelLoadComponent } from './components/LevelLoadComponent';
 import { DefaultGameLoop } from './DefaultGameLoop';
 
 const gameContext = initGameContext({
-  CANVAS_HTML_ID: "playground",
+  CANVAS_HTML_PREFIX: "gl-",
   CANVAS_HEIGHT: 900,
   CANVAS_WIDTH: 1080,
   DEBUG_ON: true,

@@ -1,5 +1,5 @@
 
-export class PositionalComponent {
+export class DynamicPositionalComponent {
   constructor(
       public position: MathVector2d = {x: 0, y: 0},
       public velocity: MathVector2d = {x: 0, y: 0},

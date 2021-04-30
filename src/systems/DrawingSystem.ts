@@ -1,16 +1,15 @@
 import {DrawableComponent} from '../components/DrawableComponent';
 import {PathComponent} from '../components/PathComponent';
-import {PositionalComponent} from '../components/PositionalComponent';
+import {DynamicPositionalComponent} from '../components/DynamicPositionalComponent';
 import {GameContext} from '../GameContext';
 import {Vec2dAdd, Vec2dMul} from '../VectorOperations';
 import {ISystem} from './ISystem';
 
 export class DrawingSystem implements ISystem {
   update(gctx: GameContext): void {
-    let ctx = gctx.canvasManager.getCanvasContext();
+    let ctx = gctx.canvasManager.getGameContext()
 
-    ctx.clearRect(
-        0, 0, gctx.canvasManager.canvasWidth, gctx.canvasManager.canvasHeight);
+    gctx.canvasManager.clear()
 
     /**
      * Painter's algorithm
@@ -28,20 +27,16 @@ export class DrawingSystem implements ISystem {
 
     for (let entity of gctx.entityManager) {
       let drawComp = entity.getComponent(DrawableComponent);
-      let posComp = entity.getComponent(PositionalComponent);
+      let posComp = entity.getComponent(DynamicPositionalComponent);
       let pathComp = entity.getComponent(PathComponent);
 
       if (posComp && drawComp) {
         if (drawComp.isFilled) {
-          ctx.fillStyle = drawComp.color;
-          ctx.fillRect(
-              posComp.position.x, posComp.position.y, posComp.dimension.x,
-              posComp.dimension.y);
+          ctx.fillStyle = drawComp.color
+          ctx.fillRect(posComp.position.x, posComp.position.y, posComp.dimension.x, posComp.dimension.y)
         } else {
-          ctx.strokeStyle = drawComp.color;
-          ctx.strokeRect(
-              posComp.position.x, posComp.position.y, posComp.dimension.x,
-              posComp.dimension.y);
+          ctx.strokeStyle = drawComp.color
+          ctx.strokeRect(posComp.position.x, posComp.position.y, posComp.dimension.x, posComp.dimension.y)
         }
       }
 
@@ -60,5 +55,7 @@ export class DrawingSystem implements ISystem {
         }
       }
     }
+
+    gctx.canvasManager.flushDraws()
   }
 };

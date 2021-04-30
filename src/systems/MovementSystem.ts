@@ -1,6 +1,6 @@
 import {CanvasBoundaryComponent} from '../components/CanvasBoundaryComponent';
 import {FrictionComponent} from '../components/FrictionComponent';
-import {PositionalComponent} from '../components/PositionalComponent';
+import {DynamicPositionalComponent} from '../components/DynamicPositionalComponent';
 import {GameContext} from '../GameContext';
 import {Vec2dAdd, Vec2dMul, Vec2dMulMut} from '../VectorOperations';
 
@@ -9,7 +9,7 @@ import {ISystem} from './ISystem';
 export class MovementSystem implements ISystem {
   update(gtx: GameContext) {
     for (let e of gtx.entityManager) {
-      let positionComp = e.getComponent(PositionalComponent);
+      let positionComp = e.getComponent(DynamicPositionalComponent);
       let collisionComp = e.getComponent(CanvasBoundaryComponent);
       let frictionComp = e.getComponent(FrictionComponent);
 
@@ -47,8 +47,8 @@ export class MovementSystem implements ISystem {
       }
 
       if (positionComp) {
-        positionComp.position.x += positionComp.velocity.x;
-        positionComp.position.y += positionComp.velocity.y;
+        positionComp.position.x = (positionComp.position.x + positionComp.velocity.x);
+        positionComp.position.y = (positionComp.position.y + positionComp.velocity.y);
       }
     }
   }

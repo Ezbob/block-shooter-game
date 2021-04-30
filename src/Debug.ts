@@ -6,7 +6,7 @@ export class Debug {
   constructor(private isDebugOn = false) {}
 
   drawLineBetween(manager: CanvasManager, start: MathVector2d, end: MathVector2d, color: string = 'black') {
-    let ctx = manager.getCanvasContext();
+    let ctx = manager.getUiCanvasContext();
     if (this.isDebugOn) {
       ctx.beginPath();
       ctx.strokeStyle = color;
@@ -18,7 +18,7 @@ export class Debug {
   }
 
   drawLine(manager: CanvasManager, start: MathVector2d, end: MathVector2d, color: string = 'black') {
-    let ctx = manager.getCanvasContext();
+    let ctx = manager.getUiCanvasContext();
     if (this.isDebugOn) {
       ctx.beginPath();
       ctx.strokeStyle = color;
@@ -31,7 +31,7 @@ export class Debug {
 
   drawPoint(manager: CanvasManager, center: MathVector2d, color: string = 'black') {
     if (this.isDebugOn) {
-      let ctx = manager.getCanvasContext();
+      let ctx = manager.getUiCanvasContext();
       ctx.beginPath();
       ctx.strokeStyle = color;
       ctx.moveTo(center.x + 10, center.y);
@@ -44,7 +44,7 @@ export class Debug {
   }
 
   drawPath(manager: CanvasManager, points: MathVector2d[], color: string = 'black') {
-    let ctx = manager.getCanvasContext();
+    let ctx = manager.getUiCanvasContext();
     let length = points.length;
     if (this.isDebugOn && length >= 2) {
       ctx.beginPath();
@@ -62,7 +62,7 @@ export class Debug {
   }
 
   drawCircle(manager: CanvasManager, center: MathVector2d, radius: number) {
-    let ctx = manager.getCanvasContext();
+    let ctx = manager.getUiCanvasContext();
     if (this.isDebugOn) {
       ctx.beginPath();
       ctx.arc(center.x, center.y, radius, 0, 2 * Math.PI);

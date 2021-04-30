@@ -4,12 +4,35 @@
 	<meta charset="UTF-8">
 	<meta author="Anders Busch">
 	<title>Let's play a game</title>
+	<style>
+		#scene {
+			margin-left: auto;
+			margin-right: auto;
+			width: 1080px;
+			position: relative;
+		}
+		canvas {
+			position: absolute;
+			background-color: transparent;
+		}
+		#gl-ui-layer {
+			z-index: 3;
+			border: 1px solid black;
+		}
+		#gl-game-layer {
+			z-index: 2;
+		}
+		#gl-background-layer {
+			z-index: 1;
+		}
+	</style>
 </head>
 <body style="overflow: hidden">
-	<section style="margin-left: auto; margin-right: auto; width: 1080px;">
-		<!--<h2>Keys: space to shoot, arrows to move, escape to pause</h2>-->
-		<canvas id="playground" tabindex="1" style="border: 1px solid black;"></canvas>
-	</section>
+	<div id="scene">
+		<canvas id="gl-ui-layer"></canvas>
+		<canvas id="gl-game-layer"></canvas>
+		<canvas id="gl-background-layer"></canvas>
+	</div>
 	<div id="updateState"></div>
 	<div id="renderState"></div>
 </body>

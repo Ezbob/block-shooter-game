@@ -23,7 +23,7 @@ export class PlayerUIDisplaySystem implements ISystem {
   }
 
   update(gtx: GameContext): void {
-    let ctx = gtx.canvasManager.getCanvasContext();
+    let ctx = gtx.canvasManager.getUiCanvasContext();
 
     for (let e of gtx.entityManager) {
       let healthComp = e.getComponent(HealthComponent)
@@ -43,20 +43,19 @@ export class PlayerUIDisplaySystem implements ISystem {
 
         for (let i = 0; i < beads; i++) {
           ctx.fillRect(
-              (healthDispComp.position.x + 3) +
-                  (healthDispComp.dimension.x * i),
-              healthDispComp.position.y + 2, healthDispComp.dimension.x - 5,
+              (healthDispComp.position.x + 3) + (healthDispComp.dimension.x * i),
+              healthDispComp.position.y + 2, 
+              healthDispComp.dimension.x - 5,
               healthDispComp.dimension.y - 2);
         }
       }
 
       if (scoreComp && scoreDisplayComp) {
         ctx.fillStyle = scoreDisplayComp.color;
-        ctx.font =
-            `${scoreDisplayComp.pixelSize} ${scoreDisplayComp.fontFaceName}`
+        ctx.font = `${scoreDisplayComp.pixelSize} ${scoreDisplayComp.fontFaceName}`
 
-        let text = `${scoreComp.score}`;
-        let textMeasure = ctx.measureText(text);
+        let text = `${scoreComp.score}`
+        let textMeasure = ctx.measureText(text)
         ctx.fillText(
             text, scoreDisplayComp.position.x - (textMeasure.width / 2),
             scoreDisplayComp.position.y)

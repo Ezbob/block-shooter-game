@@ -2,7 +2,7 @@ import {ShotArchetype} from '../archetypes/ShotArchetype';
 import {GunComponent} from '../components/GunComponent';
 import {KeyboardControllableComponent} from '../components/KeyboardControllableComponent';
 
-import {PositionalComponent} from '../components/PositionalComponent';
+import {DynamicPositionalComponent} from '../components/DynamicPositionalComponent';
 import {GameContext} from '../GameContext';
 import { Vec2dDivMut } from '../VectorOperations';
 
@@ -52,7 +52,7 @@ export class KeyboardControlSystem implements ISystem {
 
   update(gtx: GameContext) {
     for (let entity of gtx.entityManager) {
-      let positionComponent = entity.getComponent(PositionalComponent)
+      let positionComponent = entity.getComponent(DynamicPositionalComponent)
       let keyboardComponent = entity.getComponent(KeyboardControllableComponent)
       let gunComponent = entity.getComponent(GunComponent)
 

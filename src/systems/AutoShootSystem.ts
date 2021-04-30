@@ -1,7 +1,7 @@
 import {ShotArchetype} from '../archetypes/ShotArchetype';
 import {AutoShootComponent} from '../components/AutoShootComponent';
 import {GunComponent} from '../components/GunComponent';
-import {PositionalComponent} from '../components/PositionalComponent';
+import {DynamicPositionalComponent} from '../components/DynamicPositionalComponent';
 import {GameContext} from '../GameContext';
 import {ISystem} from './ISystem';
 
@@ -10,7 +10,7 @@ export class AutoShootSystem implements ISystem {
     for (const entity of ctx.entityManager) {
       let autoShootComp = entity.getComponent(AutoShootComponent);
       let gunComp = entity.getComponent(GunComponent);
-      let posComp = entity.getComponent(PositionalComponent);
+      let posComp = entity.getComponent(DynamicPositionalComponent);
 
       if (autoShootComp && autoShootComp.isShooting && gunComp && posComp) {
         let diff = ctx.frameClock.now - gunComp.timeSinceLast

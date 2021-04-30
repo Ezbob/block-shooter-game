@@ -6,7 +6,7 @@ import {GunComponent} from '../components/GunComponent';
 import {HealthComponent} from '../components/HealthComponent';
 import {HealthDisplayComponent} from '../components/HealthDisplayComponent';
 import {KeyboardControllableComponent} from '../components/KeyboardControllableComponent';
-import {PositionalComponent} from '../components/PositionalComponent';
+import {DynamicPositionalComponent} from '../components/DynamicPositionalComponent';
 import {ScoreComponent} from '../components/ScoreComponent';
 import {ScoreDisplayComponent} from '../components/ScoreDisplayComponent';
 import {Entity} from '../dataStructures/Entity';
@@ -20,8 +20,8 @@ export const PlayerArchetype = new class {
     healthPos: MathVector2d, 
     scorePos: MathVector2d): Entity {
     return gtx.entityManager.createEntity(
-      new PositionalComponent(initialPosition, {x: 0, y: 0}, {x: 32, y: 32}),
-      new DrawableComponent(2, 'blue'), 
+      new DynamicPositionalComponent(initialPosition, {x: 0, y: 0}, {x: 32, y: 32}),
+      new DrawableComponent(2, 'blue', true, 'game'), 
       new FrictionComponent(),
       new HealthComponent(100, 100, 0), 
       new HealthDisplayComponent(healthPos),
