@@ -62,8 +62,12 @@
             }
         },
         {
+            "event_type": "enemies_defeated",
+            "argument": 1
+        },
+        {
             "event_type": "timeout",
-            "argument": 3000
+            "argument": 2000
         },
         {
             "event_type": "weak",

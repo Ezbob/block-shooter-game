@@ -1,4 +1,4 @@
-import { SpawnComponent } from '../components/SpawnComponent';
+import { SpawnCountdownComponent } from '../components/SpawnCountdownComponent';
 import {TimerComponent} from '../components/TimerComponent';
 import {GameContext} from '../GameContext';
 import {ISystem} from './ISystem';
@@ -21,7 +21,7 @@ export class TimerSystem implements ISystem {
     }
 
     for (let e of gtx.entityManager) {
-      let component = e.getComponent(TimerComponent);
+      let component = e.getComponent(TimerComponent)
 
       if (component) {
         component.time += extendTime;
@@ -30,12 +30,24 @@ export class TimerSystem implements ISystem {
 
           switch(component.eventName) {
             case 'spawnTimeout':
-              let spawn = component.eventArguments[0] as SpawnComponent
+              let spawn = component.spawn
               spawn.shouldSpawn = true
               break;
           }
 
           gtx.entityManager.deleteEntity(e);
+        }
+      }
+
+      let component2 = e.getComponent(SpawnCountdownComponent)
+
+      if (component2) {
+        if (component2.countdown <= 0) {
+
+          let spawn = component2.spawn
+          spawn.shouldSpawn = true
+
+          gtx.entityManager.deleteEntity(e)
         }
       }
     }

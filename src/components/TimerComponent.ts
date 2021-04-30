@@ -1,10 +1,10 @@
-
+import { SpawnComponent } from "./SpawnComponent";
 
 export class TimerComponent {
 
   constructor(
     public eventName: string,
     public time: number,
-    public eventArguments: any[] = null) {
+    public spawn: SpawnComponent = null) {
   }
 }

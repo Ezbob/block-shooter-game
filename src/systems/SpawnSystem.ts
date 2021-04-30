@@ -1,6 +1,7 @@
 import { PlayerArchetype } from "../archetypes/PlayerArchetype";
 import { WeakEnemyArchetype } from "../archetypes/WeakEnemyArchetype";
 import { SpawnComponent } from "../components/SpawnComponent";
+import { SpawnCountdownComponent } from "../components/SpawnCountdownComponent";
 import { TimerComponent } from "../components/TimerComponent";
 import { CircularBuffer } from "../dataStructures/CircularBuffer";
 import { IPathBuffer } from "../dataStructures/IPathBuffer";
@@ -18,7 +19,7 @@ export class SpawnSystem implements ISystem {
             if (spawnComponent && this.canSpawn(spawnComponent)) {
                 let entity = null
                 while (entity = this.instantiateNext(spawnComponent, ctx)) {
-                    if ( entity.getComponent(TimerComponent) ) {
+                    if ( entity.getComponent(TimerComponent) || entity.getComponent(SpawnCountdownComponent) ) {
                         break;
                     }
                 }
@@ -58,11 +59,17 @@ export class SpawnSystem implements ISystem {
                     new TimerComponent(
                         'spawnTimeout',
                         gtx.frameClock.now + next.argument,
-                        [spawn]
+                        spawn
                     )
                 )
             case 'enemies_defeated':
-                break;
+                spawn.shouldSpawn = false
+                return gtx.entityManager.createEntity(
+                    new SpawnCountdownComponent(
+                        next.argument,
+                        spawn
+                    )
+                )
         }
         return null
     }
