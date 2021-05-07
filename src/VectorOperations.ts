@@ -70,6 +70,12 @@ const Vec2dLength = (out: MathVector2d): number => {
     return Math.sqrt(Math.pow(out.x, 2) + Math.pow(out.y, 2));
 }
 
+const Vec2dLerp = (from: MathVector2d, to: MathVector2d, p: number): MathVector2d => {
+    let v = Vec2dMul(from, p)
+    Vec2dAddMut(v, Vec2dMul(to, (p - 1)));
+    return v
+}
+
 export {
     Vec2dAddMut,
     Vec2dSubMut,
@@ -81,5 +87,6 @@ export {
     Vec2dSub,
     Vec2dMul,
     Vec2dDiv,
-    Vec2dNormalize
+    Vec2dNormalize,
+    Vec2dLerp
 };

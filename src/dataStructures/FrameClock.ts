@@ -10,7 +10,7 @@ export class FrameClock {
   private _isPaused: boolean = false;
 
   constructor(private entityManager: EntityManager, fpsLimit: number) {
-    this.msPerUpdate = (1 / fpsLimit) * 1000;
+    this.msPerUpdate = (1000 / fpsLimit);
   }
 
   public tick() {
@@ -36,7 +36,7 @@ export class FrameClock {
   }
 
   public getMsPerUpdate(): number {
-    return this.msPerUpdate / 1000
+    return this.msPerUpdate
   }
 
   public shouldUpdate(): boolean {
