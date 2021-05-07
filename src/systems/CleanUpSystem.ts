@@ -15,22 +15,22 @@ export class CleanUpSystem implements ISystem {
       let healthComp = e.getComponent(HealthComponent);
 
       if (posComp && cleanup) {
-        if (posComp.position.y < cleanup.limitUpper) {
+        if (posComp.y < cleanup.limitUpper) {
           gtx.entityManager.deleteEntity(e);
           continue;
         }
 
-        if (posComp.position.y > cleanup.limitLower) {
+        if (posComp.y > cleanup.limitLower) {
           gtx.entityManager.deleteEntity(e);
           continue;
         }
 
-        if (posComp.position.x < cleanup.limitXLeft) {
+        if (posComp.x < cleanup.limitXLeft) {
           gtx.entityManager.deleteEntity(e);
           continue;
         }
 
-        if (posComp.position.x > cleanup.limitXRight) {
+        if (posComp.x > cleanup.limitXRight) {
           gtx.entityManager.deleteEntity(e);
           continue;
         }

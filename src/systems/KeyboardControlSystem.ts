@@ -1,8 +1,10 @@
 import {ShotArchetype} from '../archetypes/ShotArchetype';
+import { DimensionComponent } from '../components/DimensionComponent';
 import {GunComponent} from '../components/GunComponent';
 import {KeyboardControllableComponent} from '../components/KeyboardControllableComponent';
 
 import {PositionalComponent} from '../components/PositionalComponent';
+import { VelocityComponent } from '../components/VelocityComponent';
 import {GameContext} from '../GameContext';
 import { Vec2dDivMut } from '../VectorOperations';
 
@@ -55,6 +57,8 @@ export class KeyboardControlSystem implements ISystem {
       let positionComponent = entity.getComponent(PositionalComponent)
       let keyboardComponent = entity.getComponent(KeyboardControllableComponent)
       let gunComponent = entity.getComponent(GunComponent)
+      let velocityComp = entity.getComponent(VelocityComponent)
+      let dimensionComp = entity.getComponent(DimensionComponent)
 
       if (positionComponent && keyboardComponent) {
         let down = this.pressed.get('ArrowDown') == KeyPressType.KEY_DOWN;
@@ -63,35 +67,35 @@ export class KeyboardControlSystem implements ISystem {
         let right = this.pressed.get('ArrowRight') == KeyPressType.KEY_DOWN;
 
         if (down && !up) {
-          positionComponent.velocity.y = keyboardComponent.inputForce.y;
+          velocityComp.y = keyboardComponent.inputForce.y;
         }
 
         if (up && !down) {
-          positionComponent.velocity.y = -keyboardComponent.inputForce.y;
+          velocityComp.y = -keyboardComponent.inputForce.y;
         }
 
         if (left && !right) {
-          positionComponent.velocity.x = -keyboardComponent.inputForce.x;
+          velocityComp.x = -keyboardComponent.inputForce.x;
         }
 
         if (right && !left) {
-          positionComponent.velocity.x = keyboardComponent.inputForce.x;
+          velocityComp.x = keyboardComponent.inputForce.x;
         }
 
-        if (Math.abs(positionComponent.velocity.x) == Math.abs(positionComponent.velocity.y)) {
-          Vec2dDivMut(positionComponent.velocity, this.squareRoot2) // scales back diagonal movement
+        if (Math.abs(velocityComp.x) == Math.abs(velocityComp.y)) {
+          Vec2dDivMut(velocityComp, this.squareRoot2) // scales back diagonal movement
         }
 
         if (gunComponent && this.pressed.get('Space') == KeyPressType.KEY_PRESS) {
           let diff = gtx.frameClock.now - gunComponent.timeSinceLast;
           if (diff > gunComponent.shotDelay) {
             let initialPosition = {
-              x:  positionComponent.position.x + positionComponent.dimension.x / 2,
-              y:  positionComponent.position.y - positionComponent.dimension.y
+              x:  positionComponent.x + dimensionComp.x / 2,
+              y:  positionComponent.y - dimensionComp.y
             }
             let velocity = {
               x: 0, 
-              y: gunComponent.bulletVelocity
+              y: gunComponent.gunForce
             }
             let collision = 0o0010
 

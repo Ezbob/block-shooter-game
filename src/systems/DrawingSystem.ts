@@ -1,6 +1,8 @@
+import { DimensionComponent } from '../components/DimensionComponent';
 import {DrawableComponent} from '../components/DrawableComponent';
 import {PathComponent} from '../components/PathComponent';
 import {PositionalComponent} from '../components/PositionalComponent';
+import { VelocityComponent } from '../components/VelocityComponent';
 import {GameContext} from '../GameContext';
 import {Vec2dAdd, Vec2dMul} from '../VectorOperations';
 import {ISystem} from './ISystem';
@@ -30,26 +32,24 @@ export class DrawingSystem implements ISystem {
       let drawComp = entity.getComponent(DrawableComponent);
       let posComp = entity.getComponent(PositionalComponent);
       let pathComp = entity.getComponent(PathComponent);
+      let dimensionComp = entity.getComponent(DimensionComponent)
+      let velocityComp = entity.getComponent(VelocityComponent)
 
-      if (posComp && drawComp) {
+      if (posComp && drawComp && dimensionComp) {
         if (drawComp.isFilled) {
           ctx.fillStyle = drawComp.color;
-          ctx.fillRect(
-              posComp.position.x, posComp.position.y, posComp.dimension.x,
-              posComp.dimension.y);
+          ctx.fillRect(posComp.x, posComp.y, dimensionComp.x, dimensionComp.y);
         } else {
           ctx.strokeStyle = drawComp.color;
-          ctx.strokeRect(
-              posComp.position.x, posComp.position.y, posComp.dimension.x,
-              posComp.dimension.y);
+          ctx.strokeRect(posComp.x, posComp.y, dimensionComp.x, dimensionComp.y);
         }
       }
 
-      if (posComp) {
+      if (posComp && velocityComp) {
         gctx.debugging.drawLineBetween(
             gctx.canvasManager,
-            posComp.position,
-            Vec2dAdd(posComp.position, Vec2dMul(posComp.velocity, 4))
+            posComp,
+            Vec2dAdd(posComp, Vec2dMul(velocityComp, 4))
         );
       }
 

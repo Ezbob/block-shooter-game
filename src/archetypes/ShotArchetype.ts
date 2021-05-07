@@ -1,8 +1,10 @@
 import {CleanUpComponent} from '../components/CleanUpComponent';
 import {CollisionDetectionComponent} from '../components/CollisionDetectionComponent';
 import {DamageComponent} from '../components/DamageComponent';
+import { DimensionComponent } from '../components/DimensionComponent';
 import {DrawableComponent} from '../components/DrawableComponent';
 import {PositionalComponent} from '../components/PositionalComponent';
+import { VelocityComponent } from '../components/VelocityComponent';
 import {Entity} from '../dataStructures/Entity';
 import { GameContext } from '../GameContext';
 
@@ -19,7 +21,9 @@ export const ShotArchetype = new class {
     this.cleanup.limitXRight = gtx.canvasManager.canvasWidth + 20;
 
     return gtx.entityManager.createEntity(
-      new PositionalComponent(initialPosition, velocity, this.dimensions),
+      new PositionalComponent(initialPosition.x, initialPosition.y),
+      new DimensionComponent(6, 15),
+      new VelocityComponent(velocity.x, velocity.y),
       new CollisionDetectionComponent(collisionMask, this.dimensions),
       new DamageComponent(10, shooter),
       this.drawable,

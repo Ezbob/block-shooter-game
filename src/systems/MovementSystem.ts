@@ -1,6 +1,8 @@
 import {CanvasBoundaryComponent} from '../components/CanvasBoundaryComponent';
+import { DimensionComponent } from '../components/DimensionComponent';
 import {FrictionComponent} from '../components/FrictionComponent';
 import {PositionalComponent} from '../components/PositionalComponent';
+import { VelocityComponent } from '../components/VelocityComponent';
 import {GameContext} from '../GameContext';
 import {Vec2dAdd, Vec2dMul, Vec2dMulMut} from '../VectorOperations';
 
@@ -10,45 +12,44 @@ export class MovementSystem implements ISystem {
   update(gtx: GameContext) {
     for (let e of gtx.entityManager) {
       let positionComp = e.getComponent(PositionalComponent);
+      let velocityComp = e.getComponent(VelocityComponent)
       let collisionComp = e.getComponent(CanvasBoundaryComponent);
       let frictionComp = e.getComponent(FrictionComponent);
+      let dimensionComp = e.getComponent(DimensionComponent)
 
       const canvasWidth = gtx.canvasManager.canvasWidth;
       const canvasHeight = gtx.canvasManager.canvasHeight;
 
-      if (positionComp && collisionComp) {
+      if (positionComp && collisionComp && velocityComp && frictionComp) {
 
-        let nextPos = Vec2dAdd(positionComp.position, Vec2dMul(positionComp.velocity, 1 - positionComp.breakingForcePercentage ) );
+        let nextPos = Vec2dAdd(positionComp, Vec2dMul(velocityComp, 1 - frictionComp.frictionBreakingForce) );
 
         if (collisionComp.canvasPaddingX.x > nextPos.x) {
-          positionComp.position.x = collisionComp.canvasPaddingX.x;
-          positionComp.velocity.x = 0;
+          positionComp.x = collisionComp.canvasPaddingX.x;
+          velocityComp.x = 0;
         }
-        if (nextPos.x + positionComp.dimension.x >
-          canvasWidth - collisionComp.canvasPaddingX.y) {
-          positionComp.position.x =
-              (canvasWidth - positionComp.dimension.x -
-               collisionComp.canvasPaddingX.y);
-          positionComp.velocity.x = 0;
+        if (nextPos.x + dimensionComp.x > canvasWidth - collisionComp.canvasPaddingX.y) {
+          positionComp.x = (canvasWidth - dimensionComp.x - collisionComp.canvasPaddingX.y);
+          velocityComp.x = 0;
         }
 
         if (collisionComp.canvasPaddingY.x > nextPos.y) {
-          positionComp.position.y = collisionComp.canvasPaddingY.x;
-          positionComp.velocity.y = 0;
+          positionComp.y = collisionComp.canvasPaddingY.x;
+          velocityComp.y = 0;
         }
-        if (nextPos.y + positionComp.dimension.y > canvasHeight - collisionComp.canvasPaddingY.y) {
-          positionComp.position.y = (canvasHeight - positionComp.dimension.y - collisionComp.canvasPaddingY.y);
-          positionComp.velocity.y = 0;
+        if (nextPos.y + dimensionComp.y > canvasHeight - collisionComp.canvasPaddingY.y) {
+          positionComp.y = (canvasHeight - dimensionComp.y - collisionComp.canvasPaddingY.y);
+          velocityComp.y = 0;
         }
       }
 
       if (frictionComp && positionComp) {
-        Vec2dMulMut(positionComp.velocity, 1 - frictionComp.frictionBreakingForce);
+        Vec2dMulMut(velocityComp, 1 - frictionComp.frictionBreakingForce);
       }
 
-      if (positionComp) {
-        positionComp.position.x += positionComp.velocity.x;
-        positionComp.position.y += positionComp.velocity.y;
+      if (positionComp && velocityComp) {
+        positionComp.x += velocityComp.x;
+        positionComp.y += velocityComp.y;
       }
     }
   }

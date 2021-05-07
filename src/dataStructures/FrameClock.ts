@@ -35,6 +35,10 @@ export class FrameClock {
     }
   }
 
+  public getMsPerUpdate(): number {
+    return this.msPerUpdate / 1000
+  }
+
   public shouldUpdate(): boolean {
     return this.lagTime >= this.msPerUpdate;
   }

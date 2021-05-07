@@ -24,7 +24,7 @@ export class CollideSystem implements ISystem {
           if (compA && posA && damageComp) {
             if (entity.id != a.id && (compA.layers & compE.layers) != 0 &&
                 Utils.intersectingRectanglesFlat(
-                    posE.position, compE.shape, posA.position, compA.shape)) {
+                    posE, compE.shape, posA, compA.shape)) {
               healthComp.health -= damageComp.damage;
 
               let s = damageComp.dealer.getComponent(ScoreComponent);
