@@ -4,7 +4,7 @@ import {PathComponent} from '../components/PathComponent';
 import {PositionalComponent} from '../components/PositionalComponent';
 import { VelocityComponent } from '../components/VelocityComponent';
 import {GameContext} from '../GameContext';
-import {Vec2dAdd, Vec2dLerp, Vec2dMul} from '../VectorOperations';
+import {Vec2dAdd, Vec2dMul} from '../VectorOperations';
 import {ISystem} from './ISystem';
 
 export class DrawingSystem implements ISystem {
