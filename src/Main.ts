@@ -21,8 +21,7 @@ const gameContext = initGameContext({
   CANVAS_HTML_ID: "playground",
   CANVAS_HEIGHT: 900,
   CANVAS_WIDTH: 1080,
-  DEBUG_ON: true,
-  FPS_LIMIT: 60
+  DEBUG_ON: true
 });
 
 const updateSystems = [

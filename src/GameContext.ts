@@ -17,7 +17,7 @@ export function initGameContext(config: ConfigurationJson): GameContext {
   return {
     entityManager: entityManager,
     canvasManager: new CanvasManager(config.CANVAS_HTML_ID, config.CANVAS_WIDTH, config.CANVAS_HEIGHT),
-    frameClock: new FrameClock(entityManager, config.FPS_LIMIT),
+    frameClock: new FrameClock(entityManager),
     debugging: new Debug(config.DEBUG_ON)
   }
 }

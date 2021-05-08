@@ -33,6 +33,5 @@ type ConfigurationJson = {
     CANVAS_HTML_ID: string,
     CANVAS_WIDTH: number,
     CANVAS_HEIGHT: number,
-    DEBUG_ON: boolean,
-    FPS_LIMIT: number
+    DEBUG_ON: boolean
 };
