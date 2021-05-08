@@ -24,7 +24,7 @@ export const WeakEnemyArchetype = new class {
         new PathComponent(path),
         new HealthComponent(50, 50, 400),
         new AutoShootComponent(),
-        new GunComponent(700, 6),
+        new GunComponent(700, 350),
         new CollisionDetectionComponent(0o0010, {x: 32, y: 32}),
         this.drawable,
         this.friction,

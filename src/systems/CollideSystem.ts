@@ -1,5 +1,7 @@
+import { CanvasBoundaryComponent } from '../components/CanvasBoundaryComponent';
 import {CollisionDetectionComponent} from '../components/CollisionDetectionComponent';
 import {DamageComponent} from '../components/DamageComponent';
+import { DimensionComponent } from '../components/DimensionComponent';
 import {HealthComponent} from '../components/HealthComponent';
 import {PositionalComponent} from '../components/PositionalComponent';
 import {ScoreComponent} from '../components/ScoreComponent';
@@ -42,6 +44,33 @@ export class CollideSystem implements ISystem {
           }
         }
       }
+
+      let collisionComp = entity.getComponent(CanvasBoundaryComponent)
+      let dimensionComp = entity.getComponent(DimensionComponent)
+
+      const canvasWidth = gtx.canvasManager.canvasWidth;
+      const canvasHeight = gtx.canvasManager.canvasHeight;
+
+      if (dimensionComp && collisionComp && posE) {
+
+        if (posE.x < collisionComp.canvasPaddingX.x) {
+          posE.x = collisionComp.canvasPaddingX.x
+        }
+
+        if (posE.x + dimensionComp.x >= canvasWidth - collisionComp.canvasPaddingX.y) {
+          posE.x = (canvasWidth - dimensionComp.x - collisionComp.canvasPaddingX.y)
+        }
+
+        if (posE.y < collisionComp.canvasPaddingY.x) {
+          posE.y = collisionComp.canvasPaddingY.x
+        }
+
+        if (posE.y + dimensionComp.y >= canvasHeight - collisionComp.canvasPaddingY.y) {
+          posE.y = (canvasHeight - dimensionComp.y - collisionComp.canvasPaddingY.y)
+        }
+
+      }
+
     }
   }
 }

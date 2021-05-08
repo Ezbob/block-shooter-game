@@ -5,19 +5,14 @@ export class FrameClock {
   private _lastUpdate: number = 0;
   private _now: number = 0;
   private _dt: number = 0;
-  private lagTime: number = 0;
-  private msPerUpdate: number = 0;
   private _isPaused: boolean = false;
 
-  constructor(private entityManager: EntityManager, fpsLimit: number) {
-    this.msPerUpdate = (1000 / fpsLimit);
-  }
+  constructor(private entityManager: EntityManager) {}
 
   public tick(now: number) {
     this._now = now
     this._dt = (this._now - (this._lastUpdate || this._now));
     this._lastUpdate = this.now;
-    this.lagTime += this._dt;
   }
 
   public pause = () => {
@@ -35,18 +30,6 @@ export class FrameClock {
     }
   }
 
-  public getMsPerUpdate(): number {
-    return this.msPerUpdate
-  }
-
-  public shouldUpdate(): boolean {
-    return this.lagTime >= this.msPerUpdate;
-  }
-
-  public deductLag() {
-    this.lagTime -= this.msPerUpdate;
-  }
-
   public get isPaused(): boolean {
     return this._isPaused;
   }
@@ -56,7 +39,7 @@ export class FrameClock {
   }
 
   public get dt(): number {
-    return this._dt;
+    return this._dt / 1000;
   }
 
   public get lastUpdate(): number {

@@ -32,7 +32,7 @@ export const PlayerArchetype = new class {
       new CollisionDetectionComponent(0o0011, {x: 32, y: 32}),
       new CanvasBoundaryComponent({x: 5, y: 5}, {x: 180, y: 30}),
       new KeyboardControllableComponent(inputVelocity), 
-      new GunComponent(110, -9),
+      new GunComponent(110, -700),
       new ScoreComponent(), 
       new ScoreDisplayComponent(scorePos)
     );

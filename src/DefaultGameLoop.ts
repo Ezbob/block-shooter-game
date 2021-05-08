@@ -31,12 +31,8 @@ export class DefaultGameLoop implements IGameLoop {
 
         this.gameContext.frameClock.tick(now);
 
-        while ( this.gameContext.frameClock.shouldUpdate()) {
-            for (let system of this.updateSystems) {
-                system.update(this.gameContext);
-            }
-
-            this.gameContext.frameClock.deductLag();
+        for (let system of this.updateSystems) {
+            system.update(this.gameContext);
         }
 
         for (let system of this.drawingSystems) {

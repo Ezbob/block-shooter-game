@@ -50,7 +50,7 @@ export class DrawingSystem implements ISystem {
         gctx.debugging.drawLineBetween(
             gctx.canvasManager,
             posComp,
-            Vec2dAdd(posComp, Vec2dMul(velocityComp, 4))
+            Vec2dAdd(posComp, Vec2dMul(velocityComp, 0.1))
         );
       }
 
