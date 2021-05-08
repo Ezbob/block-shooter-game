@@ -14,6 +14,7 @@ export const ShotArchetype = new class {
   private cleanup = new CleanUpComponent(-20, 20, 20, -20);
   private drawable = new DrawableComponent(-1, 'orange');
 
+
   createNew(gtx: GameContext, shooter: Entity, initialPosition: MathVector2d, velocity: MathVector2d,
       collisionMask: number): Entity {
 
@@ -27,7 +28,7 @@ export const ShotArchetype = new class {
       new CollisionDetectionComponent(collisionMask, this.dimensions),
       new DamageComponent(10, shooter),
       this.drawable,
-      this.cleanup
+      this.cleanup,
     );
   }
 };

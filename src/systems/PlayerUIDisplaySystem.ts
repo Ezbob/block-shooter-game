@@ -1,3 +1,4 @@
+import { DeathMessageComponent } from '../components/DeathComponent';
 import {HealthComponent} from '../components/HealthComponent';
 import {HealthDisplayComponent} from '../components/HealthDisplayComponent';
 import {ScoreComponent} from '../components/ScoreComponent';
@@ -29,7 +30,9 @@ export class PlayerUIDisplaySystem implements ISystem {
       let healthComp = e.getComponent(HealthComponent)
       let healthDispComp = e.getComponent(HealthDisplayComponent)
       let scoreComp = e.getComponent(ScoreComponent);
-      let scoreDisplayComp = e.getComponent(ScoreDisplayComponent);
+      let scoreDisplayComp = e.getComponent(ScoreDisplayComponent)
+      let deathMessage = e.getComponent(DeathMessageComponent)
+
 
       if (healthComp && healthDispComp) {
         let beads = Math.floor(
@@ -60,6 +63,16 @@ export class PlayerUIDisplaySystem implements ISystem {
         ctx.fillText(
             text, scoreDisplayComp.position.x - (textMeasure.width / 2),
             scoreDisplayComp.position.y)
+      }
+
+      if (deathMessage) {
+        let text = deathMessage.message
+        let measurement = ctx.measureText(text)
+        //ctx.fillStyle = `${deathMessage.color}`
+        //ctx.font = `${deathMessage.pixelSize} ${deathMessage.fontFaceName}`
+        ctx.fillText(text, 
+          gtx.canvasManager.canvasWidth / 2 - measurement.width / 2, 
+          gtx.canvasManager.canvasHeight / 2 - measurement.emHeightDescent / 2)
       }
     }
   }

@@ -7,6 +7,7 @@ import {GunComponent} from '../components/GunComponent';
 import {HealthComponent} from '../components/HealthComponent';
 import {PathComponent} from '../components/PathComponent';
 import {PositionalComponent} from '../components/PositionalComponent';
+import { RoleComponent } from '../components/RoleComponent';
 import { VelocityComponent } from '../components/VelocityComponent';
 import { IPathBuffer } from '../dataStructures/IPathBuffer';
 import { GameContext } from '../GameContext';
@@ -15,6 +16,7 @@ import { GameContext } from '../GameContext';
 export const WeakEnemyArchetype = new class {
   private friction = new FrictionComponent();
   private drawable = new DrawableComponent(1, 'red');
+  private role = new RoleComponent('enemy');
 
   createNew(gtx: GameContext, initialPosition: MathVector2d, velocity: MathVector2d, path: IPathBuffer<MathVector2d>) {
     return gtx.entityManager.createEntity(
@@ -26,6 +28,7 @@ export const WeakEnemyArchetype = new class {
         new AutoShootComponent(),
         new GunComponent(700, 350),
         new CollisionDetectionComponent(0o0010, {x: 32, y: 32}),
+        this.role,
         this.drawable,
         this.friction,
     );

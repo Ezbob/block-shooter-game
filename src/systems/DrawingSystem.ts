@@ -35,6 +35,7 @@ export class DrawingSystem implements ISystem {
       let dimensionComp = entity.getComponent(DimensionComponent)
       let velocityComp = entity.getComponent(VelocityComponent)
 
+
       if (posComp && drawComp && dimensionComp) {
         if (drawComp.isFilled) {
           ctx.fillStyle = drawComp.color;

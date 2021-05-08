@@ -13,6 +13,7 @@ import {ScoreDisplayComponent} from '../components/ScoreDisplayComponent';
 import { VelocityComponent } from '../components/VelocityComponent';
 import {Entity} from '../dataStructures/Entity';
 import { GameContext } from '../GameContext';
+import { RoleComponent} from '../components/RoleComponent';
 
 export const PlayerArchetype = new class {
   createNew(
@@ -34,7 +35,8 @@ export const PlayerArchetype = new class {
       new KeyboardControllableComponent(inputVelocity), 
       new GunComponent(110, -700),
       new ScoreComponent(), 
-      new ScoreDisplayComponent(scorePos)
+      new ScoreDisplayComponent(scorePos),
+      new RoleComponent('player')
     );
   }
 };
