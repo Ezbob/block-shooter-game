@@ -13,8 +13,8 @@ export class FrameClock {
     this.msPerUpdate = (1000 / fpsLimit);
   }
 
-  public tick() {
-    this._now = window.performance.now();
+  public tick(now: number) {
+    this._now = now
     this._dt = (this._now - (this._lastUpdate || this._now));
     this._lastUpdate = this.now;
     this.lagTime += this._dt;

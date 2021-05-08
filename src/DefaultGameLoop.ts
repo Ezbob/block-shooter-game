@@ -24,12 +24,12 @@ export class DefaultGameLoop implements IGameLoop {
         return this
     }
 
-    private loop = () => {
+    private loop = (now: number) => {
         if (this.gameContext.frameClock.isPaused) {
             return window.requestAnimationFrame(this.loop);
         }
 
-        this.gameContext.frameClock.tick();
+        this.gameContext.frameClock.tick(now);
 
         while ( this.gameContext.frameClock.shouldUpdate()) {
             for (let system of this.updateSystems) {
