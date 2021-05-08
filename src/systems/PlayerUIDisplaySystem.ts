@@ -68,10 +68,10 @@ export class PlayerUIDisplaySystem implements ISystem {
       if (deathMessage) {
         let text = deathMessage.message
         let measurement = ctx.measureText(text)
-        
+
         ctx.fillStyle = `${deathMessage.color}`
-        ctx.font = `${deathMessage.pixelSize} ${deathMessage.fontFaceName}`
-        let h = parseInt(deathMessage.pixelSize) / 2
+        ctx.font = `${deathMessage.pixelSize}px ${deathMessage.fontFaceName}`
+        let h = deathMessage.pixelSize / 2
         ctx.fillText(text, gtx.canvasManager.canvasWidth / 2 - measurement.width / 2, gtx.canvasManager.canvasHeight / 2 - h)
       }
     }

@@ -4,5 +4,5 @@ export class DeathMessageComponent {
         public message: string, 
         public fontFaceName: string = 'Arial',
         public color: string = 'black',
-        public pixelSize: string = '62px') {}
+        public pixelSize: number = 62) {}
 };
