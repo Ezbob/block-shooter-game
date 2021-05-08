@@ -20,8 +20,8 @@ export const WeakEnemyArchetype = new class {
     return gtx.entityManager.createEntity(
         new PositionalComponent(initialPosition.x, initialPosition.y),
         new DimensionComponent(32, 32),
-        new VelocityComponent(velocity.x, velocity.y),
-        new PathComponent(path),
+        new VelocityComponent(0, 0),
+        new PathComponent(velocity, path),
         new HealthComponent(50, 50, 400),
         new AutoShootComponent(),
         new GunComponent(700, 350),
