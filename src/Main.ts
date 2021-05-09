@@ -7,7 +7,7 @@ import {DrawingSystem} from './systems/DrawingSystem';
 import {KeyboardControlSystem} from './systems/KeyboardControlSystem';
 import {MovementSystem} from './systems/MovementSystem';
 import {PathFollowingSystem} from './systems/PathFollowingSystem';
-import {PlayerUIDisplaySystem} from './systems/PlayerUIDisplaySystem';
+import {UIDisplaySystem} from './systems/UIDisplaySystem';
 import {TimerSystem} from './systems/TimerSystem';
 import { SpawnSystem } from './systems/SpawnSystem';
 import { LevelLoaderSystem } from './systems/LevelLoaderSystem';
@@ -32,7 +32,7 @@ const updateSystems = [
 
 const drawSystems = [
   new DrawingSystem(),
-  new PlayerUIDisplaySystem()
+  new UIDisplaySystem()
 ];
 
 window.onblur = gameContext.frameClock.pause

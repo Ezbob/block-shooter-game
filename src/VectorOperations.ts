@@ -76,6 +76,44 @@ const Vec2dLerp = (from: MathVector2d, to: MathVector2d, p: number): MathVector2
     return v
 }
 
+
+/**
+ * Parse a vector that may have string member such as percentage or "middle" members.
+ * @param gtx GameContext
+ * @param vector Incoming vector
+ * @param offsets additional offsets to add and subtract to the vector
+ * @returns a vector that has it's string member resolved
+ * @throws Error in case of strings cannot be parsed
+ */
+const Vec2dParse = (vector: MathVector2d | {x: string, y: string}, canvasBoundaries: MathVector2d, offsets: MathVector2d = {x: 0, y: 0}): MathVector2d => {
+    let xPos = vector.x
+    if (typeof vector.x === "string") {
+
+        if (vector.x === "middle") {
+            xPos = (canvasBoundaries.x / 2) - offsets.x
+        } else if (vector.x.endsWith("%")) {
+            let parsed = parseInt(vector.x) / 100
+            xPos = (canvasBoundaries.x * parsed) - offsets.x
+        } else {
+            throw new Error("X position string argument could not be parsed")
+        }
+    }
+
+    let yPos = vector.y
+    if (typeof vector.y === "string") {
+        if (vector.y == "middle") {
+            yPos = (canvasBoundaries.y / 2) + offsets.y
+        } else if (vector.y.endsWith("%")) {
+            let parsed = parseInt(vector.y) / 100
+            yPos = (canvasBoundaries.y * parsed) + offsets.y
+        } else {
+            throw new Error("Y position string argument could not be parsed")
+        }
+    }
+
+    return { x: xPos as number, y: yPos as number }
+}
+
 export {
     Vec2dAddMut,
     Vec2dSubMut,
@@ -88,5 +126,6 @@ export {
     Vec2dMul,
     Vec2dDiv,
     Vec2dNormalize,
-    Vec2dLerp
+    Vec2dLerp,
+    Vec2dParse
 };

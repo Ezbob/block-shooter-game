@@ -1,12 +1,13 @@
-import { DeathMessageComponent } from '../components/DeathComponent';
+import { MessageComponent } from '../components/MessageComponent';
 import {HealthComponent} from '../components/HealthComponent';
 import {HealthDisplayComponent} from '../components/HealthDisplayComponent';
 import {ScoreComponent} from '../components/ScoreComponent';
 import {ScoreDisplayComponent} from '../components/ScoreDisplayComponent';
 import {GameContext} from '../GameContext';
 import {ISystem} from './ISystem';
+import { Vec2dParse } from '../VectorOperations';
 
-export class PlayerUIDisplaySystem implements ISystem {
+export class UIDisplaySystem implements ISystem {
   getBeadColor(
       colors: {
         ok: string, warning: string, fatal: string
@@ -31,7 +32,7 @@ export class PlayerUIDisplaySystem implements ISystem {
       let healthDispComp = e.getComponent(HealthDisplayComponent)
       let scoreComp = e.getComponent(ScoreComponent);
       let scoreDisplayComp = e.getComponent(ScoreDisplayComponent)
-      let deathMessage = e.getComponent(DeathMessageComponent)
+      let messageComp = e.getComponent(MessageComponent)
 
 
       if (healthComp && healthDispComp) {
@@ -65,14 +66,24 @@ export class PlayerUIDisplaySystem implements ISystem {
             scoreDisplayComp.position.y)
       }
 
-      if (deathMessage) {
-        let text = deathMessage.message
+      if (messageComp) {
+        let text = messageComp.message
         let measurement = ctx.measureText(text)
+        let resolved = Vec2dParse(messageComp.position, gtx.canvasManager.getBoundaries(), {
+          x: (measurement.width / 2),
+          y: (messageComp.pixelSize / 2)
+        })
 
-        ctx.fillStyle = `${deathMessage.color}`
-        ctx.font = `${deathMessage.pixelSize}px ${deathMessage.fontFaceName}`
-        let h = deathMessage.pixelSize / 2
-        ctx.fillText(text, gtx.canvasManager.canvasWidth / 2 - measurement.width / 2, gtx.canvasManager.canvasHeight / 2 - h)
+        ctx.font = `${messageComp.pixelSize}px ${messageComp.fontFaceName}`
+
+        if (messageComp.isFilled) {
+          ctx.fillStyle = `${messageComp.color}`
+          ctx.fillText(text, resolved.x, resolved.y)
+        } else {
+          ctx.strokeStyle = `${messageComp.color}`
+          ctx.strokeText(text, resolved.x, resolved.y)
+        }
+
       }
     }
   }

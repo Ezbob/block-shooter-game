@@ -1,5 +1,5 @@
 import {CleanUpComponent} from '../components/CleanUpComponent';
-import { DeathMessageComponent } from '../components/DeathComponent';
+import { MessageComponent } from '../components/MessageComponent';
 import {HealthComponent} from '../components/HealthComponent';
 import {PositionalComponent} from '../components/PositionalComponent';
 import { RoleComponent } from '../components/RoleComponent';
@@ -43,7 +43,7 @@ export class CleanUpSystem implements ISystem {
         if (role && role.roleName == "enemy") {
           deathCount++;
         } else if (role && role.roleName == "player") {
-          gtx.entityManager.createEntity(new DeathMessageComponent("Game over"))
+          gtx.entityManager.createEntity(new MessageComponent("Game over", {x:"middle", y: "middle"}, 62))
         }
         gtx.entityManager.deleteEntity(e);
       }

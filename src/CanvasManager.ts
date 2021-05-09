@@ -46,6 +46,10 @@ export class CanvasManager {
     return this.htmlElement;
   };
 
+  getBoundaries(): MathVector2d {
+    return {x: this._width, y: this._height}
+  }
+
   isAttached() {
     return this._isAttached;
   };
