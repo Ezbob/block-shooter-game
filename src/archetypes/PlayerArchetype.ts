@@ -9,11 +9,11 @@ import {HealthDisplayComponent} from '../components/HealthDisplayComponent';
 import {KeyboardControllableComponent} from '../components/KeyboardControllableComponent';
 import {PositionalComponent} from '../components/PositionalComponent';
 import {ScoreComponent} from '../components/ScoreComponent';
-import {ScoreDisplayComponent} from '../components/ScoreDisplayComponent';
 import { VelocityComponent } from '../components/VelocityComponent';
 import {Entity} from '../dataStructures/Entity';
 import { GameContext } from '../GameContext';
 import { RoleComponent} from '../components/RoleComponent';
+import { MessageComponent } from '../components/MessageComponent';
 
 export const PlayerArchetype = new class {
   createNew(
@@ -21,7 +21,7 @@ export const PlayerArchetype = new class {
     initialPosition: MathVector2d, 
     inputVelocity: MathVector2d, 
     healthPos: MathVector2d, 
-    scorePos: MathVector2d): Entity {
+    scorePos: InputMathVector2d): Entity {
     return gtx.entityManager.createEntity(
       new PositionalComponent(initialPosition.x, initialPosition.y),
       new DimensionComponent(32, 32),
@@ -35,7 +35,7 @@ export const PlayerArchetype = new class {
       new KeyboardControllableComponent(inputVelocity), 
       new GunComponent(110, -550),
       new ScoreComponent(), 
-      new ScoreDisplayComponent(scorePos),
+      new MessageComponent("0", scorePos, 24),
       new RoleComponent('player')
     );
   }

@@ -1,6 +1,8 @@
 
 type MathVector2d = {x: number, y: number};
 
+type InputMathVector2d = MathVector2d | {x: string, y: string}
+
 type ComponentConstructor<T = any> = {new(...a: any): T};
 
 type ComponentInstance = {constructor: Function};

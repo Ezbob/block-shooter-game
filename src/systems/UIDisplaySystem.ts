@@ -2,7 +2,6 @@ import { MessageComponent } from '../components/MessageComponent';
 import {HealthComponent} from '../components/HealthComponent';
 import {HealthDisplayComponent} from '../components/HealthDisplayComponent';
 import {ScoreComponent} from '../components/ScoreComponent';
-import {ScoreDisplayComponent} from '../components/ScoreDisplayComponent';
 import {GameContext} from '../GameContext';
 import {ISystem} from './ISystem';
 import { Vec2dParse } from '../VectorOperations';
@@ -31,7 +30,6 @@ export class UIDisplaySystem implements ISystem {
       let healthComp = e.getComponent(HealthComponent)
       let healthDispComp = e.getComponent(HealthDisplayComponent)
       let scoreComp = e.getComponent(ScoreComponent);
-      let scoreDisplayComp = e.getComponent(ScoreDisplayComponent)
       let messageComp = e.getComponent(MessageComponent)
 
 
@@ -54,16 +52,8 @@ export class UIDisplaySystem implements ISystem {
         }
       }
 
-      if (scoreComp && scoreDisplayComp) {
-        ctx.fillStyle = scoreDisplayComp.color;
-        ctx.font =
-            `${scoreDisplayComp.pixelSize} ${scoreDisplayComp.fontFaceName}`
-
-        let text = `${scoreComp.score}`;
-        let textMeasure = ctx.measureText(text);
-        ctx.fillText(
-            text, scoreDisplayComp.position.x - (textMeasure.width / 2),
-            scoreDisplayComp.position.y)
+      if (scoreComp && messageComp) {
+        messageComp.message = "" + scoreComp.score
       }
 
       if (messageComp) {
