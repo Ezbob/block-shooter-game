@@ -1,5 +1,4 @@
 
-
 export class DrawableComponent {
   constructor(
       public priority: number = -1,

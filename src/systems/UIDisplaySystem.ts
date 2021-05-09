@@ -7,7 +7,7 @@ import {ISystem} from './ISystem';
 import { Vec2dParse } from '../VectorOperations';
 
 export class UIDisplaySystem implements ISystem {
-  getBeadColor(
+  private getBeadColor(
       colors: {
         ok: string, warning: string, fatal: string
       }, numberOfBeads: number,

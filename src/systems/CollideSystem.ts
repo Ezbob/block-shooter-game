@@ -4,7 +4,9 @@ import {DamageComponent} from '../components/DamageComponent';
 import { DimensionComponent } from '../components/DimensionComponent';
 import {HealthComponent} from '../components/HealthComponent';
 import {PositionalComponent} from '../components/PositionalComponent';
+import { RoleComponent } from '../components/RoleComponent';
 import {ScoreComponent} from '../components/ScoreComponent';
+import { ShakeComponent } from '../components/ShakeComponent';
 import { GameContext } from '../GameContext';
 import {Utils} from '../Utils';
 
@@ -19,20 +21,27 @@ export class CollideSystem implements ISystem {
 
       if (compE && posE && healthComp) {
         for (let a of gtx.entityManager) {
-          let compA = a.getComponent(CollisionDetectionComponent);
-          let posA = a.getComponent(PositionalComponent);
-          let damageComp = a.getComponent(DamageComponent);
+          let compA = a.getComponent(CollisionDetectionComponent)
+          let posA = a.getComponent(PositionalComponent)
+          let damageComp = a.getComponent(DamageComponent)
 
           if (compA && posA && damageComp) {
             if (entity.id != a.id && (compA.layers & compE.layers) != 0 &&
                 Utils.intersectingRectanglesFlat(
                     posE, compE.shape, posA, compA.shape)) {
+
               healthComp.health -= damageComp.damage;
 
               let s = damageComp.dealer.getComponent(ScoreComponent);
 
               if (s && healthComp.health <= 0) {
                 s.score += healthComp.worth;
+              }
+
+              let r = entity.getComponent(RoleComponent)
+
+              if (r && r.roleName == "player") {
+                entity.addComponent(new ShakeComponent(Math.round(Math.random() * 10), Math.round(Math.random() * 10)))
               }
 
               gtx.entityManager.deleteEntity(a);

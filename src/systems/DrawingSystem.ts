@@ -2,6 +2,7 @@ import { DimensionComponent } from '../components/DimensionComponent';
 import {DrawableComponent} from '../components/DrawableComponent';
 import {PathComponent} from '../components/PathComponent';
 import {PositionalComponent} from '../components/PositionalComponent';
+import { ShakeComponent } from '../components/ShakeComponent';
 import { VelocityComponent } from '../components/VelocityComponent';
 import {GameContext} from '../GameContext';
 import {Vec2dAdd, Vec2dMul} from '../VectorOperations';
@@ -27,6 +28,13 @@ export class DrawingSystem implements ISystem {
       }
       return 0;
     });
+    for (let entity of gctx.entityManager) {
+      let shake = entity.getComponent(ShakeComponent)
+
+      if (shake) {
+        ctx.setTransform(1, 0, 0, 1, shake.x, shake.y)
+      }
+    }
 
     for (let entity of gctx.entityManager) {
       let drawComp = entity.getComponent(DrawableComponent);
@@ -34,7 +42,6 @@ export class DrawingSystem implements ISystem {
       let pathComp = entity.getComponent(PathComponent);
       let dimensionComp = entity.getComponent(DimensionComponent)
       let velocityComp = entity.getComponent(VelocityComponent)
-
 
       if (posComp && drawComp && dimensionComp) {
         if (drawComp.isFilled) {
@@ -45,7 +52,6 @@ export class DrawingSystem implements ISystem {
           ctx.strokeRect(posComp.x, posComp.y, dimensionComp.x, dimensionComp.y);
         }
       }
-
 
       if (posComp && velocityComp) {
         gctx.debugging.drawLineBetween(
@@ -62,5 +68,7 @@ export class DrawingSystem implements ISystem {
         }
       }
     }
+
+    ctx.setTransform(1, 0, 0, 1, 0, 0)
   }
 };
