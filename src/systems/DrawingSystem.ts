@@ -28,11 +28,29 @@ export class DrawingSystem implements ISystem {
       }
       return 0;
     });
+
     for (let entity of gctx.entityManager) {
       let shake = entity.getComponent(ShakeComponent)
 
       if (shake) {
-        ctx.setTransform(1, 0, 0, 1, shake.x, shake.y)
+        let dt = gctx.frameClock.now - shake.startTime
+
+        if (dt > shake.duration) {
+          entity.removeComponent(ShakeComponent)
+          break
+        }
+
+        let easingCoef = dt / shake.duration;
+        let easing = Math.pow(easingCoef - 1, 3) + 1;
+
+        let dx = easing * (Math.cos(dt * 0.1 ) + Math.cos(dt * 0.3115)) * 15;
+        let dy = easing * (Math.sin(dt * 0.05) + Math.sin(dt * 0.057113)) * 15;
+
+        ctx.setTransform(
+          1,  0,  0,
+          1, dx, dy,
+        //0,  0,  1,
+        )
       }
     }
 

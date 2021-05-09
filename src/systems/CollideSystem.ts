@@ -41,7 +41,7 @@ export class CollideSystem implements ISystem {
               let r = entity.getComponent(RoleComponent)
 
               if (r && r.roleName == "player") {
-                entity.addComponent(new ShakeComponent(Math.round(Math.random() * 10), Math.round(Math.random() * 10)))
+                entity.addComponent(new ShakeComponent(100, gtx.frameClock.now))
               }
 
               gtx.entityManager.deleteEntity(a);

@@ -1,4 +1,4 @@
 
 export class ShakeComponent {
-    constructor(public x: number, public y: number) {}
+    constructor(public duration: number, public startTime: number) {}
 }
