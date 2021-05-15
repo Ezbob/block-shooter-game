@@ -1,6 +1,5 @@
 import { TimerComponent } from "../components/TimerComponent";
-import { EntityManager } from "./EntityManager";
-
+import { EntityManager } from 'escarole';
 export class FrameClock {
   private _lastUpdate: number = 0;
   private _now: number = 0;

@@ -7,7 +7,7 @@
   "scripts": {
     "build-dev": "webpack-cli --config webpack.config.development.js",
     "build-prod": "webpack-cli --config webpack.config.production.js",
-    "start": "webpack-dev-server --open --config webpack.config.development.js"
+    "start": "webpack serve --config webpack.config.development.js"
   },
   "repository": {
     "type": "git",

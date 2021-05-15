@@ -1,7 +1,6 @@
 
 import {CanvasManager} from './CanvasManager';
-import { ComponentRegistry } from './dataStructures/ComponentRegistry';
-import { EntityManager } from './dataStructures/EntityManager';
+import {EntityManager} from 'escarole';
 import {FrameClock} from './dataStructures/FrameClock';
 import {Debug} from './Debug';
 
@@ -13,7 +12,7 @@ export interface GameContext {
 };
 
 export function initGameContext(config: ConfigurationJson): GameContext {
-  const entityManager = new EntityManager(new ComponentRegistry())
+  const entityManager = new EntityManager()
   return {
     entityManager: entityManager,
     canvasManager: new CanvasManager(config.CANVAS_HTML_ID, config.CANVAS_WIDTH, config.CANVAS_HEIGHT),

@@ -15,20 +15,6 @@ export class DrawingSystem implements ISystem {
     ctx.clearRect(
         0, 0, gctx.canvasManager.canvasWidth, gctx.canvasManager.canvasHeight);
 
-    /**
-     * Painter's algorithm
-     * Sort the the drawable component by priority to order the drawing
-     */
-    gctx.entityManager.data.sort((aEntity, bEntity) => {
-      let aDrawComp = aEntity.getComponent(DrawableComponent);
-      let bDrawComp = bEntity.getComponent(DrawableComponent);
-
-      if (aDrawComp && bDrawComp) {
-        return aDrawComp.priority - bDrawComp.priority;
-      }
-      return 0;
-    });
-
     for (let entity of gctx.entityManager) {
       let shake = entity.getComponent(ShakeComponent)
 
@@ -36,7 +22,7 @@ export class DrawingSystem implements ISystem {
         let dt = gctx.frameClock.now - shake.startTime
 
         if (dt > shake.duration) {
-          entity.removeComponent(ShakeComponent)
+          entity.deleteComponent(ShakeComponent)
           break
         }
 

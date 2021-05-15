@@ -1,16 +1,15 @@
-import {CanvasBoundaryComponent} from '../components/CanvasBoundaryComponent';
-import {CollisionDetectionComponent} from '../components/CollisionDetectionComponent';
+import { CanvasBoundaryComponent } from '../components/CanvasBoundaryComponent';
+import { CollisionDetectionComponent } from '../components/CollisionDetectionComponent';
 import { DimensionComponent } from '../components/DimensionComponent';
-import {DrawableComponent} from '../components/DrawableComponent';
-import {FrictionComponent} from '../components/FrictionComponent';
-import {GunComponent} from '../components/GunComponent';
-import {HealthComponent} from '../components/HealthComponent';
-import {HealthDisplayComponent} from '../components/HealthDisplayComponent';
-import {KeyboardControllableComponent} from '../components/KeyboardControllableComponent';
-import {PositionalComponent} from '../components/PositionalComponent';
-import {ScoreComponent} from '../components/ScoreComponent';
+import { DrawableComponent } from '../components/DrawableComponent';
+import { FrictionComponent } from '../components/FrictionComponent';
+import { GunComponent } from '../components/GunComponent';
+import { HealthComponent } from '../components/HealthComponent';
+import { HealthDisplayComponent } from '../components/HealthDisplayComponent';
+import { KeyboardControllableComponent } from '../components/KeyboardControllableComponent';
+import { PositionalComponent } from '../components/PositionalComponent';
+import { ScoreComponent } from '../components/ScoreComponent';
 import { VelocityComponent } from '../components/VelocityComponent';
-import {Entity} from '../dataStructures/Entity';
 import { GameContext } from '../GameContext';
 import { RoleComponent} from '../components/RoleComponent';
 import { MessageComponent } from '../components/MessageComponent';
@@ -21,7 +20,7 @@ export const PlayerArchetype = new class {
     initialPosition: MathVector2d, 
     inputVelocity: MathVector2d, 
     healthPos: MathVector2d, 
-    scorePos: InputMathVector2d): Entity {
+    scorePos: InputMathVector2d) {
     return gtx.entityManager.createEntity(
       new PositionalComponent(initialPosition.x, initialPosition.y),
       new DimensionComponent(32, 32),
