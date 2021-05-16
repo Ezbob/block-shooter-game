@@ -36,7 +36,7 @@
     "webpack-dev-server": "^3.11.2"
   },
   "dependencies": {
-    "ajv": "^6.12.6",
+    "ajv": "^8.4.0",
     "escarole": "^0.1.7",
     "stats.js": "^0.17.0"
   }

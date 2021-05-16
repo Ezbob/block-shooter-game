@@ -37,3 +37,9 @@ type ConfigurationJson = {
     CANVAS_HEIGHT: number,
     DEBUG_ON: boolean
 };
+
+type LevelJson = {
+    title: string,
+    level: number,
+    events: Array<PlayerJson | EnemyJson | ConditionJson>
+}
