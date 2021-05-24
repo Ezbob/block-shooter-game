@@ -78,7 +78,8 @@ export class SpawnSystem implements ISystem {
         switch (enemy.event_type) {
             case 'weak':
             let path = this.instantiatePath(enemy.path);
-            return WeakEnemyArchetype.createNew(gtx, enemy.movement.startAt, enemy.movement.velocity, path);
+            return WeakEnemyArchetype.createNew(
+                gtx, enemy.movement.startAt, enemy.movement.velocity, path, gtx.assets.weak);
         }
     }
 
@@ -93,7 +94,9 @@ export class SpawnSystem implements ISystem {
             },{
                 x: gtx.canvasManager.canvasWidth - gtx.canvasManager.canvasWidth / 11,
                 y: gtx.canvasManager.canvasHeight - 10
-            });
+            },
+            gtx.assets.player1
+            );
     }
 
     private instantiatePath(rawPath: {

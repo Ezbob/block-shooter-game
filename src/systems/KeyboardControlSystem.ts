@@ -90,7 +90,7 @@ export class KeyboardControlSystem implements ISystem {
           let diff = gtx.frameClock.now - gunComponent.timeSinceLast;
           if (diff > gunComponent.shotDelay) {
             let initialPosition = {
-              x:  positionComponent.x + dimensionComp.x / 2,
+              x:  positionComponent.x,
               y:  positionComponent.y - dimensionComp.y
             }
             let velocity = {
@@ -104,7 +104,8 @@ export class KeyboardControlSystem implements ISystem {
               entity,
               initialPosition,
               velocity,
-              collision
+              collision,
+              gtx.assets.shot1
             );
 
             gunComponent.timeSinceLast = gtx.frameClock.now;

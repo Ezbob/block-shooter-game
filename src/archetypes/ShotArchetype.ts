@@ -2,21 +2,19 @@ import { CleanUpComponent } from '../components/CleanUpComponent';
 import { CollisionDetectionComponent } from '../components/CollisionDetectionComponent';
 import { DamageComponent } from '../components/DamageComponent';
 import { DimensionComponent } from '../components/DimensionComponent';
-import { DrawableComponent } from '../components/DrawableComponent';
 import { PositionalComponent } from '../components/PositionalComponent';
 import { VelocityComponent } from '../components/VelocityComponent';
 import { Entity } from 'escarole';
 import { GameContext } from '../GameContext';
+import { DrawableImageComponent } from '../components/DrawableImageComponent';
 
 
 export const ShotArchetype = new class {
   private dimensions = {x: 6, y: 20};
   private cleanup = new CleanUpComponent(-20, 20, 20, -20);
-  private drawable = new DrawableComponent(-1, 'orange');
-
 
   createNew(gtx: GameContext, shooter: Entity, initialPosition: MathVector2d, velocity: MathVector2d,
-      collisionMask: number) {
+      collisionMask: number, image: HTMLImageElement) {
 
     this.cleanup.limitLower = gtx.canvasManager.canvasHeight + 20;
     this.cleanup.limitXRight = gtx.canvasManager.canvasWidth + 20;
@@ -27,7 +25,7 @@ export const ShotArchetype = new class {
       new VelocityComponent(velocity.x, velocity.y),
       new CollisionDetectionComponent(collisionMask, this.dimensions),
       new DamageComponent(10, shooter),
-      this.drawable,
+      new DrawableImageComponent(image),
       this.cleanup,
     );
   }

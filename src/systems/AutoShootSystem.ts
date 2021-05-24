@@ -19,11 +19,11 @@ export class AutoShootSystem implements ISystem {
         if (diff > gunComp.shotDelay) {
 
           let initialPosition = {
-            x: posComp.x + dimensionComp.x / 2,
-            y: posComp.y + dimensionComp.y
+            x: posComp.x,
+            y: posComp.y + dimensionComp.y / 2
           }
 
-          ShotArchetype.createNew(ctx, entity, initialPosition, {x: 0, y: gunComp.gunForce}, 0b0001)
+          ShotArchetype.createNew(ctx, entity, initialPosition, {x: 0, y: gunComp.gunForce}, 0b0001, ctx.assets.shot1)
           gunComp.timeSinceLast = ctx.frameClock.now
         }
       }

@@ -37,5 +37,17 @@ export const Utils = {
 
     return !(
         ARight < BLeft || BRight < ALeft || ABottom < BTop || BBottom < ATop);
+  },
+  promiseLoadImage(url: string, width: number = undefined, height: number = undefined): Promise<HTMLImageElement> {
+    return new Promise(( resolve, reject ) => {
+       let image = new Image(width, height)
+       image.onload = () => {
+          resolve(image)
+       }
+       image.onabort = () => {
+          reject(null)
+       }
+       image.src = url
+    })
   }
 };

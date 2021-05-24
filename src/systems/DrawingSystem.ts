@@ -1,5 +1,6 @@
 import { DimensionComponent } from '../components/DimensionComponent';
 import {DrawableComponent} from '../components/DrawableComponent';
+import { DrawableImageComponent } from '../components/DrawableImageComponent';
 import {PathComponent} from '../components/PathComponent';
 import {PositionalComponent} from '../components/PositionalComponent';
 import { ShakeComponent } from '../components/ShakeComponent';
@@ -42,6 +43,7 @@ export class DrawingSystem implements ISystem {
 
     for (let entity of gctx.entityManager) {
       let drawComp = entity.getComponent(DrawableComponent);
+      let imageComp = entity.getComponent(DrawableImageComponent);
       let posComp = entity.getComponent(PositionalComponent);
       let pathComp = entity.getComponent(PathComponent);
       let dimensionComp = entity.getComponent(DimensionComponent)
@@ -55,6 +57,10 @@ export class DrawingSystem implements ISystem {
           ctx.strokeStyle = drawComp.color;
           ctx.strokeRect(posComp.x, posComp.y, dimensionComp.x, dimensionComp.y);
         }
+      }
+
+      if (imageComp && posComp) {
+        ctx.drawImage(imageComp.image, posComp.x, posComp.y)
       }
 
       if (posComp && velocityComp) {
